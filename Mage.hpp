@@ -5,32 +5,33 @@
 class Mage : public Character
 {
 protected:
-	int mana;
+	float mana;
 public:
 	//Contructor
-	Mage(std::string name, std::string faction, std::string race, int healthPoints, int attackPoints, int armor, int dodge, int criticalChance, int exp, int level, int nextLevelExp, int mana);
+	Mage(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float lucky, int exp, int level, int nextLevelExp, float mana);
 
 	//Creator
 	static Mage* createCharacter(std::string name, std::string faction, std::string race);
 
 	//Override Methods
-	void showSheet() override;
-	void showCombatLayout(NpCharacter* enemy) override;
+	void showSheet() const override;
+	void showCombatLayout(std::vector<NpCharacter*> enemies) override;
 	void upgradeAttributes() override;
 	void healStats() override;
 	void basicAttack(NpCharacter* enemy) override;
 
 	//Combat Methods
+	void calculeMana();
 	void increaseMana();
-	void fireBall(NpCharacter* enemy);
-	void earthQuake(NpCharacter* enemy);
-	void cloudStrife(NpCharacter* enemy);
+	void fireBall(std::vector<NpCharacter*> enemies, NpCharacter* enemy);
+	void earthQuake(std::vector<NpCharacter*> enemies, NpCharacter* enemy);
+	void cloudStrife(std::vector<NpCharacter*> enemies, NpCharacter* enemy);
 
 	//Getters
-	int getMana();
+	float getMana() const;
 
 	//Setters
-	void setMana(int mana);
+	void setMana(float mana);
 
 };
 

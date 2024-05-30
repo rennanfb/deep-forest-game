@@ -8,26 +8,26 @@ protected:
 	int stamina;
 public:
 	//Constructor
-	Rogue(std::string name, std::string faction, std::string race, int healthPoints, int attackPoints, int armor, int dodge, int criticalChance, int exp, int level, int nextLevelExp, int stamina);
+	Rogue(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float lucky, int exp, int level, int nextLevelExp, int stamina);
 	
 	//Creator
 	static Rogue* createCharacter(std::string name, std::string faction, std::string race);
 
 	//Override Methods
-	void showSheet() override;
-	void showCombatLayout(NpCharacter* enemy) override;
+	void showSheet() const override;
+	void showCombatLayout(std::vector<NpCharacter*> enemies) override;
 	void upgradeAttributes() override;
 	void healStats() override;
 	void basicAttack(NpCharacter* enemy) override;
 
 	//Combat Methods
 	void increaseStamina();
-	void twinBlades(NpCharacter* enemy);
-	void deepWound(NpCharacter* enemy);
-	void sevenSins(NpCharacter* enemy);
+	void twinBlades(std::vector<NpCharacter*> enemies, NpCharacter* target);
+	void deepWound(std::vector<NpCharacter*> enemies, NpCharacter* target);
+	void sevenSins(std::vector<NpCharacter*> enemies, NpCharacter* target);
 
 	//Getters
-	int getStamina();
+	int getStamina() const;
 
 	//Setters
 	void setStamina(int stamina);

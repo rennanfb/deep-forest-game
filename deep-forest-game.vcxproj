@@ -127,35 +127,67 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Act2.hpp" />
+    <ClInclude Include="BoarColossal.hpp" />
     <ClInclude Include="Character.hpp" />
     <ClInclude Include="CharacterCreation.hpp" />
+    <ClInclude Include="Conflict5.hpp" />
+    <ClInclude Include="Conflict6.hpp" />
+    <ClInclude Include="Conflict7.hpp" />
+    <ClInclude Include="Conflict8.hpp" />
     <ClInclude Include="Creature.hpp" />
-    <ClInclude Include="FirstConflict.hpp" />
-    <ClInclude Include="FourthConflict.hpp" />
-    <ClInclude Include="Goblin.hpp" />
+    <ClInclude Include="Act1.hpp" />
+    <ClInclude Include="Conflict1.hpp" />
+    <ClInclude Include="Conflict4.hpp" />
+    <ClInclude Include="DemonAztras.hpp" />
+    <ClInclude Include="EgoShadow.hpp" />
+    <ClInclude Include="GnomeBeth.hpp" />
+    <ClInclude Include="GnomeRath.hpp" />
+    <ClInclude Include="GoblinPaladin.hpp" />
+    <ClInclude Include="GoblinRebel.hpp" />
+    <ClInclude Include="GoblinZombie.hpp" />
     <ClInclude Include="Interval.hpp" />
     <ClInclude Include="Mage.hpp" />
     <ClInclude Include="NpCharacter.hpp" />
+    <ClInclude Include="CompanionPriest.hpp" />
     <ClInclude Include="Rogue.hpp" />
-    <ClInclude Include="SecondConflict.hpp" />
-    <ClInclude Include="ThirdConflict.hpp" />
+    <ClInclude Include="Conflict2.hpp" />
+    <ClInclude Include="Conflict3.hpp" />
+    <ClInclude Include="TorturerZulmin.hpp" />
     <ClInclude Include="Warrior.hpp" />
+    <ClInclude Include="GoblinWarrior.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Act2.cpp" />
+    <ClCompile Include="BoarColossal.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="CharacterCreation.cpp" />
+    <ClCompile Include="Conflict5.cpp" />
+    <ClCompile Include="Conflict6.cpp" />
+    <ClCompile Include="Conflict7.cpp" />
+    <ClCompile Include="Conflict8.cpp" />
     <ClCompile Include="Creature.cpp" />
-    <ClCompile Include="FirstConflict.cpp" />
-    <ClCompile Include="FourthConflict.cpp" />
-    <ClCompile Include="Goblin.cpp" />
+    <ClCompile Include="Act1.cpp" />
+    <ClCompile Include="Conflict1.cpp" />
+    <ClCompile Include="Conflict4.cpp" />
+    <ClCompile Include="DemonAztras.cpp" />
+    <ClCompile Include="EgoShadow.cpp" />
+    <ClCompile Include="GnomeBeth.cpp" />
+    <ClCompile Include="GnomeRath.cpp" />
+    <ClCompile Include="GoblinPaladin.cpp" />
+    <ClCompile Include="GoblinRebel.cpp" />
+    <ClCompile Include="GoblinZombie.cpp" />
     <ClCompile Include="Interval.cpp" />
     <ClCompile Include="Mage.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NpCharacter.cpp" />
+    <ClCompile Include="CompanionPriest.cpp" />
     <ClCompile Include="Rogue.cpp" />
-    <ClCompile Include="SecondConflict.cpp" />
-    <ClCompile Include="ThirdConflict.cpp" />
+    <ClCompile Include="Conflict2.cpp" />
+    <ClCompile Include="Conflict3.cpp" />
+    <ClCompile Include="TorturerZulmin.cpp" />
     <ClCompile Include="Warrior.cpp" />
+    <ClCompile Include="GoblinWarrior.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />

@@ -3,45 +3,126 @@
 
 //Constructor
 
-Character::Character(std::string name, std::string faction, std::string race, int healthPoints, int attackPoints, int armor, int dodge, int criticalChance, int exp, int level, int nextLevelExp) :
-	Creature(name, faction, race),
-	healthPoints(healthPoints),
-	attackPoints(attackPoints),
-	armor(armor),
-	dodge(dodge),
-	criticalChance(criticalChance),
+Character::Character(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float lucky, int exp, int level, int nextLevelExp) :
+	Creature(name, faction, race, strength, agility, constitution, intelligence, lucky),
 	exp(exp),
 	level(level),
 	nextLevelExp(nextLevelExp)
 {
-
+	calculateCombatStatus();
 }
 
 //Combat Methods
 
-int Character::damageReduction()
+float Character::calculateAverageDamage(float damage) 
 {
-	int damageReduction = this->armor / 5;
+	float averageDamageBonus = this->getAverageAttackBase();
+
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	std::uniform_int_distribution<> dis(1, 2);
+
+	int damageUpOrDownChance = dis(gen);
+	if (damageUpOrDownChance == 1)
+	{
+		damage -= averageDamageBonus;
+	}
+	else
+	{
+		damage += averageDamageBonus;
+	}
+	return damage;
+}
+
+float Character::calculateAverageMagicDamage(float damage)
+{
+	float averageDamageBonus = this->getAverageMagicAttackBase();
+
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	std::uniform_int_distribution<> dis(1, 2);
+
+	int damageUpOrDownChance = dis(gen);
+	if (damageUpOrDownChance == 1)
+	{
+		damage -= averageDamageBonus;
+	}
+	else
+	{
+		damage += averageDamageBonus;
+	}
+	return damage;
+}
+
+std::vector<NpCharacter*> Character::filterAliveEnemies(std::vector<NpCharacter*> enemies)
+{
+	std::vector<NpCharacter*> aliveEnemies;
+	for (auto enemy : enemies)
+	{
+		if (enemy->isAlive() == true)
+		{
+			aliveEnemies.push_back(enemy);
+		}
+	}
+	return aliveEnemies;
+}
+
+int Character::chooseEnemy(const std::vector<NpCharacter*>& enemies) 
+{
+	while (true) 
+	{
+		std::cout << "Choose your target:" << std::endl;
+		for (size_t i = 0; i < enemies.size(); ++i) {
+				std::cout << "Enter (" << (i + 1) << ") for " << enemies[i]->getName() << " | Faction: " << enemies[i]->getFaction() << " | HP: " << enemies[i]->getHealthPoints() << std::endl;
+		}
+
+		int choice;
+		std::cin >> choice;
+
+		if (choice > 0 && choice <= static_cast<int>(enemies.size()))
+		{
+				return choice - 1; // Convert to zero-based index
+		}
+		else
+		{
+			std::cout << "Please enter a valid number between 1 and " << enemies.size() << std::endl;
+		}
+	}
+}
+
+float Character::damageReduction() const
+{
+	float damageReduction = this->armor / 5.0f;
 	return damageReduction;
 }
 
-bool Character::dodgeAttack()
+bool Character::dodgeAttack() const
 {
-	std::srand(std::time(nullptr));
-	int chance = std::rand() % 100;
-	if (chance < this->dodge) {
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	std::uniform_int_distribution<> dis(1, 100);
+
+	int chance = dis(gen);
+
+	if (chance < this->dodge) 
+	{
 		std::cout << this->getName() << " dodges the attack" << std::endl;
 		return true;
 	}
-	else {
+	else 
+	{
 		return false;
 	}
 }
 
-bool Character::criticalHit()
+bool Character::criticalHit() const
 {
-	std::srand(std::time(nullptr));
-	int chance = std::rand() % 100;
+	std::random_device rd; 
+	std::mt19937 gen(rd());
+	std::uniform_int_distribution<> dis(1, 100);
+
+	int chance = dis(gen);
+
 	if (chance < this->criticalChance) {
 		std::cout << this->getName() << " * Critical Damage * " << std::endl;
 		return true;
@@ -51,13 +132,19 @@ bool Character::criticalHit()
 	}
 }
 
-void Character::decreaseHealth(int damage)
+void Character::increaseHealth(float heal)
+{
+	this->healthPoints += heal;
+}
+
+void Character::decreaseHealth(float damage)
 {
 	this->healthPoints -= damage;
 }
 
-bool Character::isAlive() {
-	if (this->healthPoints > 0) {
+bool Character::isAlive() const 
+{
+	if (this->healthPoints > 1.0f) {
 		return true;
 	}
 	else
@@ -104,20 +191,16 @@ void Character::increaseExp(NpCharacter* enemy)
 
 //Uppers
 
-void Character::upHealthPoints(int upgrade)
+void Character::calculateCombatStatus() 
 {
-	this->healthPoints += upgrade;
+	this->healthPoints = this->getConstitution() * 10.0f;
+	this->attackPoints = this->getStrength() * 2.0f;
+	this->magicAttackPoints = this->getIntelligence() * 2.0f;
+	this->armor = this->getConstitution() * 3.0f;
+	this->dodge = this->getAgility() / 2.0f;
+	this->criticalChance = this->getLucky() / 2.0f;
 }
 
-void Character::upAttackPoints(int upgrade)
-{
-	this->attackPoints += upgrade;
-}
-
-void Character::upArmor(int upgrade)
-{
-	this->armor += upgrade;
-}
 
 void Character::upNextLevelExp(int restExp)
 {
@@ -129,44 +212,79 @@ void Character::upNextLevelExp(int restExp)
 
 //Getters
 
-int Character::getHealthPoints() 
+float Character::getHealthPoints() const
 {
 	return healthPoints;
 }
 
-int Character::getAttackPoints() 
+float Character::getAttackPoints() const
 {
 	return attackPoints;
 }
-int Character::getArmor() 
+
+float Character::getAverageAttackBase() const
+{
+	float averageAttackBase = this->attackPoints * 0.1f;
+
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	std::uniform_real_distribution<float> dis(0.0f, averageAttackBase);
+
+	float averageDamage = dis(gen);
+	return averageDamage;
+
+}
+
+float Character::getMagicAttackPoints() const
+{
+	return magicAttackPoints;
+}
+
+float Character::getAverageMagicAttackBase() const
+{
+	float averageMagicAttackBase = this->magicAttackPoints * 0.1f;
+
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	std::uniform_real_distribution<float> dis(0.0f, averageMagicAttackBase);
+
+	float averageMagicDamage = dis(gen);
+	return averageMagicDamage;
+}
+
+float Character::getArmor() const
 {
 	return armor;
 }
 
-int Character::getExp() 
+int Character::getExp() const
 {
 	return exp;
 }
-int Character::getLevel()
+int Character::getLevel() const
 {
 	return level;
 }
-int Character::getNextLevelExp() 
+int Character::getNextLevelExp() const
 {
 	return nextLevelExp;
 }
 
 //Setters
 
-void Character::setHealthPoints(int healthPoints) 
+void Character::setHealthPoints(float healthPoints)
 {
 	this->healthPoints = healthPoints;
 }
-void Character::setAttackPoints(int attackPoints) 
+void Character::setAttackPoints(float attackPoints)
 {
 	this->attackPoints = attackPoints;
 }
-void Character::setArmor(int armor) 
+void Character::setMagicAttackPoints(float magicAttackPoints)
+{
+	this->magicAttackPoints = magicAttackPoints;
+}
+void Character::setArmor(float armor)
 {
 	this->armor = armor;
 }
@@ -179,7 +297,7 @@ void Character::setLevel(int level)
 {
 	this->level = level;
 }
-void Character::setnextLevelExp(int nextLevelExp) 
+void Character::setNextLevelExp(int nextLevelExp) 
 {
 	this->nextLevelExp = nextLevelExp;
 }

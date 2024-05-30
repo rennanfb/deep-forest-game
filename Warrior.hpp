@@ -1,37 +1,38 @@
 #pragma once
 #include "Character.hpp"
 #include "NpCharacter.hpp"
+#include <vector>
 
 class Warrior : public Character
 {
 protected:
-	int fury;
+	float fury;
 public:
 	//Constructor
-	Warrior(std::string name, std::string faction, std::string race, int healthPoints, int attackPoints, int armor, int dodge, int criticalChance, int exp, int level, int nextLevelExp, int fury);
+	Warrior(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float lucky, int exp, int level, int nextLevelExp, float fury);
 	
 	//Creator
 	static Warrior* createCharacter(std::string name, std::string faction, std::string race);
 
 	//Override Methods
-	void showCombatLayout(NpCharacter* enemy) override;
-	void showSheet() override;
-	void decreaseHealth(int damage) override;
+	void showCombatLayout(std::vector<NpCharacter*> enemies) override;
+	void showSheet() const override;
+	void decreaseHealth(float damage) override;
 	void upgradeAttributes() override;
 	void healStats() override;
 	void basicAttack(NpCharacter* enemy) override;
 
 	//Combat Methods
-	void increaseFury(int damage);
-	void swordShout(NpCharacter* enemy);
-	void rockBreaker(NpCharacter* enemy);
-	void chaosSword(NpCharacter* enemy);
+	void increaseFury(float damage);
+	void swordShout(std::vector<NpCharacter*> enemies, NpCharacter* target);
+	void rockBreaker(std::vector<NpCharacter*> enemies, NpCharacter* target);
+	void chaosSword(std::vector<NpCharacter*> enemies, NpCharacter* target);
 
 	//Getters
-	int getFury();
+	float getFury() const;
 
 	//Setters
-	void setFury(int increaseFury);
+	void setFury(float increaseFury);
 
 };
 

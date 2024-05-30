@@ -3,37 +3,52 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+#include <random>
 
 class NpCharacter;
 
 class Character : public Creature
 {
 protected:
-	int healthPoints;
-	int attackPoints;
-	int armor;
-	int dodge;
-	int criticalChance;
+
+	//Combat Stats
+
+	float healthPoints;
+	float attackPoints;
+	float magicAttackPoints;
+	float armor;
+	float dodge;
+	float criticalChance;
+
+	//Experience
+
 	int exp;
 	int level;
 	int nextLevelExp;
+
 public:
 	//Constructor
-	Character(std::string name, std::string faction, std::string race, int healthPoints, int attackPoints, int armor, int dodge,int criticalChance, int exp, int level, int nextLevelExp);
+	Character(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float lucky, int exp, int level, int nextLevelExp);
 
 	//Pure Virtual Methods
-	virtual void showSheet() = 0;
-	virtual void showCombatLayout(NpCharacter* enemy) = 0;
+	virtual void showSheet() const = 0;
+	virtual void showCombatLayout(std::vector<NpCharacter*> enemies) = 0;
 	virtual void basicAttack(NpCharacter* enemy) = 0;
 	virtual void healStats() = 0;
 	virtual void upgradeAttributes() = 0;
 
 	//Combat Methods
-	int damageReduction();
-	virtual void decreaseHealth(int damage);
-	bool dodgeAttack();
-	bool criticalHit();
-	bool isAlive();
+
+	float calculateAverageDamage(float damage);
+	float calculateAverageMagicDamage(float damage);
+	std::vector<NpCharacter*> filterAliveEnemies(std::vector<NpCharacter*> enemies);
+	int chooseEnemy(const std::vector<NpCharacter*>& enemies);
+	float damageReduction() const;
+	void increaseHealth(float heal);
+	virtual void decreaseHealth(float damage);
+	bool dodgeAttack() const;
+	bool criticalHit() const; 
+	bool isAlive() const;
 
 	//Level Up Methods
 	void levelUp();
@@ -41,25 +56,29 @@ public:
 	void increaseExp(NpCharacter* enemy);
 
 	//Uppers
-	void upHealthPoints(int upgrade);
-	void upAttackPoints(int upgrade);
-	void upArmor(int upgrade);
+
+	void calculateCombatStatus();
+	void upNextLevelExp(int restExp);
 
 	//Getters
-	int getHealthPoints();
-	int getAttackPoints();
-	int getArmor();
-	int getExp();
-	int getLevel();
-	int getNextLevelExp();
+
+	float getHealthPoints() const;
+	float getAttackPoints() const;
+	float getAverageAttackBase() const;
+	float getMagicAttackPoints() const;
+	float getAverageMagicAttackBase() const;
+	float getArmor() const;
+	int getExp() const;
+	int getLevel() const;
+	int getNextLevelExp() const;
 
 	//Setters
-	void setHealthPoints(int healthPoints);
-	void setAttackPoints(int attackPower);
-	void setArmor(int armor);
-	void upNextLevelExp(int restExp);
+	void setHealthPoints(float healthPoints);
+	void setAttackPoints(float attackPoints);
+	void setMagicAttackPoints(float magicAttackPoints);
+	void setArmor(float armor);
 	void setExp(int exp);
 	void setLevel(int level);
-	void setnextLevelExp(int nextLevelExp);
+	void setNextLevelExp(int nextLevelExp);
 };
 

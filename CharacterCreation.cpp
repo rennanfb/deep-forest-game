@@ -9,33 +9,41 @@ Character* CharacterCreation()
 	std::cout << "What Faction do you serve?" << std::endl;
 	std::string factionName;
 	std::cin >> factionName;
-	std::cout << "What is your race?" << std::endl;
-	std::string raceName;
-	std::cin >> raceName;
-	std::cout << "Write your job: (Warrior, Rogue or Mage)" << std::endl;
+
+	std::string raceName = Creature::setRace();
+
+	std::cout << "Which is your job?" << std::endl;
+	std::cout << "Enter (1) - Warrior" << std::endl;
+	std::cout << "Enter (2) - Rogue" << std::endl;
+	std::cout << "Enter (3) - Mage" << std::endl;
+
 	std::string classChoice;
 	std::cin >> classChoice;
 
-	if (classChoice == "Warrior") 
+	if (classChoice == "1") 
 	{
-		Warrior* player1 = Warrior::createCharacter(charName, factionName, raceName);
+		Character* player1 = Warrior::createCharacter(charName, factionName, raceName);
+		player1->raceBonus(raceName);
 		return player1;
 	}
-	if (classChoice == "Rogue") 
+	else if (classChoice == "2") 
 	{
-		Rogue* player1 = Rogue::createCharacter(charName, factionName, raceName);
+		Character* player1 = Rogue::createCharacter(charName, factionName, raceName);
+		player1->raceBonus(raceName);
 		return player1;
 	}
-	if (classChoice == "Mage") 
+	else if (classChoice == "3") 
 	{
-		Mage* player1 = Mage::createCharacter(charName, factionName, raceName);
+		Character* player1 = Mage::createCharacter(charName, factionName, raceName);
+		player1->raceBonus(raceName);
 		return player1;
 	}
 	else 
 	{
-		std::cout << "You had to write the class name as the exemple (Warrior, Rogue or Mage)" << std::endl;
+		std::cout << "You had to enter the class number as the exemple (1 - Warrior | 2 - Rogue | 3 - Mage)" << std::endl;
 		return CharacterCreation();
 	}
+
 }
 
 
