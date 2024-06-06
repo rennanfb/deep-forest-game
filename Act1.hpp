@@ -18,4 +18,4 @@
 #include "Conflict3.hpp"
 #include "Conflict4.hpp"
 
-void Act1(Character* player1);
+void Act1(std::vector <Character*> players);

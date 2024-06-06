@@ -39,12 +39,17 @@ void CompanionPriest::showCombatLayout(std::vector<NpCharacter*> enemies)
 
 void CompanionPriest::showCombatLayout(Character* ally, std::vector<NpCharacter*> enemies)
 {
+	std::cout << "- " << this->getName() << "'s turn -" << std::endl;
+
 	std::vector<NpCharacter*> aliveEnemies = filterAliveEnemies(enemies);
 
 	if (aliveEnemies.empty())
 	{
 		return;
 	}
+
+	int targetIndex = chooseEnemy(aliveEnemies);
+	NpCharacter* target = aliveEnemies[targetIndex];
 
 	std::cout << std::endl;
 	std::cout << " --------- " << this->getName() << " --------- " << std::endl;
@@ -53,12 +58,9 @@ void CompanionPriest::showCombatLayout(Character* ally, std::vector<NpCharacter*
 	std::cout << " --------- " << "Skills" << " --------- " << std::endl;
 	std::cout << "1 - Basic Attack" << std::endl;
 	std::cout << "2 - Holy Light (30MP)" << std::endl;
-	std::cout << "3 - Heal (60MP) (target: Ally)" << std::endl;
-	std::cout << "4 - Saviour Rain (90MP)" << std::endl;
+	std::cout << "3 - Heal (60MP) (Target: Ally)" << std::endl;
+	std::cout << "4 - Saviour Rain (90MP) (Target: All)" << std::endl;
 	std::cout << std::endl;
-
-	int targetIndex = chooseEnemy(aliveEnemies);
-	NpCharacter* target = aliveEnemies[targetIndex];
 
 	std::cout << "*Type the number of your next attack (1, 2, 3, 4)*" << std::endl;
 	int nextMove;

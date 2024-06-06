@@ -5,4 +5,4 @@
 #include "Mage.hpp"
 #include "NpCharacter.hpp"
 
-void Conflict2(Character* player1, std::vector<NpCharacter*> enemies);
+void Conflict2(std::vector <Character*> players, std::vector<NpCharacter*> enemies);

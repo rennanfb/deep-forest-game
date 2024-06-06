@@ -18,7 +18,11 @@ TorturerZulmin* TorturerZulmin::createEnemy()
 
 //Skills Sets
 
-void TorturerZulmin::npcSkillSet(NpCharacter* npc, Character* player) {
+void TorturerZulmin::npcSkillSet(std::vector <Character*> players) 
+{
+	std::cout << "- " << this->getName() << "'s turn -" << std::endl;
+
+	int target = chooseEnemy(players);
 
 	std::random_device rd;
 	std::mt19937 gen(rd());
@@ -28,15 +32,15 @@ void TorturerZulmin::npcSkillSet(NpCharacter* npc, Character* player) {
 
 	if (chance >= 1 && chance < 20)
 	{
-		npc->basicAttack(player);
+		this->basicAttack(players[target]);
 	}
 	else if (chance >= 21 && chance < 85)
 	{
-		npc->throwDagger(player);
+		this->throwDagger(players[target]);
 	}
 	else if (chance >= 86 && chance <= 100)
 	{
-		npc->shadowEmbrace(player);
+		this->shadowEmbrace(players[target]);
 	}
 
 }

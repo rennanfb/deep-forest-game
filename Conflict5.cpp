@@ -1,6 +1,6 @@
 #include "Conflict5.hpp"
 
-void Conflict5(Character* player1, std::vector<NpCharacter*> enemies)
+void Conflict5(std::vector <Character*> players, std::vector<NpCharacter*> enemies)
 {
 	std::cout << std::endl;
 	std::cout << "------------------------------- Am i alive ? -------------------------------" << std::endl;
@@ -17,16 +17,19 @@ void Conflict5(Character* player1, std::vector<NpCharacter*> enemies)
 	std::cout << "run away from you, until it screams and attack you" << std::endl;
 	std::cout << std::endl;
 
-	while (enemies[0]->isAlive() == true && player1->isAlive() == true)
+	while (enemies[0]->isAlive() == true && players[0]->isAlive() == true)
 	{
-		enemies[0]->npcSkillSet(enemies[0], player1);
+		enemies[0]->npcSkillSet(players);
 
-		player1->showCombatLayout(enemies);
+		if (players[0]->isAlive() == true)
+		{
+			players[0]->showCombatLayout(enemies);
+		}
 	}
 	if (enemies[0]->isAlive() == false)
 	{
 		std::cout << "The " << enemies[0]->getName() << " fall down" << std::endl;
-		player1->increaseExp(enemies[0]);
+		players[0]->increaseExp(enemies[0]);
 		delete enemies[0];
 
 		std::cout << "After the last strike, your ego starts to cry and it slowly unites with you again" << std::endl;
@@ -34,11 +37,11 @@ void Conflict5(Character* player1, std::vector<NpCharacter*> enemies)
 		std::cout << "as you get awake, you hear chains shaking, you're imprisoned." << std::endl;
 
 	}
-	else if (player1->isAlive() == false)
+	else if (players[0]->isAlive() == false)
 	{
-		std::cout << player1->getName() << " fall down" << std::endl;
+		std::cout << players[0]->getName() << " fall down" << std::endl;
 		std::cout << "You'are dead" << std::endl;
-		delete player1;
+		delete players[0];
 		exit(0);
 	}
 }

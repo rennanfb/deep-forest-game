@@ -1,29 +1,29 @@
 #include "Act1.hpp"
 
-void Act1(Character* player1) 
+void Act1(std::vector <Character*> players) 
 {
-	Interval(player1);
+	Interval(players);
 
 	NpCharacter* enemy1 = GoblinRebel::createEnemy();
 	std::vector<NpCharacter*> enemies = { enemy1 };
-	Conflict1(player1, enemies);
+	Conflict1(players, enemies);
 
-	Interval(player1);
+	Interval(players);
 
 	NpCharacter* enemy2 = GoblinWarrior::createEnemy();
 	std::vector<NpCharacter*> enemies2 = { enemy2 };
-	Conflict2(player1, enemies2);
+	Conflict2(players, enemies2);
 
-	Interval(player1);
+	Interval(players);
 
 	NpCharacter* enemy3 = GoblinPaladin::createEnemy();
 	std::vector<NpCharacter*> enemies3 = { enemy3 };
-	Conflict3(player1, enemies3);
+	Conflict3(players, enemies3);
 
-	Interval(player1);
+	Interval(players);
 
 	NpCharacter* enemy4 = GoblinZombie::createEnemy();
 	NpCharacter* enemy5 = TorturerZulmin::createEnemy();
 	std::vector<NpCharacter*> enemies4 = { enemy4, enemy5 };
-	Conflict4(player1, enemies4);
+	Conflict4(players, enemies4);
 }

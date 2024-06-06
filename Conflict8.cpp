@@ -1,6 +1,6 @@
 #include "Conflict8.hpp"
 
-void Conflict8(Character* player1, Character* companion, std::vector<NpCharacter*> enemies)
+void Conflict8(std::vector <Character*> players, std::vector<NpCharacter*> enemies)
 {
 	std::cout << std::endl;
 	std::cout << "------------------------------- The Priestess of the sun -------------------------------" << std::endl;
@@ -32,37 +32,23 @@ void Conflict8(Character* player1, Character* companion, std::vector<NpCharacter
 	std::cout << std::endl;
 
 
-	while (player1->isAlive() == true && (enemies[0]->isAlive() == true || enemies[1]->isAlive() == true || enemies[2]->isAlive() == true))
+	while (players[0]->isAlive() == true && (enemies[0]->isAlive() == true || enemies[1]->isAlive() == true || enemies[2]->isAlive() == true))
 	{
-		player1->showCombatLayout(enemies);
+		players[0]->showCombatLayout(enemies);
 
-		if (companion->isAlive() == true)
+		if (players[1]->isAlive() == true)
 		{
-			dynamic_cast<CompanionPriest*>(companion)->showCombatLayout(player1, enemies);
+			dynamic_cast<CompanionPriest*>(players[1])->showCombatLayout(players[0], enemies);
 		}
 
 		for (size_t i = 0; i < enemies.size(); ++i) 
 		{
 
-			std::random_device rd;
-			std::mt19937 gen(rd());
-			std::uniform_int_distribution<> dis(1, 2);
+			if (enemies[i]->isAlive() == true)
+			{
+				enemies[i]->npcSkillSet(players);
+			}
 
-			int npcTarget = dis(gen);
-			if (npcTarget == 1)
-			{
-				if (enemies[i]->isAlive() == true)
-				{
-					enemies[i]->npcSkillSet(enemies[i], player1);
-				}
-			}
-			else if (npcTarget == 2)
-			{
-				if (enemies[i]->isAlive() == true)
-				{
-					enemies[i]->npcSkillSet(enemies[i], companion);
-				}
-			}
 		}
 
 	}
@@ -70,9 +56,9 @@ void Conflict8(Character* player1, Character* companion, std::vector<NpCharacter
 	{
 		std::cout << "The enemies are down" << std::endl;
 
-		player1->increaseExp(enemies[0]);
-		player1->increaseExp(enemies[1]);
-		player1->increaseExp(enemies[2]);
+		players[0]->increaseExp(enemies[0]);
+		players[0]->increaseExp(enemies[1]);
+		players[0]->increaseExp(enemies[2]);
 		delete enemies[0];
 		delete enemies[1];
 		delete enemies[2];
@@ -86,11 +72,11 @@ void Conflict8(Character* player1, Character* companion, std::vector<NpCharacter
 		std::cout << std::endl;
 
 	}
-	else if (player1->isAlive() == false)
+	else if (players[0]->isAlive() == false)
 	{
-		std::cout << player1->getName() << " fall down" << std::endl;
+		std::cout << players[0]->getName() << " fall down" << std::endl;
 		std::cout << "You'are dead" << std::endl;
-		delete player1;
+		delete players[0];
 		exit(0);
 	}
 

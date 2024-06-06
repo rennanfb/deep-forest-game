@@ -81,7 +81,7 @@ int Character::chooseEnemy(const std::vector<NpCharacter*>& enemies)
 
 		if (choice > 0 && choice <= static_cast<int>(enemies.size()))
 		{
-				return choice - 1; // Convert to zero-based index
+				return choice - 1;
 		}
 		else
 		{

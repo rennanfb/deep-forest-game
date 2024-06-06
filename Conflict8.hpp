@@ -6,4 +6,4 @@
 #include "CompanionPriest.hpp"
 #include "NpCharacter.hpp"
 
-void Conflict8(Character* player1, Character* companion, std::vector<NpCharacter*> enemies);
+void Conflict8(std::vector <Character*> players, std::vector<NpCharacter*> enemies);

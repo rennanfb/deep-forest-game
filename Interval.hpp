@@ -3,4 +3,4 @@
 #include <string>
 #include "Character.hpp"
 
-void Interval(Character* player1);
+void Interval(std::vector <Character*> players);

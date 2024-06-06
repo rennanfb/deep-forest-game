@@ -18,7 +18,11 @@ GoblinPaladin* GoblinPaladin::createEnemy()
 
 //Skills Sets
 
-void GoblinPaladin::npcSkillSet(NpCharacter* npc, Character* player) {
+void GoblinPaladin::npcSkillSet(std::vector <Character*> players)
+{
+	std::cout << "- " << this->getName() << "'s turn -" << std::endl;
+
+	int target = chooseEnemy(players);
 
 	std::random_device rd;
 	std::mt19937 gen(rd());
@@ -26,13 +30,13 @@ void GoblinPaladin::npcSkillSet(NpCharacter* npc, Character* player) {
 
 	int chance = dis(gen);
 
-	if (chance >= 1 && chance < 70)
+	if (chance >= 1 && chance < 75)
 	{
-		npc->basicAttack(player);
+		this->basicAttack(players[target]);
 	}
-	else if (chance >= 71 && chance < 100)
+	else if (chance >= 76 && chance < 100)
 	{
-		npc->shieldBash(player);
+		this->shieldBash(players[target]);
 	}
 
 }

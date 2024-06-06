@@ -15,7 +15,7 @@ public:
 
 	//Skills Sets
 
-	void npcSkillSet(NpCharacter* npc, Character* player) override;
+	void npcSkillSet(std::vector <Character*> players) override;
 
 };
 

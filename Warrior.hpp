@@ -6,15 +6,21 @@
 class Warrior : public Character
 {
 protected:
+
 	float fury;
+
 public:
+
 	//Constructor
+
 	Warrior(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float lucky, int exp, int level, int nextLevelExp, float fury);
 	
 	//Creator
+
 	static Warrior* createCharacter(std::string name, std::string faction, std::string race);
 
 	//Override Methods
+
 	void showCombatLayout(std::vector<NpCharacter*> enemies) override;
 	void showSheet() const override;
 	void decreaseHealth(float damage) override;
@@ -23,15 +29,18 @@ public:
 	void basicAttack(NpCharacter* enemy) override;
 
 	//Combat Methods
+
 	void increaseFury(float damage);
 	void swordShout(std::vector<NpCharacter*> enemies, NpCharacter* target);
 	void rockBreaker(std::vector<NpCharacter*> enemies, NpCharacter* target);
 	void chaosSword(std::vector<NpCharacter*> enemies, NpCharacter* target);
 
 	//Getters
+
 	float getFury() const;
 
 	//Setters
+
 	void setFury(float increaseFury);
 
 };

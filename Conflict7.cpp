@@ -1,6 +1,6 @@
 #include "Conflict7.hpp"
 
-void Conflict7(Character* player1, std::vector<NpCharacter*> enemies)
+void Conflict7(std::vector <Character*> players, std::vector<NpCharacter*> enemies)
 {
 	std::cout << std::endl;
 	std::cout << "------------------------------- The Truth? -------------------------------" << std::endl;
@@ -25,17 +25,19 @@ void Conflict7(Character* player1, std::vector<NpCharacter*> enemies)
 	std::cout << "that's a lot of meat." << std::endl;
 	std::cout << std::endl;
 
-	while (player1->isAlive() == true && enemies[0]->isAlive() == true)
+	while (players[0]->isAlive() == true && enemies[0]->isAlive() == true)
 	{
-		player1->showCombatLayout(enemies);
+		players[0]->showCombatLayout(enemies);
 
-		enemies[0]->npcSkillSet(enemies[0], player1);
-
+		if (enemies[0]->isAlive() == true)
+		{
+			enemies[0]->npcSkillSet(players);
+		}
 	}
 	if (enemies[0]->isAlive() == false)
 	{
 		std::cout << "The " << enemies[0]->getName() << " fall down" << std::endl;
-		player1->increaseExp(enemies[0]);
+		players[0]->increaseExp(enemies[0]);
 		delete enemies[0];
 
 		std::cout << "You kill your hungry, while thinks about what the prophet told you... messiah?" << std::endl;
@@ -45,11 +47,11 @@ void Conflict7(Character* player1, std::vector<NpCharacter*> enemies)
 		std::cout << "of him in you, you had just ate him to kill your hungry at that moment." << std::endl;
 
 	}
-	else if (player1->isAlive() == false)
+	else if (players[0]->isAlive() == false)
 	{
-		std::cout << player1->getName() << " fall down" << std::endl;
+		std::cout << players[0]->getName() << " fall down" << std::endl;
 		std::cout << "You'are dead" << std::endl;
-		delete player1;
+		delete players[0];
 		exit(0);
 	}
 }

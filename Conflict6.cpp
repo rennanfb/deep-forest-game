@@ -1,6 +1,6 @@
 #include "Conflict6.hpp"
 
-void Conflict6(Character* player1, std::vector<NpCharacter*> enemies)
+void Conflict6(std::vector <Character*> players, std::vector<NpCharacter*> enemies)
 {
 	std::cout << std::endl;
 	std::cout << "------------------------------- The Twin Mercenaries -------------------------------" << std::endl;
@@ -8,7 +8,7 @@ void Conflict6(Character* player1, std::vector<NpCharacter*> enemies)
 	std::cout << "they notice that you're awake." << std::endl;
 	std::cout << std::endl;
 	std::cout << "Both says: we are Rath and Beth, and by now you are our property, at least until we" << std::endl;
-	std::cout << "deliver you to them, it is nothing personal big " << player1->getRace() << " just business" << std::endl;
+	std::cout << "deliver you to them, it is nothing personal big " << players[0]->getRace() << " just business" << std::endl;
 	std::cout << "they are paying so much gold for you, and we want so much gold, you know?!" << std::endl;
 	std::cout  << std::endl;
 	std::cout << "You have no much to do by now, imprisoned without your waepons, then you are hit by a" << std::endl;
@@ -24,14 +24,14 @@ void Conflict6(Character* player1, std::vector<NpCharacter*> enemies)
 	std::cout << std::endl;
 
 
-	while (player1->isAlive() == true && (enemies[0]->isAlive() == true || enemies[1]->isAlive() == true))
+	while (players[0]->isAlive() == true && (enemies[0]->isAlive() == true || enemies[1]->isAlive() == true))
 	{
-			player1->showCombatLayout(enemies);
+		players[0]->showCombatLayout(enemies);
 
 		for (size_t i = 0; i < enemies.size(); ++i) {
 			if (enemies[i]->isAlive() == true)
 			{
-				enemies[i]->npcSkillSet(enemies[i], player1);
+				enemies[i]->npcSkillSet(players);
 			}
 		}
 
@@ -40,8 +40,8 @@ void Conflict6(Character* player1, std::vector<NpCharacter*> enemies)
 	{
 		std::cout << "The " << enemies[0]->getName() << " and " << enemies[1]->getName() << " are down" << std::endl;
 
-		player1->increaseExp(enemies[0]);
-		player1->increaseExp(enemies[1]);
+		players[0]->increaseExp(enemies[0]);
+		players[0]->increaseExp(enemies[1]);
 		delete enemies[0];
 		delete enemies[1];
 
@@ -55,11 +55,11 @@ void Conflict6(Character* player1, std::vector<NpCharacter*> enemies)
 		std::cout << std::endl;
 
 	}
-	else if (player1->isAlive() == false)
+	else if (players[0]->isAlive() == false)
 	{
-		std::cout << player1->getName() << " fall down" << std::endl;
+		std::cout << players[0]->getName() << " fall down" << std::endl;
 		std::cout << "You'are dead" << std::endl;
-		delete player1;
+		delete players[0];
 		exit(0);
 	}
 

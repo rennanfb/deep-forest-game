@@ -1,9 +1,12 @@
 #include "Interval.hpp"
 
-void Interval(Character* player1) 
+void Interval(std::vector <Character*> players) 
 {
-	player1->healStats();
-	player1->showSheet();
+	for (size_t i = 0; i < players.size(); ++i)
+	{
+		players[i]->healStats();
+		players[i]->showSheet();
+	}
 
 	std::cout << "Continue ? (Enter Y for Yes)" << std::endl;
 	std::string answer;
@@ -15,6 +18,6 @@ void Interval(Character* player1)
 	}
 	else
 	{
-		Interval(player1);
+		Interval(players);
 	}
 }

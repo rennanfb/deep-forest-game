@@ -18,7 +18,11 @@ GnomeBeth* GnomeBeth::createEnemy()
 
 //Skills Sets
 
-void GnomeBeth::npcSkillSet(NpCharacter* npc, Character* player) {
+void GnomeBeth::npcSkillSet(std::vector <Character*> players)
+{
+	std::cout << "- " << this->getName() << "'s turn -" << std::endl;
+
+	int target = chooseEnemy(players);
 
 	std::random_device rd;
 	std::mt19937 gen(rd());
@@ -28,15 +32,15 @@ void GnomeBeth::npcSkillSet(NpCharacter* npc, Character* player) {
 
 	if (chance >= 1 && chance < 50)
 	{
-		npc->basicAttack(player);
+		this->basicAttack(players[target]);
 	}
 	else if (chance >= 51 && chance < 80)
 	{
-		npc->throwDagger(player);
+		this->throwDagger(players[target]);
 	}
 	else if (chance >= 81 && chance <= 100)
 	{
-		npc->stockCharge(player);
+		this->stockCharge(players[target]);
 	}
 
 }

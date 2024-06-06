@@ -18,7 +18,11 @@ GoblinWarrior* GoblinWarrior::createEnemy()
 
 //Skills Sets
 
-void GoblinWarrior::npcSkillSet(NpCharacter* npc, Character* player) {
+void GoblinWarrior::npcSkillSet(std::vector <Character*> players)
+{
+	std::cout << "- " << this->getName() << "'s turn -" << std::endl;
+
+	int target = chooseEnemy(players);
 
 	std::random_device rd;
 	std::mt19937 gen(rd());
@@ -28,15 +32,15 @@ void GoblinWarrior::npcSkillSet(NpCharacter* npc, Character* player) {
 
 	if (chance >= 1 && chance < 70)
 	{
-		npc->basicAttack(player);
+		this->basicAttack(players[target]);
 	}
 	else if (chance >= 71 && chance < 90)
 	{
-		npc->stockCharge(player);
+		this->stockCharge(players[target]);
 	}
 	else if (chance >= 91 && chance <= 100)
 	{
-		npc->spinningSlash(player);
+		this->spinningSlash(players[target]);
 	}
 
 }

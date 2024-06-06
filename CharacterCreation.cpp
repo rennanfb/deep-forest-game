@@ -6,9 +6,6 @@ Character* CharacterCreation()
 	std::cout << "What is your name? " << std::endl;
 	std::string charName;
 	std::cin >> charName;
-	std::cout << "What Faction do you serve?" << std::endl;
-	std::string factionName;
-	std::cin >> factionName;
 
 	std::string raceName = Creature::setRace();
 
@@ -22,19 +19,19 @@ Character* CharacterCreation()
 
 	if (classChoice == "1") 
 	{
-		Character* player1 = Warrior::createCharacter(charName, factionName, raceName);
+		Character* player1 = Warrior::createCharacter(charName, "Nomad", raceName);
 		player1->raceBonus(raceName);
 		return player1;
 	}
 	else if (classChoice == "2") 
 	{
-		Character* player1 = Rogue::createCharacter(charName, factionName, raceName);
+		Character* player1 = Rogue::createCharacter(charName, "Nomad", raceName);
 		player1->raceBonus(raceName);
 		return player1;
 	}
 	else if (classChoice == "3") 
 	{
-		Character* player1 = Mage::createCharacter(charName, factionName, raceName);
+		Character* player1 = Mage::createCharacter(charName, "Nomad", raceName);
 		player1->raceBonus(raceName);
 		return player1;
 	}

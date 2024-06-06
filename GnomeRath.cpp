@@ -18,7 +18,11 @@ GnomeRath* GnomeRath::createEnemy()
 
 //Skills Sets
 
-void GnomeRath::npcSkillSet(NpCharacter* npc, Character* player) {
+void GnomeRath::npcSkillSet(std::vector <Character*> players)
+{
+	std::cout << "- " << this->getName() << "'s turn -" << std::endl;
+
+	int target = chooseEnemy(players);
 
 	std::random_device rd;
 	std::mt19937 gen(rd());
@@ -26,13 +30,17 @@ void GnomeRath::npcSkillSet(NpCharacter* npc, Character* player) {
 
 	int chance = dis(gen);
 
-	if (chance >= 1 && chance < 70)
+	if (chance >= 1 && chance < 50)
 	{
-		npc->basicAttack(player);
+		this->basicAttack(players[target]);
 	}
-	else if (chance >= 71 && chance < 100)
+	else if (chance >= 51 && chance < 80)
 	{
-		npc->shieldBash(player);
+		this->throwDagger(players[target]);
+	}
+	else if (chance >= 81 && chance <= 100)
+	{
+		this->stockCharge(players[target]);
 	}
 
 }

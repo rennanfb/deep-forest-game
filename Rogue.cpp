@@ -34,12 +34,18 @@ void Rogue::showSheet() const
 
 void Rogue::showCombatLayout(std::vector<NpCharacter*> enemies)
 {
+	std::cout << "- " << this->getName() << "'s turn -" << std::endl;
+
 	std::vector<NpCharacter*> aliveEnemies = filterAliveEnemies(enemies);
 
 	if (aliveEnemies.empty())
 	{
 		return;
 	}
+
+	int targetIndex = chooseEnemy(aliveEnemies);
+	NpCharacter* target = aliveEnemies[targetIndex];
+
 
 	std::cout << std::endl;
 	std::cout << " --------- " << this->getName() << " --------- " << std::endl;
@@ -51,9 +57,6 @@ void Rogue::showCombatLayout(std::vector<NpCharacter*> enemies)
 	std::cout << "3 - Deep Wound (60SP)" << std::endl;
 	std::cout << "4 - Seven Sins (80SP)" << std::endl;
 	std::cout << std::endl;
-
-	int targetIndex = chooseEnemy(aliveEnemies);
-	NpCharacter* target = aliveEnemies[targetIndex];
 
 	std::cout << "*Type the number of your next attack (1, 2, 3, 4)*" << std::endl;
 	int nextMove;

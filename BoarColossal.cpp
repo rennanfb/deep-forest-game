@@ -18,8 +18,12 @@ BoarColossal* BoarColossal::createEnemy()
 
 //Skills Sets
 
-void BoarColossal::npcSkillSet(NpCharacter* npc, Character* player)
+void BoarColossal::npcSkillSet(std::vector <Character*> players)
 {
+	std::cout << "- " << this->getName() << "'s turn -" << std::endl;
+
+	int target = chooseEnemy(players);
+
 	std::random_device rd;
 	std::mt19937 gen(rd());
 	std::uniform_int_distribution<> dis(1, 100);
@@ -28,15 +32,15 @@ void BoarColossal::npcSkillSet(NpCharacter* npc, Character* player)
 
 	if (chance >= 1 && chance < 60)
 	{
-		npc->basicAttack(player);
+		this->basicAttack(players[target]);
 	}
 	else if (chance >= 61 && chance < 80)
 	{
-		npc->bite(player);
+		this->bite(players[target]);
 	}
 	else if (chance >= 81 && chance <= 100)
 	{
-		npc->clawStrike(player);
+		this->clawStrike(players[target]);
 	}
 
 }

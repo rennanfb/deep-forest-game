@@ -1,6 +1,6 @@
 #include "Conflict2.hpp"
 
-void Conflict2(Character* player1, std::vector<NpCharacter*> enemies)
+void Conflict2(std::vector <Character*> players, std::vector<NpCharacter*> enemies)
 {
 	std::cout << std::endl;
 	std::cout << "------------------------------- They Found Him -------------------------------" << std::endl;
@@ -13,23 +13,26 @@ void Conflict2(Character* player1, std::vector<NpCharacter*> enemies)
 	std::cout << "he draws his sword and charges into you" << std::endl;
 	std::cout << std::endl;
 
-	while (player1->isAlive() == true && enemies[0]->isAlive() == true)
+	while (players[0]->isAlive() == true && enemies[0]->isAlive() == true)
 	{
-		enemies[0]->npcSkillSet(enemies[0], player1);
+		enemies[0]->npcSkillSet(players);
 
-		player1->showCombatLayout(enemies);
+		if (players[0]->isAlive() == true)
+		{
+			players[0]->showCombatLayout(enemies);
+		}
 	}
 	if (enemies[0]->isAlive() == false)
 	{
 		std::cout << "The " << enemies[0]->getName() << " falls down" << std::endl;
-		player1->increaseExp(enemies[0]);
+		players[0]->increaseExp(enemies[0]);
 		delete enemies[0];
 	}
-	else if (player1->isAlive() == false)
+	else if (players[0]->isAlive() == false)
 	{
-		std::cout << player1->getName() << " fall down" << std::endl;
+		std::cout << players[0]->getName() << " fall down" << std::endl;
 		std::cout << "You'are dead" << std::endl;
-		delete player1;
+		delete players[0];
 		exit(0);
 	}
 }

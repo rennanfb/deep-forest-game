@@ -20,4 +20,4 @@
 #include "Conflict7.hpp"
 #include "Conflict8.hpp"
 
-void Act2(Character* player1);
+void Act2(std::vector <Character*> players);

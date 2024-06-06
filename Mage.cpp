@@ -13,7 +13,7 @@ Mage::Mage(std::string name, std::string faction, std::string race, float streng
 
 Mage* Mage::createCharacter(std::string name, std::string faction, std::string race)
 {
-	return new Mage(name, faction, race, 5.0f, 5.0f, 50.0f, 20.0f, 13.0f, 0, 1, 100, 100.0);
+	return new Mage(name, faction, race, 5.0f, 5.0f, 120.0f, 20.0f, 13.0f, 0, 1, 100, 100.0);
 }
 
 //Override Methods
@@ -34,12 +34,18 @@ void Mage::showSheet() const
 
 void Mage::showCombatLayout(std::vector<NpCharacter*> enemies)
 {
+	std::cout << "- " << this->getName() << "'s turn -" << std::endl;
+
 	std::vector<NpCharacter*> aliveEnemies = filterAliveEnemies(enemies);
 
 	if (aliveEnemies.empty()) 
 	{
 		return;
 	}
+
+	int targetIndex = chooseEnemy(aliveEnemies);
+	NpCharacter* target = aliveEnemies[targetIndex];
+
 
 	std::cout << std::endl;
 	std::cout << " --------- " << this->getName() << " --------- " << std::endl;
@@ -48,12 +54,9 @@ void Mage::showCombatLayout(std::vector<NpCharacter*> enemies)
 	std::cout << " --------- " << "Skills" << " --------- " << std::endl;
 	std::cout << "1 - Basic Attack" << std::endl;
 	std::cout << "2 - Fire Ball (30MP)" << std::endl;
-	std::cout << "3 - Earthquake (60MP)" << std::endl;
+	std::cout << "3 - Earthquake (60MP) (Target: all enemies)" << std::endl;
 	std::cout << "4 - Cloud Strife (90MP)" << std::endl;
 	std::cout << std::endl;
-
-	int targetIndex = chooseEnemy(aliveEnemies);
-	NpCharacter* target = aliveEnemies[targetIndex];
 
 	std::cout << "*Type the number of your next attack (1, 2, 3, 4)*" << std::endl;
 	int nextMove;
@@ -221,48 +224,45 @@ void Mage::earthQuake(std::vector<NpCharacter*> enemies, NpCharacter* target)
 	{
 		this->mana -= 60;
 
-		if (target->dodgeAttack() != true)
+		if (this->criticalHit() == true)
 		{
-			if (this->criticalHit() == true)
+			float skillDamageBonus = this->getMagicAttackPoints() * 0.7f;
+			float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
+			float criticalDamage = skillDamage * 2.0f;
+			float damage = calculateAverageMagicDamage(criticalDamage);
+
+			if (damage < 0.0f)
 			{
-				float skillDamageBonus = this->getMagicAttackPoints() * 0.8f;
-				float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
-				float criticalDamage = skillDamage * 2.0f;
-				float averageDamage = calculateAverageMagicDamage(criticalDamage);
-				float damage = averageDamage - target->damageReduction();
-
-				if (damage < 0.0f)
-				{
-					damage = 0.0f;
-				}
-
-				target->decreaseHealth(damage);
-				std::cout << this->getName() << " used Earthquake against " << target->getName() << " with " << damage << " points of damage" << std::endl;
-				this->increaseMana();
-				std::cout << std::endl;
+				damage = 0.0f;
 			}
-			else
+
+			for (size_t i = 0; i < enemies.size(); ++i)
 			{
-				float skillDamageBonus = this->getMagicAttackPoints() * 0.8f;
-				float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
-				float averageDamage = calculateAverageMagicDamage(skillDamage);
-				float damage = averageDamage - target->damageReduction();
-
-				if (damage < 0.0f)
-				{
-					damage = 0.0f;
-				}
-
-				target->decreaseHealth(damage);
-				std::cout << this->getName() << " used Earthquake against " << target->getName() << " with " << damage << " points of damage" << std::endl;
-				this->increaseMana();
-				std::cout << std::endl;
+				enemies[i]->decreaseHealth(damage - enemies[i]->damageReduction());
 			}
+
+			std::cout << this->getName() << " used Earthquake, all enemies take " << damage << " points of damage" << std::endl;
+			this->increaseMana();
+			std::cout << std::endl;
 		}
 		else
 		{
+			float skillDamageBonus = this->getMagicAttackPoints() * 0.7f;
+			float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
+			float damage = calculateAverageMagicDamage(skillDamage);
+			if (damage < 0.0f)
+			{
+				damage = 0.0f;
+			}
+
+			for (size_t i = 0; i < enemies.size(); ++i)
+			{
+				enemies[i]->decreaseHealth(damage - enemies[i]->damageReduction());
+			}
+
+			std::cout << this->getName() << " used Earthquake, all enemies take " << damage << " points of damage" << std::endl;
 			this->increaseMana();
-			return;
+			std::cout << std::endl;
 		}
 	}
 	else 

@@ -27,10 +27,13 @@ protected:
 	int nextLevelExp;
 
 public:
+
 	//Constructor
+
 	Character(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float lucky, int exp, int level, int nextLevelExp);
 
 	//Pure Virtual Methods
+
 	virtual void showSheet() const = 0;
 	virtual void showCombatLayout(std::vector<NpCharacter*> enemies) = 0;
 	virtual void basicAttack(NpCharacter* enemy) = 0;
@@ -51,6 +54,7 @@ public:
 	bool isAlive() const;
 
 	//Level Up Methods
+
 	void levelUp();
 	void verifyLvl();
 	void increaseExp(NpCharacter* enemy);
@@ -73,6 +77,7 @@ public:
 	int getNextLevelExp() const;
 
 	//Setters
+
 	void setHealthPoints(float healthPoints);
 	void setAttackPoints(float attackPoints);
 	void setMagicAttackPoints(float magicAttackPoints);

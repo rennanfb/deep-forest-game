@@ -7,7 +7,8 @@ class Character;
 
 class NpCharacter : public Creature
 {
-private:
+protected:
+
 	float healthPoints;
 	float attackPoints;
 	float magicAttackPoints;
@@ -15,6 +16,7 @@ private:
 	float dodge;
 	float criticalChance;
 	int exp;
+
 public:
 
 	//Constructor
@@ -23,13 +25,14 @@ public:
 
 	//Pure Virtual Methos
 
-	virtual void npcSkillSet(NpCharacter* npc, Character* player) = 0;
+	virtual void npcSkillSet(std::vector <Character*> players) = 0;
 
 	//Combat Methods
 
 	float calculateAverageDamage(float damage);
 	float calculateAverageMagicDamage(float damage);
 	virtual void calculateCombatStatus();
+	int chooseEnemy(const std::vector<Character*>& players);
 	void decreaseHealth(float damage);
 	bool dodgeAttack() const;
 	bool criticalHit() const;

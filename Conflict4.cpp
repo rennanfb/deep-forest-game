@@ -1,6 +1,6 @@
 #include "Conflict4.hpp"
 
-void Conflict4(Character* player1, std::vector<NpCharacter*> enemies)
+void Conflict4(std::vector <Character*> players, std::vector<NpCharacter*> enemies)
 {
 	std::cout << std::endl;
 	std::cout << "------------------------------- Is he alive? -------------------------------" << std::endl;
@@ -29,16 +29,19 @@ void Conflict4(Character* player1, std::vector<NpCharacter*> enemies)
 	std::cout << "your kind... i will alow him to feast revenge upon you" << std::endl;
 	std::cout << std::endl;
 
-	while (player1->isAlive() == true && (enemies[0]->isAlive() == true || enemies[1]->isAlive() == true))
+	while (players[0]->isAlive() == true && (enemies[0]->isAlive() == true || enemies[1]->isAlive() == true))
 	{
 		for (size_t i = 0; i < enemies.size(); ++i) {
 			if (enemies[i]->isAlive() == true)
 			{
-				enemies[i]->npcSkillSet(enemies[i], player1);
+				enemies[i]->npcSkillSet(players);
 			}
 		}
 
-		player1->showCombatLayout(enemies);
+		if (players[0]->isAlive() == true)
+		{
+			players[0]->showCombatLayout(enemies);
+		}
 
 	}
 
@@ -46,8 +49,8 @@ void Conflict4(Character* player1, std::vector<NpCharacter*> enemies)
 	{
 		std::cout << "The " << enemies[0]->getName() << " and " << enemies[1]->getName() << " are down" << std::endl;
 
-		player1->increaseExp(enemies[0]);
-		player1->increaseExp(enemies[1]);
+		players[0]->increaseExp(enemies[0]);
+		players[0]->increaseExp(enemies[1]);
 		delete enemies[0];
 		delete enemies[1];
 
@@ -57,11 +60,11 @@ void Conflict4(Character* player1, std::vector<NpCharacter*> enemies)
 		std::cout << "a whisper that even without understand the language, it put you to sleep" << std::endl;
 
 	}
-	else if (player1->isAlive() == false)
+	else if (players[0]->isAlive() == false)
 	{
-		std::cout << player1->getName() << " fall down" << std::endl;
+		std::cout << players[0]->getName() << " fall down" << std::endl;
 		std::cout << "You'are dead" << std::endl;
-		delete player1;
+		delete players[0];
 		exit(0);
 	}
 
