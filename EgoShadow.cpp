@@ -5,6 +5,7 @@
 EgoShadow::EgoShadow(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float lucky, int exp) :
 	NpCharacter(name, faction, race, strength, agility, constitution, intelligence, lucky, exp)
 {
+	this->bag = createNpcBag();
 	calculateCombatStatus();
 }
 
@@ -16,13 +17,19 @@ EgoShadow* EgoShadow::createEnemy()
 
 }
 
+Bag* EgoShadow::createNpcBag()
+{
+	std::vector<Item*> npcItems;
+	return new Bag(10, npcItems);
+}
+
 //Skills Sets
 
 void EgoShadow::npcSkillSet(std::vector <Character*> players)
 {
 	std::cout << "- " << this->getName() << "'s turn -" << std::endl;
 
-	int target = chooseEnemy(players);
+	size_t target = chooseEnemy(players);
 
 	std::random_device rd;
 	std::mt19937 gen(rd());

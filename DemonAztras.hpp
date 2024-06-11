@@ -12,6 +12,7 @@ public:
 	//Creator
 
 	static DemonAztras* createEnemy();
+	virtual Bag* createNpcBag() override;
 
 	//Skills Sets
 

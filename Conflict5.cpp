@@ -28,9 +28,7 @@ void Conflict5(std::vector <Character*> players, std::vector<NpCharacter*> enemi
 	}
 	if (enemies[0]->isAlive() == false)
 	{
-		std::cout << "The " << enemies[0]->getName() << " fall down" << std::endl;
-		players[0]->increaseExp(enemies[0]);
-		delete enemies[0];
+		players[0]->defeatEnemy(enemies[0]);
 
 		std::cout << "After the last strike, your ego starts to cry and it slowly unites with you again" << std::endl;
 		std::cout << "you feel a great eye opening inside your mind for a moment, before you wake up" << std::endl;

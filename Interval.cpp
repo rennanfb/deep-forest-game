@@ -8,7 +8,7 @@ void Interval(std::vector <Character*> players)
 		players[i]->showSheet();
 	}
 
-	std::cout << "Continue ? (Enter Y for Yes)" << std::endl;
+	std::cout << "Continue ? (Enter Y for Yes) | Check you bag ? (Enter B)" << std::endl;
 	std::string answer;
 	std::cin >> answer;
 
@@ -16,8 +16,14 @@ void Interval(std::vector <Character*> players)
 	{
 		return;
 	}
+	else if (answer == "B" || answer == "b")
+	{
+		players[0]->bag->showBag();
+		Interval(players);
+	}
 	else
 	{
+		std::cout << "Enter a valid answer: (Y) To continue the game | (B) To see the bag" << std::endl;
 		Interval(players);
 	}
 }

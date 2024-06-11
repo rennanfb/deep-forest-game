@@ -1,18 +1,19 @@
 #pragma once
 #include "Character.hpp"
 #include "NpCharacter.hpp"
+#include "Bag.hpp"
 
 class Rogue : public Character
 {
 protected:
 
-	int stamina;
+	float stamina;
 
 public:
 
 	//Constructor
 
-	Rogue(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float lucky, int exp, int level, int nextLevelExp, int stamina);
+	Rogue(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float lucky, int exp, int level, int nextLevelExp, float stamina);
 	
 	//Creator
 
@@ -25,6 +26,7 @@ public:
 	void upgradeAttributes() override;
 	void healStats() override;
 	void basicAttack(NpCharacter* enemy) override;
+	void restoreEnergy(float energyAmount) override;
 
 	//Combat Methods
 
@@ -35,11 +37,11 @@ public:
 
 	//Getters
 
-	int getStamina() const;
+	float getStamina() const;
 
 	//Setters
 
-	void setStamina(int stamina);
+	void setStamina(float stamina);
 
 };
 

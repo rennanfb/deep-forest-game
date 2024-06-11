@@ -54,14 +54,9 @@ void Conflict8(std::vector <Character*> players, std::vector<NpCharacter*> enemi
 	}
 	if (enemies[0]->isAlive() == false && enemies[1]->isAlive() == false && enemies[2]->isAlive() == false)
 	{
-		std::cout << "The enemies are down" << std::endl;
-
-		players[0]->increaseExp(enemies[0]);
-		players[0]->increaseExp(enemies[1]);
-		players[0]->increaseExp(enemies[2]);
-		delete enemies[0];
-		delete enemies[1];
-		delete enemies[2];
+		players[0]->defeatEnemy(enemies[0]);
+		players[0]->defeatEnemy(enemies[1]);
+		players[0]->defeatEnemy(enemies[2]);
 
 		std::cout << std::endl;
 		std::cout << "Aztras: We'll met again messiah, you can't run from fate..." << std::endl;

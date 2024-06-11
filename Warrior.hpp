@@ -1,7 +1,8 @@
 #pragma once
+#include <vector>
 #include "Character.hpp"
 #include "NpCharacter.hpp"
-#include <vector>
+#include "Bag.hpp"
 
 class Warrior : public Character
 {
@@ -27,6 +28,7 @@ public:
 	void upgradeAttributes() override;
 	void healStats() override;
 	void basicAttack(NpCharacter* enemy) override;
+	void restoreEnergy(float energyAmount) override;
 
 	//Combat Methods
 

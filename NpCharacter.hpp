@@ -1,12 +1,19 @@
 #pragma once
 #include "Creature.hpp"
 #include "Character.hpp"
+#include "Bag.hpp"
+#include "Item.hpp"
 #include <random>
 
+class Bag;
 class Character;
 
 class NpCharacter : public Creature
 {
+public:
+
+	Bag* bag;
+
 protected:
 
 	float healthPoints;
@@ -26,13 +33,14 @@ public:
 	//Pure Virtual Methos
 
 	virtual void npcSkillSet(std::vector <Character*> players) = 0;
+	virtual Bag* createNpcBag() = 0;
 
 	//Combat Methods
 
 	float calculateAverageDamage(float damage);
 	float calculateAverageMagicDamage(float damage);
 	virtual void calculateCombatStatus();
-	int chooseEnemy(const std::vector<Character*>& players);
+	size_t chooseEnemy(const std::vector<Character*>& players);
 	void decreaseHealth(float damage);
 	bool dodgeAttack() const;
 	bool criticalHit() const;

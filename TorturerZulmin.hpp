@@ -12,6 +12,7 @@ public:
 	//Creator
 
 	static TorturerZulmin* createEnemy();
+	virtual Bag* createNpcBag() override;
 
 	//Skills Sets
 

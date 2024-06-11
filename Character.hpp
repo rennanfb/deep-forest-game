@@ -5,10 +5,15 @@
 #include <ctime>
 #include <random>
 
+class Bag;
 class NpCharacter;
 
 class Character : public Creature
 {
+public:
+
+	Bag* bag;
+
 protected:
 
 	//Combat Stats
@@ -26,6 +31,8 @@ protected:
 	int level;
 	int nextLevelExp;
 
+
+
 public:
 
 	//Constructor
@@ -39,6 +46,7 @@ public:
 	virtual void basicAttack(NpCharacter* enemy) = 0;
 	virtual void healStats() = 0;
 	virtual void upgradeAttributes() = 0;
+	virtual void restoreEnergy(float energyAmount) = 0;
 
 	//Combat Methods
 
@@ -47,11 +55,12 @@ public:
 	std::vector<NpCharacter*> filterAliveEnemies(std::vector<NpCharacter*> enemies);
 	int chooseEnemy(const std::vector<NpCharacter*>& enemies);
 	float damageReduction() const;
-	void increaseHealth(float heal);
+	void restoreHealth(float heal);
 	virtual void decreaseHealth(float damage);
 	bool dodgeAttack() const;
 	bool criticalHit() const; 
 	bool isAlive() const;
+	void defeatEnemy(NpCharacter* enemy);
 
 	//Level Up Methods
 

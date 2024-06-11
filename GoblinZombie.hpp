@@ -12,6 +12,7 @@ public:
 	//Creator
 
 	static GoblinZombie* createEnemy();
+	virtual Bag* createNpcBag() override;
 
 	//Skills Sets
 

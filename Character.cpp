@@ -1,5 +1,6 @@
 #include "Character.hpp"
 #include "NpCharacter.hpp"
+#include "Bag.hpp"
 
 //Constructor
 
@@ -7,7 +8,8 @@ Character::Character(std::string name, std::string faction, std::string race, fl
 	Creature(name, faction, race, strength, agility, constitution, intelligence, lucky),
 	exp(exp),
 	level(level),
-	nextLevelExp(nextLevelExp)
+	nextLevelExp(nextLevelExp),
+	bag(Bag::createInitialBag())
 {
 	calculateCombatStatus();
 }
@@ -132,9 +134,14 @@ bool Character::criticalHit() const
 	}
 }
 
-void Character::increaseHealth(float heal)
+void Character::restoreHealth(float heal)
 {
 	this->healthPoints += heal;
+	if (this->healthPoints > this->getConstitution() * 10.0f) 
+	{
+		this->healthPoints = this->getConstitution() * 10.0f;
+	}
+	
 }
 
 void Character::decreaseHealth(float damage)
@@ -151,6 +158,25 @@ bool Character::isAlive() const
 	{
 		return false;
 	}
+}
+
+void Character::defeatEnemy(NpCharacter* enemy)
+{
+	std::cout << "The " << enemy->getName() << " fall down" << std::endl;
+	this->increaseExp(enemy);
+
+	if (!enemy->bag->getBagItems().empty())
+	{
+		this->bag->addItem(enemy->bag->getBagItems());
+	}
+
+	std::vector<Item*> items = enemy->bag->getBagItems();
+
+	for (const auto& item : items) {
+		std::cout << this->getName() << " got " << item->getItemName() << " from " << enemy->getName() << "'s corpse" << std::endl;
+	}
+
+	delete enemy;
 }
 
 //Level Up Methods

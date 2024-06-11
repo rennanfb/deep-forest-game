@@ -4,7 +4,7 @@
 
 Mage::Mage(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float lucky, int exp, int level, int nextLevelExp, float mana) :
 	Character(name, faction, race, strength, agility, constitution, intelligence, lucky, exp, level, nextLevelExp),
-	mana(mana) 
+	mana(mana)
 {
 	calculateCombatStatus();
 }
@@ -13,7 +13,7 @@ Mage::Mage(std::string name, std::string faction, std::string race, float streng
 
 Mage* Mage::createCharacter(std::string name, std::string faction, std::string race)
 {
-	return new Mage(name, faction, race, 5.0f, 5.0f, 120.0f, 20.0f, 13.0f, 0, 1, 100, 100.0);
+	return new Mage(name, faction, race, 5.0f, 5.0f, 12.0f, 20.0f, 13.0f, 0, 1, 100, 100.0);
 }
 
 //Override Methods
@@ -58,24 +58,33 @@ void Mage::showCombatLayout(std::vector<NpCharacter*> enemies)
 	std::cout << "4 - Cloud Strife (90MP)" << std::endl;
 	std::cout << std::endl;
 
-	std::cout << "*Type the number of your next attack (1, 2, 3, 4)*" << std::endl;
+	std::cout << "* Enter the number of your next attack (1, 2, 3, 4) or Enter (0) to access your bag *" << std::endl;
 	int nextMove;
 	std::cin >> nextMove;
 	std::cout << std::endl;
 
-	if (nextMove == 1) {
+	if (nextMove == 0) 
+	{
+		this->bag->showBagLayout(enemies, this);
+	}
+	else if (nextMove == 1) 
+	{
 		this->basicAttack(target);
 	}
-	else if (nextMove == 2) {
+	else if (nextMove == 2) 
+	{
 		this->fireBall(aliveEnemies, target);
 	}
-	else if (nextMove == 3) {
+	else if (nextMove == 3) 
+	{
 		this->earthQuake(aliveEnemies, target);
 	}
-	else if (nextMove == 4) {
+	else if (nextMove == 4) 
+	{
 		this->cloudStrife(aliveEnemies, target);
 	}
-	else {
+	else 
+	{
 		std::cout << "You must write the number of the skill options" << std::endl;
 		this->showCombatLayout(enemies);
 
@@ -112,7 +121,7 @@ void Mage::basicAttack(NpCharacter* target)
 
 			if (damage < 0.0f) 
 			{
-				damage = 0;
+				damage = 0.0f;
 			}
 
 			target->decreaseHealth(damage);
@@ -127,7 +136,7 @@ void Mage::basicAttack(NpCharacter* target)
 
 			if (damage < 0.0f) 
 			{
-				damage = 0;
+				damage = 0.0f;
 			}
 
 			target->decreaseHealth(damage);
@@ -142,6 +151,17 @@ void Mage::basicAttack(NpCharacter* target)
 		return;
 	}
 }
+
+void Mage::restoreEnergy(float energyAmount)
+{
+	this->mana += energyAmount;
+
+	if (this->mana > getIntelligence() * 5.0f)
+	{
+		this->setMana(getIntelligence() * 5.0f);
+	}
+}
+
 //Combat Methods
 
 void Mage::calculeMana() 
@@ -178,7 +198,7 @@ void Mage::fireBall(std::vector<NpCharacter*> enemies, NpCharacter* target)
 
 				if (damage < 0.0f)
 				{
-					damage = 0;
+					damage = 0.0f;
 				}
 
 				target->decreaseHealth(damage);
@@ -250,6 +270,7 @@ void Mage::earthQuake(std::vector<NpCharacter*> enemies, NpCharacter* target)
 			float skillDamageBonus = this->getMagicAttackPoints() * 0.7f;
 			float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
 			float damage = calculateAverageMagicDamage(skillDamage);
+
 			if (damage < 0.0f)
 			{
 				damage = 0.0f;

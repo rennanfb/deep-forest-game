@@ -38,12 +38,8 @@ void Conflict6(std::vector <Character*> players, std::vector<NpCharacter*> enemi
 	}
 	if (enemies[0]->isAlive() == false && enemies[1]->isAlive() == false)
 	{
-		std::cout << "The " << enemies[0]->getName() << " and " << enemies[1]->getName() << " are down" << std::endl;
-
-		players[0]->increaseExp(enemies[0]);
-		players[0]->increaseExp(enemies[1]);
-		delete enemies[0];
-		delete enemies[1];
+		players[0]->defeatEnemy(enemies[0]);
+		players[0]->defeatEnemy(enemies[1]);
 
 		std::cout << std::endl;
 		std::cout << "You win this unfair battle, and hear applauses coming from behind you" << std::endl;

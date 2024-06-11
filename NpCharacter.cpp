@@ -65,15 +65,15 @@ void NpCharacter::calculateCombatStatus()
 	this->criticalChance = this->getLucky() / 2.0f;
 }
 
-int NpCharacter::chooseEnemy(const std::vector<Character*>& enemies) 
+size_t NpCharacter::chooseEnemy(const std::vector<Character*>& enemies) 
 {
 	if (enemies.size() > 0)
 	{
 		std::random_device rd;
 		std::mt19937 gen(rd());
-		std::uniform_int_distribution<> dis(0, enemies.size() - 1);
+		std::uniform_int_distribution<size_t> dis(0, enemies.size() - 1);
 
-		int target = dis(gen);
+		size_t target = dis(gen);
 
 		return target;
 	}

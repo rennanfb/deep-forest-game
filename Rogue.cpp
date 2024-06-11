@@ -2,7 +2,7 @@
 
 //Cosntructor
 
-Rogue::Rogue(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float lucky, int exp, int level, int nextLevelExp, int stamina) :
+Rogue::Rogue(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float lucky, int exp, int level, int nextLevelExp, float stamina) :
 	Character(name, faction, race, strength, agility, constitution, intelligence, lucky, exp, level, nextLevelExp),
 	stamina(stamina)
 {
@@ -13,7 +13,7 @@ Rogue::Rogue(std::string name, std::string faction, std::string race, float stre
 
 Rogue* Rogue::createCharacter(std::string name, std::string faction, std::string race)
 {
-	return new Rogue(name, faction, race, 14.0f, 16.0f, 14.0f, 5.0f, 16.0f, 0, 1, 100, 100);
+	return new Rogue(name, faction, race, 14.0f, 16.0f, 14.0f, 5.0f, 16.0f, 0, 1, 100, 100.0f);
 }
 
 //Override Methods
@@ -58,24 +58,34 @@ void Rogue::showCombatLayout(std::vector<NpCharacter*> enemies)
 	std::cout << "4 - Seven Sins (80SP)" << std::endl;
 	std::cout << std::endl;
 
-	std::cout << "*Type the number of your next attack (1, 2, 3, 4)*" << std::endl;
+	std::cout << "* Enter the number of your next attack (1, 2, 3, 4) or Enter (0) to access your bag *" << std::endl;
+
 	int nextMove;
 	std::cin >> nextMove;
 	std::cout << std::endl;
 
-	if (nextMove == 1) {
+	if (nextMove == 0) 
+	{
+		this->bag->showBagLayout(enemies, this);
+	}
+	else if (nextMove == 1) 
+	{
 		this->basicAttack(target);
 	}
-	else if (nextMove == 2) {
+	else if (nextMove == 2) 
+	{
 		this->twinBlades(aliveEnemies, target);
 	}
-	else if (nextMove == 3) {
+	else if (nextMove == 3) 
+	{
 		this->deepWound(aliveEnemies, target);
 	}
-	else if (nextMove == 4) {
+	else if (nextMove == 4) 
+	{
 		this->sevenSins(aliveEnemies, target);
 	}
-	else {
+	else 
+	{
 		std::cout << "You must write the number of the skill options" << std::endl;
 		this->showCombatLayout(enemies);
 
@@ -95,7 +105,7 @@ void Rogue::upgradeAttributes()
 void Rogue::healStats()
 {
 	this->setHealthPoints(this->getConstitution() * 10.0f);
-	this->setStamina(100);
+	this->setStamina(100.0f);
 }
 
 void Rogue::basicAttack(NpCharacter* target)
@@ -142,24 +152,34 @@ void Rogue::basicAttack(NpCharacter* target)
 	}
 }
 
+void Rogue::restoreEnergy(float energyAmount) 
+{
+	this->stamina += energyAmount;
+
+	if (this->stamina > 100.0f) 
+	{
+		this->setStamina(100.0f);
+	}
+}
+
 //Combat Methods
 
 void Rogue::increaseStamina() 
 {
-	this->stamina += 15;
+	this->stamina += 15.0f;
 	std::cout << this->getName() << " breathes and regenerates 20 PS" << std::endl;
 
-	if (this->stamina > 100) {
-		this->setStamina(100);
+	if (this->stamina > 100.0f) {
+		this->setStamina(100.0f);
 	}
 }
 
 
 void Rogue::twinBlades(std::vector<NpCharacter*> enemies, NpCharacter* target)
 {
-	if (this->getStamina() >= 40) 
+	if (this->getStamina() >= 40.0f) 
 	{
-		this->stamina -= 40;
+		this->stamina -= 40.0f;
 
 		if (target->dodgeAttack() != true)
 		{
@@ -215,9 +235,9 @@ void Rogue::twinBlades(std::vector<NpCharacter*> enemies, NpCharacter* target)
 
 void Rogue::deepWound(std::vector<NpCharacter*> enemies, NpCharacter* target)
 {
-	if (this->getStamina() >= 60) 
+	if (this->getStamina() >= 60.0f) 
 	{
-		this->stamina -= 60;
+		this->stamina -= 60.0f;
 
 		if (target->dodgeAttack() != true)
 		{
@@ -272,9 +292,9 @@ void Rogue::deepWound(std::vector<NpCharacter*> enemies, NpCharacter* target)
 
 void Rogue::sevenSins(std::vector<NpCharacter*> enemies, NpCharacter* target)
 {
-	if (this->getStamina() >= 80 ) 
+	if (this->getStamina() >= 80.0f ) 
 	{
-		this->stamina -= 80;
+		this->stamina -= 80.0f;
 
 		if (target->dodgeAttack() != true)
 		{
@@ -330,14 +350,14 @@ void Rogue::sevenSins(std::vector<NpCharacter*> enemies, NpCharacter* target)
 
 //Getters
 
-int Rogue::getStamina() const
+float Rogue::getStamina() const
 {
 	return stamina;
 }
 
 //Setters
 
-void Rogue::setStamina(int stamina)
+void Rogue::setStamina(float stamina)
 {
 	this->stamina = stamina;
 }

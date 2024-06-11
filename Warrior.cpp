@@ -4,7 +4,7 @@
 
 Warrior::Warrior(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float lucky, int exp, int level, int nextLevelExp, float fury) :
 	Character(name, faction, race, strength, agility, constitution, intelligence, lucky, exp, level, nextLevelExp),
-	fury(fury) 
+	fury(fury)
 {
 	calculateCombatStatus();
 }
@@ -58,21 +58,30 @@ void Warrior::showCombatLayout(std::vector<NpCharacter*> enemies)
 	std::cout << "4 - Chaos Sword (60FP)" << std::endl;
 	std::cout << std::endl;
 
-	std::cout << "*Type the number of your next attack (1, 2, 3, 4)*" << std::endl;
+	std::cout << "* Enter the number of your next attack (1, 2, 3, 4) or Enter (0) to access your bag *" << std::endl;
 	int nextMove;
 	std::cin >> nextMove;
 	std::cout << std::endl;
 
-	if (nextMove == 1) {
+	
+	if (nextMove == 0) 
+	{
+		this->bag->showBagLayout(enemies, this);
+	}
+	else if (nextMove == 1) 
+	{
 		this->basicAttack(target);
 	}
-	else if (nextMove == 2) {
+	else if (nextMove == 2) 
+	{
 		this->swordShout(aliveEnemies, target);
 	}
-	else if (nextMove == 3) {
+	else if (nextMove == 3) 
+	{
 		this->rockBreaker(aliveEnemies, target);
 	}
-	else if (nextMove == 4) {
+	else if (nextMove == 4) 
+	{
 		this->chaosSword(aliveEnemies, target);
 	}
 	else {
@@ -142,6 +151,16 @@ void Warrior::basicAttack(NpCharacter* target)
 	else
 	{
 		return;
+	}
+}
+
+void Warrior::restoreEnergy(float energyAmount) 
+{
+	this->fury += energyAmount;
+
+	if (this->fury > 100.0f)
+	{
+		this->setFury(100.0f);
 	}
 }
 

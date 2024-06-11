@@ -1,6 +1,7 @@
 #pragma once
 #include "Character.hpp"
 #include "NpCharacter.hpp"
+#include "Bag.hpp"
 
 class Mage : public Character
 {
@@ -25,6 +26,7 @@ public:
 	void upgradeAttributes() override;
 	void healStats() override;
 	void basicAttack(NpCharacter* enemy) override;
+	void restoreEnergy(float energyAmount) override;
 
 	//Combat Methods
 

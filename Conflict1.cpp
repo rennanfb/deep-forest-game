@@ -23,9 +23,7 @@ void Conflict1(std::vector <Character*> players, std::vector<NpCharacter*> enemi
 	}
 	if (enemies[0]->isAlive() == false)
 	{
-		std::cout << "The " << enemies[0]->getName() << " fall down" << std::endl;
-		players[0]->increaseExp(enemies[0]);
-		delete enemies[0];
+		players[0]->defeatEnemy(enemies[0]);
 	}
 	else if (players[0]->isAlive() == false)
 	{
