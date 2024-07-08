@@ -110,9 +110,9 @@ void Rogue::healStats()
 
 void Rogue::basicAttack(NpCharacter* target)
 {
-	if (target->dodgeAttack() != true)
+	if (!target->dodgeAttack())
 	{
-		if (this->criticalHit() == true)
+		if (this->criticalHit())
 		{
 			float criticalDamage = this->getAttackPoints() * 2.0f;
 			float averageDamage = calculateAverageDamage(criticalDamage);
@@ -181,9 +181,9 @@ void Rogue::twinBlades(std::vector<NpCharacter*> enemies, NpCharacter* target)
 	{
 		this->stamina -= 40.0f;
 
-		if (target->dodgeAttack() != true)
+		if (!target->dodgeAttack())
 		{
-			if (this->criticalHit() == true)
+			if (this->criticalHit())
 			{
 				float skillDamageBonus = this->getAttackPoints() * 0.3f;
 				float skillDamage = this->getAttackPoints() + skillDamageBonus;
@@ -239,9 +239,9 @@ void Rogue::deepWound(std::vector<NpCharacter*> enemies, NpCharacter* target)
 	{
 		this->stamina -= 60.0f;
 
-		if (target->dodgeAttack() != true)
+		if (!target->dodgeAttack())
 		{
-			if (this->criticalHit() == true)
+			if (this->criticalHit())
 			{
 				float skillDamageBonus = this->getAttackPoints() * 0.5f;
 				float skillDamage = this->getAttackPoints() + skillDamageBonus;
@@ -296,9 +296,9 @@ void Rogue::sevenSins(std::vector<NpCharacter*> enemies, NpCharacter* target)
 	{
 		this->stamina -= 80.0f;
 
-		if (target->dodgeAttack() != true)
+		if (!target->dodgeAttack())
 		{
-			if (this->criticalHit() == true)
+			if (this->criticalHit())
 			{
 				float skillDamageBonus = this->getAttackPoints() * 1.2f;
 				float skillDamage = this->getAttackPoints() + skillDamageBonus;

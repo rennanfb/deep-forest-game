@@ -111,9 +111,9 @@ void Mage::healStats()
 
 void Mage::basicAttack(NpCharacter* target)
 {
-	if (target->dodgeAttack() != true)
+	if (!target->dodgeAttack())
 	{
-		if (this->criticalHit() == true)
+		if (this->criticalHit())
 		{
 			float criticalDamage = this->getAttackPoints() * 2.0f;
 			float averageDamage = calculateAverageDamage(criticalDamage);
@@ -186,9 +186,9 @@ void Mage::fireBall(std::vector<NpCharacter*> enemies, NpCharacter* target)
 	{
 		this->mana -= 30;
 
-		if (target->dodgeAttack() != true)
+		if (!target->dodgeAttack())
 		{
-			if (this->criticalHit() == true)
+			if (this->criticalHit())
 			{
 				float skillDamageBonus = this->getMagicAttackPoints() * 0.5f;
 				float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
@@ -244,7 +244,7 @@ void Mage::earthQuake(std::vector<NpCharacter*> enemies, NpCharacter* target)
 	{
 		this->mana -= 60;
 
-		if (this->criticalHit() == true)
+		if (this->criticalHit())
 		{
 			float skillDamageBonus = this->getMagicAttackPoints() * 0.7f;
 			float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
@@ -258,7 +258,10 @@ void Mage::earthQuake(std::vector<NpCharacter*> enemies, NpCharacter* target)
 
 			for (size_t i = 0; i < enemies.size(); ++i)
 			{
-				enemies[i]->decreaseHealth(damage - enemies[i]->damageReduction());
+				if (!enemies[i]->dodgeAttack())
+				{
+					enemies[i]->decreaseHealth(damage - enemies[i]->damageReduction());
+				}
 			}
 
 			std::cout << this->getName() << " used Earthquake, all enemies take " << damage << " points of damage" << std::endl;
@@ -278,7 +281,10 @@ void Mage::earthQuake(std::vector<NpCharacter*> enemies, NpCharacter* target)
 
 			for (size_t i = 0; i < enemies.size(); ++i)
 			{
-				enemies[i]->decreaseHealth(damage - enemies[i]->damageReduction());
+				if (!enemies[i]->dodgeAttack())
+				{
+					enemies[i]->decreaseHealth(damage - enemies[i]->damageReduction());
+				}
 			}
 
 			std::cout << this->getName() << " used Earthquake, all enemies take " << damage << " points of damage" << std::endl;
@@ -299,9 +305,9 @@ void Mage::cloudStrife(std::vector<NpCharacter*> enemies, NpCharacter* target)
 	{
 		this->mana -= 90;
 
-		if (target->dodgeAttack() != true)
+		if (!target->dodgeAttack())
 		{
-			if (this->criticalHit() == true)
+			if (this->criticalHit())
 			{
 				float skillDamageBonus = this->getMagicAttackPoints() * 1.5f;
 				float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;

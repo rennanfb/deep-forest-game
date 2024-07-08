@@ -98,11 +98,13 @@ bool NpCharacter::dodgeAttack() const
 
 	int chance = dis(gen);
 
-	if (chance < this->dodge) {
+	if (chance < this->dodge) 
+	{
 		std::cout << this->getName() << " dodges the attack" << std::endl;
 		return true;
 	}
-	else {
+	else 
+	{
 		return false;
 	}
 }
@@ -144,9 +146,9 @@ bool NpCharacter::isAlive() const
 
 void NpCharacter::basicAttack(Character* enemy)
 {
-	if (enemy->dodgeAttack() != true) 
+	if (!enemy->dodgeAttack()) 
 	{
-		if (this->criticalHit() == true)
+		if (this->criticalHit())
 		{
 			float criticalDamage = this->getAttackPoints() * 2.0f;
 			float averageDamage = calculateAverageDamage(criticalDamage);
@@ -185,9 +187,9 @@ void NpCharacter::basicAttack(Character* enemy)
 
 void NpCharacter::bite(Character* enemy) 
 {
-	if (enemy->dodgeAttack() != true)
+	if (!enemy->dodgeAttack())
 	{
-		if (this->criticalHit() == true)
+		if (this->criticalHit())
 		{
 			float skillDamageBonus = this->getAttackPoints() * 0.2f;
 			float skillDamage = this->getAttackPoints() + skillDamageBonus;
@@ -228,9 +230,9 @@ void NpCharacter::bite(Character* enemy)
 }
 void NpCharacter::clawStrike(Character* enemy)
 {
-	if (enemy->dodgeAttack() != true)
+	if (!enemy->dodgeAttack())
 	{
-		if (this->criticalHit() == true)
+		if (this->criticalHit())
 		{
 			float skillDamageBonus = this->getAttackPoints() * 0.3f;
 			float skillDamage = this->getAttackPoints() + skillDamageBonus;
@@ -272,9 +274,9 @@ void NpCharacter::clawStrike(Character* enemy)
 
 void NpCharacter::throwDagger(Character* enemy)
 {
-	if (enemy->dodgeAttack() != true)
+	if (!enemy->dodgeAttack())
 	{
-		if (this->criticalHit() == true)
+		if (this->criticalHit())
 		{
 			float skillDamageBonus = this->getAttackPoints() * 0.4f;
 			float skillDamage = this->getAttackPoints() + skillDamageBonus;
@@ -316,9 +318,9 @@ void NpCharacter::throwDagger(Character* enemy)
 
 void NpCharacter::stockCharge(Character* enemy)
 {
-	if (enemy->dodgeAttack() != true)
+	if (!enemy->dodgeAttack())
 	{
-		if (this->criticalHit() == true)
+		if (this->criticalHit())
 		{
 			float skillDamageBonus = this->getAttackPoints() * 0.6f;
 			float skillDamage = this->getAttackPoints() + skillDamageBonus;
@@ -360,9 +362,9 @@ void NpCharacter::stockCharge(Character* enemy)
 
 void NpCharacter::spinningSlash(Character* enemy)
 {
-	if (enemy->dodgeAttack() != true)
+	if (!enemy->dodgeAttack())
 	{
-		if (this->criticalHit() == true)
+		if (this->criticalHit())
 		{
 			float skillDamageBonus = this->getAttackPoints() * 0.8f;
 			float skillDamage = this->getAttackPoints() + skillDamageBonus;
@@ -404,9 +406,9 @@ void NpCharacter::spinningSlash(Character* enemy)
 
 void NpCharacter::shieldBash(Character* enemy)
 {
-	if (enemy->dodgeAttack() != true)
+	if (!enemy->dodgeAttack())
 	{
-		if (this->criticalHit() == true)
+		if (this->criticalHit())
 		{
 			float skillDamageBonus = this->getAttackPoints() * 1.0f;
 			float skillDamage = this->getAttackPoints() + skillDamageBonus;
@@ -448,9 +450,9 @@ void NpCharacter::shieldBash(Character* enemy)
 
 void NpCharacter::shadowEmbrace(Character* enemy)
 {
-	if (enemy->dodgeAttack() != true)
+	if (!enemy->dodgeAttack())
 	{
-		if (this->criticalHit() == true)
+		if (this->criticalHit())
 		{
 
 			float skillDamageBonus = this->getMagicAttackPoints() * 1.3f;

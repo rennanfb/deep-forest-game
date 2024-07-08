@@ -28,7 +28,7 @@ public:
 
 	//Combat Methods
 
-	void calculeMana();
+	void calculateMana();
 	void increaseMana();
 	void holyLight(Character* ally, std::vector<NpCharacter*> enemies, NpCharacter* target);
 	void heal(Character* ally, std::vector<NpCharacter*> enemies, NpCharacter* target);

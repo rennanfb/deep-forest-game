@@ -106,9 +106,9 @@ void CompanionPriest::healStats()
 
 void CompanionPriest::basicAttack(NpCharacter* target)
 {
-	if (target->dodgeAttack() != true)
+	if (!target->dodgeAttack())
 	{
-		if (this->criticalHit() == true)
+		if (this->criticalHit())
 		{
 			float criticalDamage = this->getAttackPoints() * 2.0f;
 			float averageDamage = calculateAverageDamage(criticalDamage);
@@ -159,7 +159,7 @@ void CompanionPriest::restoreEnergy(float energyAmount)
 
 //Combat Methods
 
-void CompanionPriest::calculeMana()
+void CompanionPriest::calculateMana()
 {
 	this->mana = getIntelligence() * 5.0f;
 }
@@ -181,9 +181,9 @@ void CompanionPriest::holyLight(Character* ally, std::vector<NpCharacter*> enemi
 	{
 		this->mana -= 30;
 
-		if (target->dodgeAttack() != true)
+		if (!target->dodgeAttack())
 		{
-			if (this->criticalHit() == true)
+			if (this->criticalHit())
 			{
 				float skillDamageBonus = this->getMagicAttackPoints() * 0.4f;
 				float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
@@ -288,7 +288,7 @@ void CompanionPriest::saviourRain(Character* ally, std::vector<NpCharacter*> ene
 	{
 		this->mana -= 90;
 
-		if (this->criticalHit() == true)
+		if (this->criticalHit())
 		{
 			float skillDamageBonus = this->getMagicAttackPoints() * 0.5f;
 			float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
@@ -303,6 +303,7 @@ void CompanionPriest::saviourRain(Character* ally, std::vector<NpCharacter*> ene
 
 			for (size_t i = 0; i < enemies.size(); ++i) 
 			{
+
 				enemies[i]->decreaseHealth(damage - enemies[i]->damageReduction());
 			}
 			ally->restoreHealth(damage);
@@ -333,8 +334,9 @@ void CompanionPriest::saviourRain(Character* ally, std::vector<NpCharacter*> ene
 			ally->restoreHealth(damage);
 			this->restoreHealth(damage);
 
-			std::cout << this->getName() << " used Saviour Rain, all enemies receive " << damage << " points of damage" << std::endl;
-			std::cout << " all allies received " << damage << " points of health" << std::endl;
+			std::cout << this->getName() << "Used Saviour Rain" << std::endl;
+			std::cout << "All enemies receive " << damage << " points of damage" << std::endl;
+			std::cout << "All allies received " << damage << " points of health" << std::endl;
 			this->increaseMana();
 			std::cout << std::endl;
 		}

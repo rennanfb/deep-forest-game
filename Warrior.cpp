@@ -116,9 +116,9 @@ void Warrior::healStats()
 
 void Warrior::basicAttack(NpCharacter* target)
 {
-	if (target->dodgeAttack() != true)
+	if (!target->dodgeAttack())
 	{
-		if (this->criticalHit() == true)
+		if (this->criticalHit())
 		{
 			float criticalDamage = this->getAttackPoints() * 2.0f;
 			float averageDamage = calculateAverageDamage(criticalDamage);
@@ -186,10 +186,10 @@ void Warrior::swordShout(std::vector<NpCharacter*> enemies, NpCharacter* target)
 	{
 		this->fury -= 15.0f;
 
-		if (target->dodgeAttack() != true)
+		if (!target->dodgeAttack())
 		{
 
-			if (this->criticalHit() == true) 
+			if (this->criticalHit()) 
 			{
 
 				float skillDamageBonus = this->getAttackPoints() * 0.5f;
@@ -243,9 +243,9 @@ void Warrior::rockBreaker(std::vector<NpCharacter*> enemies, NpCharacter* target
 	{
 		this->fury -= 30.0f;
 
-		if (target->dodgeAttack() != true)
+		if (!target->dodgeAttack())
 		{
-			if (this->criticalHit() == true) 
+			if (this->criticalHit()) 
 			{
 				float skillDamageBonus = this->getAttackPoints() * 0.8f;
 				float skillDamage = this->getAttackPoints() + skillDamageBonus;
@@ -297,9 +297,9 @@ void Warrior::chaosSword(std::vector<NpCharacter*> enemies, NpCharacter* target)
 	{
 		this->fury -= 60.0f;
 
-		if (target->dodgeAttack() != true)
+		if (!target->dodgeAttack())
 		{
-			if (this->criticalHit() == true)
+			if (this->criticalHit())
 			{
 				float skillDamageBonus = this->getAttackPoints() * 1.2f;
 				float skillDamage = this->getAttackPoints() + skillDamageBonus;

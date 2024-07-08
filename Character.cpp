@@ -61,7 +61,7 @@ std::vector<NpCharacter*> Character::filterAliveEnemies(std::vector<NpCharacter*
 	std::vector<NpCharacter*> aliveEnemies;
 	for (auto enemy : enemies)
 	{
-		if (enemy->isAlive() == true)
+		if (enemy->isAlive())
 		{
 			aliveEnemies.push_back(enemy);
 		}
