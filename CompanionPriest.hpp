@@ -20,7 +20,7 @@ public:
 
 	void showSheet() const override;
 	void showCombatLayout(std::vector<NpCharacter*> enemies) override;
-	void showCombatLayout(Character* ally, std::vector<NpCharacter*> enemies);
+	void showCombatLayout(std::vector<Character*> allies, std::vector<NpCharacter*> enemies);
 	void upgradeAttributes() override;
 	void healStats() override;
 	void basicAttack(NpCharacter* enemy) override;
@@ -30,9 +30,9 @@ public:
 
 	void calculateMana();
 	void increaseMana();
-	void holyLight(Character* ally, std::vector<NpCharacter*> enemies, NpCharacter* target);
-	void heal(Character* ally, std::vector<NpCharacter*> enemies, NpCharacter* target);
-	void saviourRain(Character* ally, std::vector<NpCharacter*> enemies, NpCharacter* target);
+	void holyLight(std::vector<Character*> allies, std::vector<NpCharacter*> enemies, NpCharacter* target);
+	void heal(std::vector<Character*> allies, std::vector<NpCharacter*> enemies, Character* target);
+	void saviourRain(std::vector<Character*> allies, std::vector<NpCharacter*> enemies);
 
 	//Getters
 

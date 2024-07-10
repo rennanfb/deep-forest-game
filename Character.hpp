@@ -53,7 +53,9 @@ public:
 	float calculateAverageDamage(float damage);
 	float calculateAverageMagicDamage(float damage);
 	std::vector<NpCharacter*> filterAliveEnemies(std::vector<NpCharacter*> enemies);
+	std::vector<Character*> filterAliveAllies(std::vector<Character*> allies);
 	int chooseEnemy(const std::vector<NpCharacter*>& enemies);
+	int chooseAlly(const std::vector<Character*>& allies);
 	float damageReduction() const;
 	void restoreHealth(float heal);
 	virtual void decreaseHealth(float damage);

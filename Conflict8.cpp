@@ -38,7 +38,7 @@ void Conflict8(std::vector <Character*> players, std::vector<NpCharacter*> enemi
 
 		if (players[1]->isAlive() == true)
 		{
-			dynamic_cast<CompanionPriest*>(players[1])->showCombatLayout(players[0], enemies);
+			dynamic_cast<CompanionPriest*>(players[1])->showCombatLayout(players, enemies);
 		}
 
 		for (size_t i = 0; i < enemies.size(); ++i) 

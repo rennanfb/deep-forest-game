@@ -69,6 +69,20 @@ std::vector<NpCharacter*> Character::filterAliveEnemies(std::vector<NpCharacter*
 	return aliveEnemies;
 }
 
+std::vector<Character*> Character::filterAliveAllies(std::vector<Character*> allies)
+{
+	std::vector<Character*> aliveAllies;
+	for (auto ally : allies)
+	{
+		if (ally->isAlive())
+		{
+			aliveAllies.push_back(ally);
+		}
+	}
+	return aliveAllies;
+}
+
+
 int Character::chooseEnemy(const std::vector<NpCharacter*>& enemies) 
 {
 	while (true) 
@@ -91,6 +105,30 @@ int Character::chooseEnemy(const std::vector<NpCharacter*>& enemies)
 		}
 	}
 }
+
+int Character::chooseAlly(const std::vector<Character*>& allies)
+{
+	while (true)
+	{
+		std::cout << "Choose your target:" << std::endl;
+		for (size_t i = 0; i < allies.size(); ++i) {
+			std::cout << "Enter (" << (i + 1) << ") for " << allies[i]->getName() << " | Faction: " << allies[i]->getFaction() << " | HP: " << allies[i]->getHealthPoints() << std::endl;
+		}
+
+		int choice;
+		std::cin >> choice;
+
+		if (choice > 0 && choice <= static_cast<int>(allies.size()))
+		{
+			return choice - 1;
+		}
+		else
+		{
+			std::cout << "Please enter a valid number between 1 and " << allies.size() << std::endl;
+		}
+	}
+}
+
 
 float Character::damageReduction() const
 {
