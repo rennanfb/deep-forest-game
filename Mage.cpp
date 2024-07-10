@@ -36,17 +36,6 @@ void Mage::showCombatLayout(std::vector<NpCharacter*> enemies)
 {
 	std::cout << "- " << this->getName() << "'s turn -" << std::endl;
 
-	std::vector<NpCharacter*> aliveEnemies = filterAliveEnemies(enemies);
-
-	if (aliveEnemies.empty()) 
-	{
-		return;
-	}
-
-	int targetIndex = chooseEnemy(aliveEnemies);
-	NpCharacter* target = aliveEnemies[targetIndex];
-
-
 	std::cout << std::endl;
 	std::cout << " --------- " << this->getName() << " --------- " << std::endl;
 	std::cout << "HP: " << this->getHealthPoints() << " | " << "MP: " << this->getMana();
@@ -69,19 +58,34 @@ void Mage::showCombatLayout(std::vector<NpCharacter*> enemies)
 	}
 	else if (nextMove == 1) 
 	{
+		std::vector<NpCharacter*> aliveEnemies = filterAliveEnemies(enemies);
+
+		int targetIndex = chooseEnemy(aliveEnemies);
+		NpCharacter* target = aliveEnemies[targetIndex];
+
 		this->basicAttack(target);
 	}
 	else if (nextMove == 2) 
 	{
-		this->fireBall(aliveEnemies, target);
+		std::vector<NpCharacter*> aliveEnemies = filterAliveEnemies(enemies);
+
+		int targetIndex = chooseEnemy(aliveEnemies);
+		NpCharacter* target = aliveEnemies[targetIndex];
+
+		this->fireBall(enemies, target);
 	}
 	else if (nextMove == 3) 
 	{
-		this->earthQuake(aliveEnemies, target);
+		this->earthQuake(enemies);
 	}
 	else if (nextMove == 4) 
 	{
-		this->cloudStrife(aliveEnemies, target);
+		std::vector<NpCharacter*> aliveEnemies = filterAliveEnemies(enemies);
+
+		int targetIndex = chooseEnemy(aliveEnemies);
+		NpCharacter* target = aliveEnemies[targetIndex];
+
+		this->cloudStrife(enemies, target);
 	}
 	else 
 	{
@@ -238,7 +242,7 @@ void Mage::fireBall(std::vector<NpCharacter*> enemies, NpCharacter* target)
 
 }
 
-void Mage::earthQuake(std::vector<NpCharacter*> enemies, NpCharacter* target)
+void Mage::earthQuake(std::vector<NpCharacter*> enemies)
 {
 	if (this->getMana() >= 60)
 	{

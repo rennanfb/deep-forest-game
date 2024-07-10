@@ -33,7 +33,7 @@ public:
 	void calculeMana();
 	void increaseMana();
 	void fireBall(std::vector<NpCharacter*> enemies, NpCharacter* enemy);
-	void earthQuake(std::vector<NpCharacter*> enemies, NpCharacter* enemy);
+	void earthQuake(std::vector<NpCharacter*> enemies);
 	void cloudStrife(std::vector<NpCharacter*> enemies, NpCharacter* enemy);
 
 	//Getters

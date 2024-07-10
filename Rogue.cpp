@@ -36,17 +36,6 @@ void Rogue::showCombatLayout(std::vector<NpCharacter*> enemies)
 {
 	std::cout << "- " << this->getName() << "'s turn -" << std::endl;
 
-	std::vector<NpCharacter*> aliveEnemies = filterAliveEnemies(enemies);
-
-	if (aliveEnemies.empty())
-	{
-		return;
-	}
-
-	int targetIndex = chooseEnemy(aliveEnemies);
-	NpCharacter* target = aliveEnemies[targetIndex];
-
-
 	std::cout << std::endl;
 	std::cout << " --------- " << this->getName() << " --------- " << std::endl;
 	std::cout << "HP: " << this->getHealthPoints() << " | " << "SP: " << this->getStamina();
@@ -58,7 +47,7 @@ void Rogue::showCombatLayout(std::vector<NpCharacter*> enemies)
 	std::cout << "4 - Seven Sins (80SP)" << std::endl;
 	std::cout << std::endl;
 
-	std::cout << "* Enter the number of your next attack (1, 2, 3, 4) or Enter (0) to access your bag *" << std::endl;
+	std::cout << "* Enter the number of your next attack (1, 2, 3, 4) | or Enter (0) to access your bag *" << std::endl;
 
 	int nextMove;
 	std::cin >> nextMove;
@@ -70,19 +59,39 @@ void Rogue::showCombatLayout(std::vector<NpCharacter*> enemies)
 	}
 	else if (nextMove == 1) 
 	{
+		std::vector<NpCharacter*> aliveEnemies = filterAliveEnemies(enemies);
+
+		int targetIndex = chooseEnemy(aliveEnemies);
+		NpCharacter* target = aliveEnemies[targetIndex];
+
 		this->basicAttack(target);
 	}
 	else if (nextMove == 2) 
 	{
-		this->twinBlades(aliveEnemies, target);
+		std::vector<NpCharacter*> aliveEnemies = filterAliveEnemies(enemies);
+
+		int targetIndex = chooseEnemy(aliveEnemies);
+		NpCharacter* target = aliveEnemies[targetIndex];
+
+		this->twinBlades(enemies, target);
 	}
 	else if (nextMove == 3) 
 	{
-		this->deepWound(aliveEnemies, target);
+		std::vector<NpCharacter*> aliveEnemies = filterAliveEnemies(enemies);
+
+		int targetIndex = chooseEnemy(aliveEnemies);
+		NpCharacter* target = aliveEnemies[targetIndex];
+
+		this->deepWound(enemies, target);
 	}
 	else if (nextMove == 4) 
 	{
-		this->sevenSins(aliveEnemies, target);
+		std::vector<NpCharacter*> aliveEnemies = filterAliveEnemies(enemies);
+
+		int targetIndex = chooseEnemy(aliveEnemies);
+		NpCharacter* target = aliveEnemies[targetIndex];
+
+		this->sevenSins(enemies, target);
 	}
 	else 
 	{
