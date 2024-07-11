@@ -68,30 +68,54 @@ void Rogue::showCombatLayout(std::vector<NpCharacter*> enemies)
 	}
 	else if (nextMove == 2) 
 	{
-		std::vector<NpCharacter*> aliveEnemies = filterAliveEnemies(enemies);
+		if (this->getStamina() >= 40)
+		{
+			std::vector<NpCharacter*> aliveEnemies = filterAliveEnemies(enemies);
 
-		int targetIndex = chooseEnemy(aliveEnemies);
-		NpCharacter* target = aliveEnemies[targetIndex];
+			int targetIndex = chooseEnemy(aliveEnemies);
+			NpCharacter* target = aliveEnemies[targetIndex];
 
-		this->twinBlades(enemies, target);
+			this->twinBlades(target);
+		}
+		else
+		{
+			std::cout << "Insufficient stamina, select a possible move" << std::endl;
+			this->showCombatLayout(enemies);
+		}
 	}
 	else if (nextMove == 3) 
 	{
-		std::vector<NpCharacter*> aliveEnemies = filterAliveEnemies(enemies);
+		if (this->getStamina() >= 80)
+		{
+			std::vector<NpCharacter*> aliveEnemies = filterAliveEnemies(enemies);
 
-		int targetIndex = chooseEnemy(aliveEnemies);
-		NpCharacter* target = aliveEnemies[targetIndex];
+			int targetIndex = chooseEnemy(aliveEnemies);
+			NpCharacter* target = aliveEnemies[targetIndex];
 
-		this->deepWound(enemies, target);
+			this->deepWound(target);
+		}
+		else
+		{
+			std::cout << "Insufficient stamina, select a possible move" << std::endl;
+			this->showCombatLayout(enemies);
+		}
 	}
 	else if (nextMove == 4) 
 	{
-		std::vector<NpCharacter*> aliveEnemies = filterAliveEnemies(enemies);
+		if (this->getStamina() >= 60)
+		{
+			std::vector<NpCharacter*> aliveEnemies = filterAliveEnemies(enemies);
 
-		int targetIndex = chooseEnemy(aliveEnemies);
-		NpCharacter* target = aliveEnemies[targetIndex];
+			int targetIndex = chooseEnemy(aliveEnemies);
+			NpCharacter* target = aliveEnemies[targetIndex];
 
-		this->sevenSins(enemies, target);
+			this->sevenSins(target);
+		}
+		else
+		{
+			std::cout << "Insufficient stamina, select a possible move" << std::endl;
+			this->showCombatLayout(enemies);
+		}
 	}
 	else 
 	{
@@ -184,176 +208,151 @@ void Rogue::increaseStamina()
 }
 
 
-void Rogue::twinBlades(std::vector<NpCharacter*> enemies, NpCharacter* target)
+void Rogue::twinBlades(NpCharacter* target)
 {
-	if (this->getStamina() >= 40.0f) 
+	this->stamina -= 40.0f;
+
+	if (!target->dodgeAttack())
 	{
-		this->stamina -= 40.0f;
-
-		if (!target->dodgeAttack())
+		if (this->criticalHit())
 		{
-			if (this->criticalHit())
+			float skillDamageBonus = this->getAttackPoints() * 0.3f;
+			float skillDamage = this->getAttackPoints() + skillDamageBonus;
+			float criticalDamage = skillDamage * 2.0f;
+			float averageDamage = calculateAverageDamage(criticalDamage);
+			float damage = averageDamage - target->damageReduction();
+
+			if (damage < 0.0f)
 			{
-				float skillDamageBonus = this->getAttackPoints() * 0.3f;
-				float skillDamage = this->getAttackPoints() + skillDamageBonus;
-				float criticalDamage = skillDamage * 2.0f;
-				float averageDamage = calculateAverageDamage(criticalDamage);
-				float damage = averageDamage - target->damageReduction();
-
-				if (damage < 0.0f)
-				{
-					damage = 0.0f;
-				}
-
-				target->decreaseHealth(damage);
-				std::cout << this->getName() << " used Twin Blades against " << target->getName() << " with " << criticalDamage << " points of damage" << std::endl;
-				this->increaseStamina();
-				std::cout << std::endl;
+				damage = 0.0f;
 			}
-			else
-			{
-				float skillDamageBonus = this->getAttackPoints() * 0.3f;
-				float skillDamage = this->getAttackPoints() + skillDamageBonus;
-				float averageDamage = calculateAverageDamage(skillDamage);
-				float damage = averageDamage - target->damageReduction();
 
-				if (damage < 0.0f)
-				{
-					damage = 0.0f;
-				}
-
-				target->decreaseHealth(damage);
-				std::cout << this->getName() << " used Twin Blades against " << target->getName() << " with " << damage << " points of damage" << std::endl;
-				this->increaseStamina();
-				std::cout << std::endl;
-			}
+			target->decreaseHealth(damage);
+			std::cout << this->getName() << " used Twin Blades against " << target->getName() << " with " << criticalDamage << " points of damage" << std::endl;
+			this->increaseStamina();
+			std::cout << std::endl;
 		}
 		else
 		{
+			float skillDamageBonus = this->getAttackPoints() * 0.3f;
+			float skillDamage = this->getAttackPoints() + skillDamageBonus;
+			float averageDamage = calculateAverageDamage(skillDamage);
+			float damage = averageDamage - target->damageReduction();
+
+			if (damage < 0.0f)
+			{
+				damage = 0.0f;
+			}
+
+			target->decreaseHealth(damage);
+			std::cout << this->getName() << " used Twin Blades against " << target->getName() << " with " << damage << " points of damage" << std::endl;
 			this->increaseStamina();
-			return;
+			std::cout << std::endl;
 		}
 	}
-	else 
+	else
 	{
-		std::cout << "Insufficient stamina, use another skill" << std::endl;
-		this->showCombatLayout(enemies);
+		this->increaseStamina();
+		return;
+	}
+}
+
+void Rogue::deepWound(NpCharacter* target)
+{
+	this->stamina -= 60.0f;
+
+	if (!target->dodgeAttack())
+	{
+		if (this->criticalHit())
+		{
+			float skillDamageBonus = this->getAttackPoints() * 0.5f;
+			float skillDamage = this->getAttackPoints() + skillDamageBonus;
+			float criticalDamage = skillDamage * 2.0f;
+			float averageDamage = calculateAverageDamage(criticalDamage);
+			float damage = averageDamage - target->damageReduction();
+
+			if (damage < 0.0f)
+			{
+				damage = 0.0f;
+			}
+
+			target->decreaseHealth(damage);
+			std::cout << this->getName() << " used Deep Wound against " << target->getName() << " with " << criticalDamage << " points of damage" << std::endl;
+			this->increaseStamina();
+			std::cout << std::endl;
+		}
+		else
+		{
+			float skillDamageBonus = this->getAttackPoints() * 0.5f;
+			float skillDamage = this->getAttackPoints() + skillDamageBonus;
+			float averageDamage = calculateAverageDamage(skillDamage);
+			float damage = averageDamage - target->damageReduction();
+
+			if (damage < 0.0f)
+			{
+				damage = 0.0f;
+			}
+
+			target->decreaseHealth(damage);
+			std::cout << this->getName() << " used Deep Wound against " << target->getName() << " with " << damage << " points of damage" << std::endl;
+			this->increaseStamina();
+			std::cout << std::endl;
+		}
+	}
+	else
+	{
+		this->increaseStamina();
+		return;
 	}
 
 }
 
-void Rogue::deepWound(std::vector<NpCharacter*> enemies, NpCharacter* target)
+void Rogue::sevenSins(NpCharacter* target)
 {
-	if (this->getStamina() >= 60.0f) 
+	this->stamina -= 80.0f;
+
+	if (!target->dodgeAttack())
 	{
-		this->stamina -= 60.0f;
-
-		if (!target->dodgeAttack())
+		if (this->criticalHit())
 		{
-			if (this->criticalHit())
+			float skillDamageBonus = this->getAttackPoints() * 1.2f;
+			float skillDamage = this->getAttackPoints() + skillDamageBonus;
+			float criticalDamage = skillDamage * 2.0f;
+			float averageDamage = calculateAverageDamage(criticalDamage);
+			float damage = averageDamage - target->damageReduction();
+
+			if (damage < 0.0f)
 			{
-				float skillDamageBonus = this->getAttackPoints() * 0.5f;
-				float skillDamage = this->getAttackPoints() + skillDamageBonus;
-				float criticalDamage = skillDamage * 2.0f;
-				float averageDamage = calculateAverageDamage(criticalDamage);
-				float damage = averageDamage - target->damageReduction();
-
-				if (damage < 0.0f)
-				{
-					damage = 0.0f;
-				}
-
-				target->decreaseHealth(damage);
-				std::cout << this->getName() << " used Deep Wound against " << target->getName() << " with " << criticalDamage << " points of damage" << std::endl;
-				this->increaseStamina();
-				std::cout << std::endl;
+				damage = 0.0f;
 			}
-			else
-			{
-				float skillDamageBonus = this->getAttackPoints() * 0.5f;
-				float skillDamage = this->getAttackPoints() + skillDamageBonus;
-				float averageDamage = calculateAverageDamage(skillDamage);
-				float damage = averageDamage - target->damageReduction();
 
-				if (damage < 0.0f)
-				{
-					damage = 0.0f;
-				}
-
-				target->decreaseHealth(damage);
-				std::cout << this->getName() << " used Deep Wound against " << target->getName() << " with " << damage << " points of damage" << std::endl;
-				this->increaseStamina();
-				std::cout << std::endl;
-			}
+			target->decreaseHealth(damage);
+			std::cout << this->getName() << " used Seven Sins against " << target->getName() << " with " << criticalDamage << " points of damage" << std::endl;
+			this->increaseStamina();
+			std::cout << std::endl;
 		}
 		else
 		{
-			this->increaseStamina();
-			return;
-		}
-	}
-	else 
-	{
-		std::cout << "Insufficient stamina, use another skill" << std::endl;
-		this->showCombatLayout(enemies);
-	}
-}
+			float skillDamageBonus = this->getAttackPoints() * 1.2f;
+			float skillDamage = this->getAttackPoints() + skillDamageBonus;
+			float averageDamage = calculateAverageDamage(skillDamage);
+			float damage = averageDamage - target->damageReduction();
 
-void Rogue::sevenSins(std::vector<NpCharacter*> enemies, NpCharacter* target)
-{
-	if (this->getStamina() >= 80.0f ) 
-	{
-		this->stamina -= 80.0f;
-
-		if (!target->dodgeAttack())
-		{
-			if (this->criticalHit())
+			if (damage < 0.0f)
 			{
-				float skillDamageBonus = this->getAttackPoints() * 1.2f;
-				float skillDamage = this->getAttackPoints() + skillDamageBonus;
-				float criticalDamage = skillDamage * 2.0f;
-				float averageDamage = calculateAverageDamage(criticalDamage);
-				float damage = averageDamage - target->damageReduction();
-
-				if (damage < 0.0f)
-				{
-					damage = 0.0f;
-				}
-
-				target->decreaseHealth(damage);
-				std::cout << this->getName() << " used Seven Sins against " << target->getName() << " with " << criticalDamage << " points of damage" << std::endl;
-				this->increaseStamina();
-				std::cout << std::endl;
+				damage = 0.0f;
 			}
-			else
-			{
-				float skillDamageBonus = this->getAttackPoints() * 1.2f;
-				float skillDamage = this->getAttackPoints() + skillDamageBonus;
-				float averageDamage = calculateAverageDamage(skillDamage);
-				float damage = averageDamage - target->damageReduction();
 
-				if (damage < 0.0f)
-				{
-					damage = 0.0f;
-				}
-
-				target->decreaseHealth(damage);
-				std::cout << this->getName() << " used Seven Sins against " << target->getName() << " with " << damage << " points of damage" << std::endl;
-				this->increaseStamina();
-				std::cout << std::endl;
-			}
-		}
-		else
-		{
+			target->decreaseHealth(damage);
+			std::cout << this->getName() << " used Seven Sins against " << target->getName() << " with " << damage << " points of damage" << std::endl;
 			this->increaseStamina();
-			return;
+			std::cout << std::endl;
 		}
-
 	}
-	else 
+	else
 	{
-		std::cout << "Insufficient stamina, use another skill" << std::endl;
-		this->showCombatLayout(enemies);
+		this->increaseStamina();
+		return;
 	}
 }
 

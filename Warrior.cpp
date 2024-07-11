@@ -68,30 +68,54 @@ void Warrior::showCombatLayout(std::vector<NpCharacter*> enemies)
 	}
 	else if (nextMove == 2) 
 	{
-		std::vector<NpCharacter*> aliveEnemies = filterAliveEnemies(enemies);
+		if (this->getFury() >= 15)
+		{
+			std::vector<NpCharacter*> aliveEnemies = filterAliveEnemies(enemies);
 
-		int targetIndex = chooseEnemy(aliveEnemies);
-		NpCharacter* target = aliveEnemies[targetIndex];
+			int targetIndex = chooseEnemy(aliveEnemies);
+			NpCharacter* target = aliveEnemies[targetIndex];
 
-		this->swordShout(enemies, target);
+			this->swordShout(target);
+		}
+		else
+		{
+			std::cout << "Insufficient Fury, select a possible move" << std::endl;
+			this->showCombatLayout(enemies);
+		}
 	}
 	else if (nextMove == 3) 
 	{
-		std::vector<NpCharacter*> aliveEnemies = filterAliveEnemies(enemies);
+		if (this->getFury() >= 30)
+		{
+			std::vector<NpCharacter*> aliveEnemies = filterAliveEnemies(enemies);
 
-		int targetIndex = chooseEnemy(aliveEnemies);
-		NpCharacter* target = aliveEnemies[targetIndex];
+			int targetIndex = chooseEnemy(aliveEnemies);
+			NpCharacter* target = aliveEnemies[targetIndex];
 
-		this->rockBreaker(enemies, target);
+			this->rockBreaker(target);
+		}
+		else
+		{
+			std::cout << "Insufficient Fury, select a possible move" << std::endl;
+			this->showCombatLayout(enemies);
+		}
 	}
 	else if (nextMove == 4) 
 	{
-		std::vector<NpCharacter*> aliveEnemies = filterAliveEnemies(enemies);
+		if (this->getFury() >= 60)
+		{
+			std::vector<NpCharacter*> aliveEnemies = filterAliveEnemies(enemies);
 
-		int targetIndex = chooseEnemy(aliveEnemies);
-		NpCharacter* target = aliveEnemies[targetIndex];
+			int targetIndex = chooseEnemy(aliveEnemies);
+			NpCharacter* target = aliveEnemies[targetIndex];
 
-		this->chaosSword(enemies, target);
+			this->chaosSword(target);
+		}
+		else
+		{
+			std::cout << "Insufficient Fury, select a possible move" << std::endl;
+			this->showCombatLayout(enemies);
+		}
 	}
 	else {
 		std::cout << "You must write the number of the skill options" << std::endl;
@@ -189,168 +213,144 @@ void Warrior::increaseFury(float damageTaken)
 	}
 }
 
-void Warrior::swordShout(std::vector<NpCharacter*> enemies, NpCharacter* target)
+void Warrior::swordShout(NpCharacter* target)
 {
-	if (this->getFury() >= 15.0f )
-	{
-		this->fury -= 15.0f;
+	this->fury -= 15.0f;
 
-		if (!target->dodgeAttack())
+	if (!target->dodgeAttack())
+	{
+
+		if (this->criticalHit()) 
 		{
 
-			if (this->criticalHit()) 
+			float skillDamageBonus = this->getAttackPoints() * 0.5f;
+			float skillDamage = this->getAttackPoints() + skillDamageBonus;
+			float criticalDamage = skillDamage * 2.0f;
+			float averageDamage = calculateAverageDamage(criticalDamage);
+			float damage = averageDamage - target->damageReduction();
+
+			if (damage < 0.0f)
 			{
-
-				float skillDamageBonus = this->getAttackPoints() * 0.5f;
-				float skillDamage = this->getAttackPoints() + skillDamageBonus;
-				float criticalDamage = skillDamage * 2.0f;
-				float averageDamage = calculateAverageDamage(criticalDamage);
-				float damage = averageDamage - target->damageReduction();
-
-				if (damage < 0.0f)
-				{
-					damage = 0.0f;
-				}
-
-				target->decreaseHealth(damage);
-				std::cout << this->getName() << " used Sword Shout against " << target->getName() << " with " << criticalDamage << " points of damage" << std::endl;
-				std::cout << std::endl;
+				damage = 0.0f;
 			}
-			else
-			{
-				float skillDamageBonus = this->getAttackPoints() * 0.5f;
-				float skillDamage = this->getAttackPoints() + skillDamageBonus;
-				float averageDamage = calculateAverageDamage(skillDamage);
-				float damage = averageDamage - target->damageReduction();
 
-				if (damage < 0.0f)
-				{
-					damage = 0.0f;
-				}
-
-				target->decreaseHealth(damage);
-				std::cout << this->getName() << " used Sword Shout against " << target->getName() << " with " << damage << " points of damage" << std::endl;
-				std::cout << std::endl;
-			}
+			target->decreaseHealth(damage);
+			std::cout << this->getName() << " used Sword Shout against " << target->getName() << " with " << criticalDamage << " points of damage" << std::endl;
+			std::cout << std::endl;
 		}
 		else
 		{
-			return;
-		}
-	}
-	else 
-	{
-		std::cout << "Insufficient fury, use another skill" << std::endl;
-		this->showCombatLayout(enemies);
-	}
+			float skillDamageBonus = this->getAttackPoints() * 0.5f;
+			float skillDamage = this->getAttackPoints() + skillDamageBonus;
+			float averageDamage = calculateAverageDamage(skillDamage);
+			float damage = averageDamage - target->damageReduction();
 
-}
-
-void Warrior::rockBreaker(std::vector<NpCharacter*> enemies, NpCharacter* target)
-{
-	if (this->getFury() >= 30.0f) 
-	{
-		this->fury -= 30.0f;
-
-		if (!target->dodgeAttack())
-		{
-			if (this->criticalHit()) 
+			if (damage < 0.0f)
 			{
-				float skillDamageBonus = this->getAttackPoints() * 0.8f;
-				float skillDamage = this->getAttackPoints() + skillDamageBonus;
-				float criticalDamage = skillDamage * 2.0f;
-				float averageDamage = calculateAverageDamage(criticalDamage);
-				float damage = averageDamage - target->damageReduction();
-
-				if (damage < 0.0f)
-				{
-					damage = 0.0f;
-				}
-
-				target->decreaseHealth(damage);
-				std::cout << this->getName() << " used Rock Breaker against " << target->getName() << " with " << criticalDamage << " points of damage" << std::endl;
-				std::cout << std::endl;
+				damage = 0.0f;
 			}
-			else
-			{
-				float skillDamageBonus = this->getAttackPoints() * 0.8f;
-				float skillDamage = this->getAttackPoints() + skillDamageBonus;
-				float averageDamage = calculateAverageDamage(skillDamage);
-				float damage = averageDamage - target->damageReduction();
 
-				if (damage < 0.0f)
-				{
-					damage = 0.0f;
-				}
-
-				target->decreaseHealth(damage);
-				std::cout << this->getName() << " used Rock Breaker against " << target->getName() << " with " << damage << " points of damage" << std::endl;
-				std::cout << std::endl;
-			}
-		}
-		else
-		{
-			return;
+			target->decreaseHealth(damage);
+			std::cout << this->getName() << " used Sword Shout against " << target->getName() << " with " << damage << " points of damage" << std::endl;
+			std::cout << std::endl;
 		}
 	}
-	else 
+	else
 	{
-		std::cout << "Insufficient fury, use another skill" << std::endl;
-		this->showCombatLayout(enemies);
+		return;
 	}
 }
 
-void Warrior::chaosSword(std::vector<NpCharacter*> enemies, NpCharacter* target)
+void Warrior::rockBreaker(NpCharacter* target)
 {
-	if (this->getFury() >= 60.0f ) 
+	this->fury -= 30.0f;
+
+	if (!target->dodgeAttack())
 	{
-		this->fury -= 60.0f;
-
-		if (!target->dodgeAttack())
+		if (this->criticalHit()) 
 		{
-			if (this->criticalHit())
+			float skillDamageBonus = this->getAttackPoints() * 0.8f;
+			float skillDamage = this->getAttackPoints() + skillDamageBonus;
+			float criticalDamage = skillDamage * 2.0f;
+			float averageDamage = calculateAverageDamage(criticalDamage);
+			float damage = averageDamage - target->damageReduction();
+
+			if (damage < 0.0f)
 			{
-				float skillDamageBonus = this->getAttackPoints() * 1.2f;
-				float skillDamage = this->getAttackPoints() + skillDamageBonus;
-				float criticalDamage = skillDamage * 2.0f;
-				float averageDamage = calculateAverageDamage(criticalDamage);
-				float damage = averageDamage - target->damageReduction();
-
-				if (damage < 0.0f)
-				{
-					damage = 0.0f;
-				}
-
-				target->decreaseHealth(damage);
-				std::cout << this->getName() << " used Chaos Sword against " << target->getName() << " with " << criticalDamage << " points of damage" << std::endl;
-				std::cout << std::endl;
+				damage = 0.0f;
 			}
-			else
-			{
-				float skillDamageBonus = this->getAttackPoints() * 1.2f;
-				float skillDamage = this->getAttackPoints() + skillDamageBonus;
-				float averageDamage = calculateAverageDamage(skillDamage);
-				float damage = averageDamage - target->damageReduction();
 
-				if (damage < 0.0f)
-				{
-					damage = 0.0f;
-				}
-
-				target->decreaseHealth(damage);
-				std::cout << this->getName() << " used Chaos Sword against " << target->getName() << " with " << damage << " points of damage" << std::endl;
-				std::cout << std::endl;
-			}
+			target->decreaseHealth(damage);
+			std::cout << this->getName() << " used Rock Breaker against " << target->getName() << " with " << criticalDamage << " points of damage" << std::endl;
+			std::cout << std::endl;
 		}
 		else
 		{
-			return;
+			float skillDamageBonus = this->getAttackPoints() * 0.8f;
+			float skillDamage = this->getAttackPoints() + skillDamageBonus;
+			float averageDamage = calculateAverageDamage(skillDamage);
+			float damage = averageDamage - target->damageReduction();
+
+			if (damage < 0.0f)
+			{
+				damage = 0.0f;
+			}
+
+			target->decreaseHealth(damage);
+			std::cout << this->getName() << " used Rock Breaker against " << target->getName() << " with " << damage << " points of damage" << std::endl;
+			std::cout << std::endl;
 		}
 	}
-	else 
+	else
 	{
-		std::cout << "Insufficient fury, use another skill" << std::endl;
-		this->showCombatLayout(enemies);
+	return;
+	}
+}
+
+void Warrior::chaosSword(NpCharacter* target)
+{
+
+	this->fury -= 60.0f;
+
+	if (!target->dodgeAttack())
+	{
+		if (this->criticalHit())
+		{
+			float skillDamageBonus = this->getAttackPoints() * 1.2f;
+			float skillDamage = this->getAttackPoints() + skillDamageBonus;
+			float criticalDamage = skillDamage * 2.0f;
+			float averageDamage = calculateAverageDamage(criticalDamage);
+			float damage = averageDamage - target->damageReduction();
+
+			if (damage < 0.0f)
+			{
+				damage = 0.0f;
+			}
+
+			target->decreaseHealth(damage);
+			std::cout << this->getName() << " used Chaos Sword against " << target->getName() << " with " << criticalDamage << " points of damage" << std::endl;
+			std::cout << std::endl;
+		}
+		else
+		{
+			float skillDamageBonus = this->getAttackPoints() * 1.2f;
+			float skillDamage = this->getAttackPoints() + skillDamageBonus;
+			float averageDamage = calculateAverageDamage(skillDamage);
+			float damage = averageDamage - target->damageReduction();
+
+			if (damage < 0.0f)
+			{
+				damage = 0.0f;
+			}
+
+			target->decreaseHealth(damage);
+			std::cout << this->getName() << " used Chaos Sword against " << target->getName() << " with " << damage << " points of damage" << std::endl;
+			std::cout << std::endl;
+		}
+	}
+	else
+	{
+		return;
 	}
 }
 

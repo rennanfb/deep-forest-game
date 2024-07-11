@@ -67,25 +67,49 @@ void Mage::showCombatLayout(std::vector<NpCharacter*> enemies)
 	}
 	else if (nextMove == 2) 
 	{
-		std::vector<NpCharacter*> aliveEnemies = filterAliveEnemies(enemies);
+		if (this->getMana() >= 30)
+		{
+			std::vector<NpCharacter*> aliveEnemies = filterAliveEnemies(enemies);
 
-		int targetIndex = chooseEnemy(aliveEnemies);
-		NpCharacter* target = aliveEnemies[targetIndex];
+			int targetIndex = chooseEnemy(aliveEnemies);
+			NpCharacter* target = aliveEnemies[targetIndex];
 
-		this->fireBall(enemies, target);
+			this->fireBall(target);
+		}
+		else
+		{
+			std::cout << "Insufficient mana, select a possible move" << std::endl;
+			this->showCombatLayout(enemies);
+		}
 	}
 	else if (nextMove == 3) 
 	{
-		this->earthQuake(enemies);
+		if (this->getMana() >= 60)
+		{
+			this->earthQuake(enemies);
+		}
+		else
+		{
+			std::cout << "Insufficient mana, select a possible move" << std::endl;
+			this->showCombatLayout(enemies);
+		}
 	}
 	else if (nextMove == 4) 
 	{
-		std::vector<NpCharacter*> aliveEnemies = filterAliveEnemies(enemies);
+		if (this->getMana() >= 90)
+		{
+			std::vector<NpCharacter*> aliveEnemies = filterAliveEnemies(enemies);
 
-		int targetIndex = chooseEnemy(aliveEnemies);
-		NpCharacter* target = aliveEnemies[targetIndex];
+			int targetIndex = chooseEnemy(aliveEnemies);
+			NpCharacter* target = aliveEnemies[targetIndex];
 
-		this->cloudStrife(enemies, target);
+			this->cloudStrife(target);
+		}
+		else
+		{
+			std::cout << "Insufficient mana, select a possible move" << std::endl;
+			this->showCombatLayout(enemies);
+		}
 	}
 	else 
 	{
@@ -184,179 +208,154 @@ void Mage::increaseMana()
 	}
 }
 
-void Mage::fireBall(std::vector<NpCharacter*> enemies, NpCharacter* target)
+void Mage::fireBall(NpCharacter* target)
 {
-	if (this->getMana() >= 30) 
+	this->mana -= 30;
+
+	if (!target->dodgeAttack())
 	{
-		this->mana -= 30;
-
-		if (!target->dodgeAttack())
+		if (this->criticalHit())
 		{
-			if (this->criticalHit())
+			float skillDamageBonus = this->getMagicAttackPoints() * 0.5f;
+			float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
+			float criticalDamage = skillDamage * 2.0f;
+			float averageDamage = calculateAverageMagicDamage(criticalDamage);
+			float damage = averageDamage - target->damageReduction();
+
+			if (damage < 0.0f)
 			{
-				float skillDamageBonus = this->getMagicAttackPoints() * 0.5f;
-				float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
-				float criticalDamage = skillDamage * 2.0f;
-				float averageDamage = calculateAverageMagicDamage(criticalDamage);
-				float damage = averageDamage - target->damageReduction();
-
-				if (damage < 0.0f)
-				{
-					damage = 0.0f;
-				}
-
-				target->decreaseHealth(damage);
-				std::cout << this->getName() << " used Fire Ball against " << target->getName() << " with " << damage << " points of damage" << std::endl;
-				this->increaseMana();
-				std::cout << std::endl;
+				damage = 0.0f;
 			}
-			else
-			{
-				float skillDamageBonus = this->getMagicAttackPoints() * 0.5f;
-				float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
-				float averageDamage = calculateAverageMagicDamage(skillDamage);
-				float damage = averageDamage - target->damageReduction();
 
-				if (damage < 0.0f)
-				{
-					damage = 0.0f;
-				}
-
-				target->decreaseHealth(damage);
-				std::cout << this->getName() << " used Fire Ball against " << target->getName() << " with " << damage << " points of damage" << std::endl;
-				this->increaseMana();
-				std::cout << std::endl;
-			}
+			target->decreaseHealth(damage);
+			std::cout << this->getName() << " used Fire Ball against " << target->getName() << " with " << damage << " points of damage" << std::endl;
+			this->increaseMana();
+			std::cout << std::endl;
 		}
 		else
 		{
-			this->increaseMana();
-			return;
-		}
-	}
-	else 
-	{
-		std::cout << "Insufficient mana, use another skill" << std::endl;
-		this->showCombatLayout(enemies);
-	}
+			float skillDamageBonus = this->getMagicAttackPoints() * 0.5f;
+			float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
+			float averageDamage = calculateAverageMagicDamage(skillDamage);
+			float damage = averageDamage - target->damageReduction();
 
+			if (damage < 0.0f)
+			{
+				damage = 0.0f;
+			}
+
+			target->decreaseHealth(damage);
+			std::cout << this->getName() << " used Fire Ball against " << target->getName() << " with " << damage << " points of damage" << std::endl;
+			this->increaseMana();
+			std::cout << std::endl;
+			}
+		}
+	else
+	{
+		this->increaseMana();
+		return;
+	}
 }
 
 void Mage::earthQuake(std::vector<NpCharacter*> enemies)
 {
-	if (this->getMana() >= 60)
+	this->mana -= 60;
+
+	if (this->criticalHit())
 	{
-		this->mana -= 60;
+		float skillDamageBonus = this->getMagicAttackPoints() * 0.7f;
+		float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
+		float criticalDamage = skillDamage * 2.0f;
+		float damage = calculateAverageMagicDamage(criticalDamage);
 
-		if (this->criticalHit())
+		if (damage < 0.0f)
 		{
-			float skillDamageBonus = this->getMagicAttackPoints() * 0.7f;
-			float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
-			float criticalDamage = skillDamage * 2.0f;
-			float damage = calculateAverageMagicDamage(criticalDamage);
-
-			if (damage < 0.0f)
-			{
-				damage = 0.0f;
-			}
-
-			for (size_t i = 0; i < enemies.size(); ++i)
-			{
-				if (!enemies[i]->dodgeAttack())
-				{
-					enemies[i]->decreaseHealth(damage - enemies[i]->damageReduction());
-				}
-			}
-
-			std::cout << this->getName() << " used Earthquake, all enemies take " << damage << " points of damage" << std::endl;
-			this->increaseMana();
-			std::cout << std::endl;
+			damage = 0.0f;
 		}
-		else
+
+		for (size_t i = 0; i < enemies.size(); ++i)
 		{
-			float skillDamageBonus = this->getMagicAttackPoints() * 0.7f;
-			float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
-			float damage = calculateAverageMagicDamage(skillDamage);
-
-			if (damage < 0.0f)
+			if (!enemies[i]->dodgeAttack())
 			{
-				damage = 0.0f;
+				enemies[i]->decreaseHealth(damage - enemies[i]->damageReduction());
 			}
-
-			for (size_t i = 0; i < enemies.size(); ++i)
-			{
-				if (!enemies[i]->dodgeAttack())
-				{
-					enemies[i]->decreaseHealth(damage - enemies[i]->damageReduction());
-				}
-			}
-
-			std::cout << this->getName() << " used Earthquake, all enemies take " << damage << " points of damage" << std::endl;
-			this->increaseMana();
-			std::cout << std::endl;
 		}
+
+		std::cout << this->getName() << " used Earthquake, all enemies take " << damage << " points of damage" << std::endl;
+		this->increaseMana();
+		std::cout << std::endl;
 	}
-	else 
+	else
 	{
-		std::cout << "Insufficient mana, use another skill" << std::endl;
-		this->showCombatLayout(enemies);
+		float skillDamageBonus = this->getMagicAttackPoints() * 0.7f;
+		float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
+		float damage = calculateAverageMagicDamage(skillDamage);
+
+		if (damage < 0.0f)
+		{
+			damage = 0.0f;
+		}
+
+		for (size_t i = 0; i < enemies.size(); ++i)
+		{
+			if (!enemies[i]->dodgeAttack())
+			{
+				enemies[i]->decreaseHealth(damage - enemies[i]->damageReduction());
+			}
+		}
+
+		std::cout << this->getName() << " used Earthquake, all enemies take " << damage << " points of damage" << std::endl;
+		this->increaseMana();
+		std::cout << std::endl;
 	}
 }
 
-void Mage::cloudStrife(std::vector<NpCharacter*> enemies, NpCharacter* target)
+void Mage::cloudStrife(NpCharacter* target)
 {
-	if (this->getMana() >= 90) 
+	this->mana -= 90;
+
+	if (!target->dodgeAttack())
 	{
-		this->mana -= 90;
-
-		if (!target->dodgeAttack())
+		if (this->criticalHit())
 		{
-			if (this->criticalHit())
+			float skillDamageBonus = this->getMagicAttackPoints() * 1.5f;
+			float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
+			float criticalDamage = skillDamage * 2.0f;
+			float averageDamage = calculateAverageMagicDamage(criticalDamage);
+			float damage = averageDamage - target->damageReduction();
+
+			if (damage < 0.0f)
 			{
-				float skillDamageBonus = this->getMagicAttackPoints() * 1.5f;
-				float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
-				float criticalDamage = skillDamage * 2.0f;
-				float averageDamage = calculateAverageMagicDamage(criticalDamage);
-				float damage = averageDamage - target->damageReduction();
-
-				if (damage < 0.0f)
-				{
-					damage = 0.0f;
-				}
-
-				target->decreaseHealth(damage);
-				std::cout << this->getName() << " used Cloud Strife against " << target->getName() << " with " << damage << " points of damage" << std::endl;
-				this->increaseMana();
-				std::cout << std::endl;
+				damage = 0.0f;
 			}
-			else
-			{
-				float skillDamageBonus = this->getMagicAttackPoints() * 1.5f;
-				float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
-				float averageDamage = calculateAverageMagicDamage(skillDamage);
-				float damage = averageDamage - target->damageReduction();
 
-				if (damage < 0.0f)
-				{
-					damage = 0.0f;
-				}
-
-				target->decreaseHealth(damage);
-				std::cout << this->getName() << " used Cloud Strife against " << target->getName() << " with " << damage << " points of damage" << std::endl;
-				this->increaseMana();
-				std::cout << std::endl;
-			}
+			target->decreaseHealth(damage);
+			std::cout << this->getName() << " used Cloud Strife against " << target->getName() << " with " << damage << " points of damage" << std::endl;
+			this->increaseMana();
+			std::cout << std::endl;
 		}
 		else
 		{
+			float skillDamageBonus = this->getMagicAttackPoints() * 1.5f;
+			float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
+			float averageDamage = calculateAverageMagicDamage(skillDamage);
+			float damage = averageDamage - target->damageReduction();
+
+			if (damage < 0.0f)
+			{
+				damage = 0.0f;
+			}
+
+			target->decreaseHealth(damage);
+			std::cout << this->getName() << " used Cloud Strife against " << target->getName() << " with " << damage << " points of damage" << std::endl;
 			this->increaseMana();
-			return;
+			std::cout << std::endl;
 		}
 	}
-	else 
+	else
 	{
-		std::cout << "Insufficient mana, use another skill" << std::endl;
-		this->showCombatLayout(enemies);
+		this->increaseMana();
+		return;
 	}
 }
 

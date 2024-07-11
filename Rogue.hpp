@@ -31,9 +31,9 @@ public:
 	//Combat Methods
 
 	void increaseStamina();
-	void twinBlades(std::vector<NpCharacter*> enemies, NpCharacter* target);
-	void deepWound(std::vector<NpCharacter*> enemies, NpCharacter* target);
-	void sevenSins(std::vector<NpCharacter*> enemies, NpCharacter* target);
+	void twinBlades(NpCharacter* target);
+	void deepWound(NpCharacter* target);
+	void sevenSins(NpCharacter* target);
 
 	//Getters
 
