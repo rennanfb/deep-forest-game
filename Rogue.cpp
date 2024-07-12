@@ -41,11 +41,18 @@ void Rogue::showCombatLayout(std::vector<NpCharacter*> enemies)
 	std::cout << "HP: " << this->getHealthPoints() << " | " << "SP: " << this->getStamina();
 	std::cout << std::endl;
 	std::cout << " --------- " << "Skills" << " --------- " << std::endl;
-	std::cout << "1 - Basic Attack" << std::endl;
-	std::cout << "2 - Twin Blades (40SP)" << std::endl;
-	std::cout << "3 - Deep Wound (60SP)" << std::endl;
-	std::cout << "4 - Seven Sins (80SP)" << std::endl;
+	std::cout << "|1| - Basic Attack" << std::endl;
+	std::cout << "|2| - Twin Blades (40SP)" << std::endl;
+	std::cout << "|3| - Deep Wound (60SP)" << std::endl;
+	std::cout << "|4| - Seven Sins (80SP)" << std::endl;
 	std::cout << std::endl;
+
+	std::cout << "Possible Targets: " << std::endl;
+	for (size_t i = 0; i < enemies.size(); ++i)
+	{
+		std::cout << "- " << enemies[i]->getName() << " | HP: " << enemies[i]->getHealthPoints() << " | ATK: " << enemies[i]->getAttackPoints() << " | DEF: " << enemies[i]->getArmor() << std::endl;
+		std::cout << std::endl;
+	}
 
 	std::cout << "* Enter the number of your next attack (1, 2, 3, 4) | or Enter (0) to access your bag *" << std::endl;
 

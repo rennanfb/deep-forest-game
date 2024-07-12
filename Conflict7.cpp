@@ -25,16 +25,16 @@ void Conflict7(std::vector <Character*> players, std::vector<NpCharacter*> enemi
 	std::cout << "that's a lot of meat." << std::endl;
 	std::cout << std::endl;
 
-	while (players[0]->isAlive() == true && enemies[0]->isAlive() == true)
+	while (players[0]->isAlive() && enemies[0]->isAlive())
 	{
 		players[0]->showCombatLayout(enemies);
 
-		if (enemies[0]->isAlive() == true)
+		if (enemies[0]->isAlive())
 		{
 			enemies[0]->npcSkillSet(players);
 		}
 	}
-	if (enemies[0]->isAlive() == false)
+	if (!enemies[0]->isAlive())
 	{
 		players[0]->defeatEnemy(enemies[0]);
 
@@ -45,7 +45,7 @@ void Conflict7(std::vector <Character*> players, std::vector<NpCharacter*> enemi
 		std::cout << "of him in you, you had just ate him to kill your hungry at that moment." << std::endl;
 
 	}
-	else if (players[0]->isAlive() == false)
+	else if (!players[0]->isAlive())
 	{
 		std::cout << players[0]->getName() << " fall down" << std::endl;
 		std::cout << "You'are dead" << std::endl;

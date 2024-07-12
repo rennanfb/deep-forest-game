@@ -5,7 +5,7 @@ Character* CharacterCreation()
 
 	std::cout << "What is your name? " << std::endl;
 	std::string charName;
-	std::cin >> charName;
+	std::getline(std::cin, charName);
 
 	std::string raceName = Creature::setRace();
 

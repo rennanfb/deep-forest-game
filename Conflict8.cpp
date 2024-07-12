@@ -32,11 +32,11 @@ void Conflict8(std::vector <Character*> players, std::vector<NpCharacter*> enemi
 	std::cout << std::endl;
 
 
-	while (players[0]->isAlive() == true && (enemies[0]->isAlive() == true || enemies[1]->isAlive() == true || enemies[2]->isAlive() == true))
+	while (players[0]->isAlive() && (enemies[0]->isAlive() || enemies[1]->isAlive() || enemies[2]->isAlive()))
 	{
 		players[0]->showCombatLayout(enemies);
 
-		if (players[1]->isAlive() == true)
+		if (players[1]->isAlive())
 		{
 			dynamic_cast<CompanionPriest*>(players[1])->showCombatLayout(players, enemies);
 		}
@@ -44,7 +44,7 @@ void Conflict8(std::vector <Character*> players, std::vector<NpCharacter*> enemi
 		for (size_t i = 0; i < enemies.size(); ++i) 
 		{
 
-			if (enemies[i]->isAlive() == true)
+			if (enemies[i]->isAlive())
 			{
 				enemies[i]->npcSkillSet(players);
 			}
@@ -52,7 +52,7 @@ void Conflict8(std::vector <Character*> players, std::vector<NpCharacter*> enemi
 		}
 
 	}
-	if (enemies[0]->isAlive() == false && enemies[1]->isAlive() == false && enemies[2]->isAlive() == false)
+	if (!enemies[0]->isAlive() && !enemies[1]->isAlive() && !enemies[2]->isAlive())
 	{
 		players[0]->defeatEnemy(enemies[0]);
 		players[0]->defeatEnemy(enemies[1]);
@@ -67,7 +67,7 @@ void Conflict8(std::vector <Character*> players, std::vector<NpCharacter*> enemi
 		std::cout << std::endl;
 
 	}
-	else if (players[0]->isAlive() == false)
+	else if (!players[0]->isAlive())
 	{
 		std::cout << players[0]->getName() << " fall down" << std::endl;
 		std::cout << "You'are dead" << std::endl;

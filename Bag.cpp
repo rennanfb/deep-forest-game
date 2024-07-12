@@ -17,7 +17,7 @@ Bag* Bag::createInitialBag()
 	return new Bag(10, initialItens);
 }
 
-void Bag::showBagLayout(std::vector<NpCharacter*> enemies, Character* player)
+void Bag::showBagLayout(Character* player)
 {
 	std::cout << "---------------------------------------------------------------------------------" << std::endl;
 	std::cout << "Bag itens: " << std::endl;
@@ -58,17 +58,13 @@ void Bag::showBagLayout(std::vector<NpCharacter*> enemies, Character* player)
 		items[answer - 1]->use(player);
 		delete player->bag->items[answer - 1];
 		items.erase(items.begin() + (answer - 1));
-		player->showCombatLayout(enemies);
+		return;
 
-	}
-	else if (answer == 0)
-	{
-		player->showCombatLayout(enemies);
 	}
 	else
 	{
-		std::cout << "invalid value, Enter the number of the item" << std::endl;
-		showBagLayout(enemies, player);
+		std::cout << "Returning to the combat menu" << std::endl;
+		return;
 	}
 
 }

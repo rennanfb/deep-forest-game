@@ -29,23 +29,23 @@ void Conflict4(std::vector <Character*> players, std::vector<NpCharacter*> enemi
 	std::cout << "your kind... i will alow him to feast revenge upon you" << std::endl;
 	std::cout << std::endl;
 
-	while (players[0]->isAlive() == true && (enemies[0]->isAlive() == true || enemies[1]->isAlive() == true))
+	while (players[0]->isAlive() && (enemies[0]->isAlive() || enemies[1]->isAlive()))
 	{
 		for (size_t i = 0; i < enemies.size(); ++i) {
-			if (enemies[i]->isAlive() == true)
+			if (enemies[i]->isAlive())
 			{
 				enemies[i]->npcSkillSet(players);
 			}
 		}
 
-		if (players[0]->isAlive() == true)
+		if (players[0]->isAlive())
 		{
 			players[0]->showCombatLayout(enemies);
 		}
 
 	}
 
-	if (enemies[0]->isAlive() == false && enemies[1]->isAlive() == false)
+	if (!enemies[0]->isAlive() && !enemies[1]->isAlive())
 	{
 		players[0]->defeatEnemy(enemies[0]);
 		players[0]->defeatEnemy(enemies[1]);
@@ -56,7 +56,7 @@ void Conflict4(std::vector <Character*> players, std::vector<NpCharacter*> enemi
 		std::cout << "a whisper that even without understand the language, it put you to sleep" << std::endl;
 
 	}
-	else if (players[0]->isAlive() == false)
+	else if (!players[0]->isAlive())
 	{
 		std::cout << players[0]->getName() << " fall down" << std::endl;
 		std::cout << "You'are dead" << std::endl;

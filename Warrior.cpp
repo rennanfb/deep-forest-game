@@ -41,11 +41,18 @@ void Warrior::showCombatLayout(std::vector<NpCharacter*> enemies)
 	std::cout << "HP: " << this->getHealthPoints() << " | " << "FP: " << this->getFury();
 	std::cout << std::endl;
 	std::cout << " --------- " << "Skills" << " --------- " << std::endl;
-	std::cout << "1 - Basic Attack" << std::endl;
-	std::cout << "2 - Sword Shout (15FP)" << std::endl;
-	std::cout << "3 - Rock Breaker (30FP)" << std::endl;
-	std::cout << "4 - Chaos Sword (60FP)" << std::endl;
+	std::cout << "|1| - Basic Attack" << std::endl;
+	std::cout << "|2| - Sword Shout (15FP)" << std::endl;
+	std::cout << "|3| - Rock Breaker (30FP)" << std::endl;
+	std::cout << "|4| - Chaos Sword (60FP)" << std::endl;
 	std::cout << std::endl;
+
+	std::cout << "Possible Targets: " << std::endl;
+	for (size_t i = 0; i < enemies.size(); ++i) 
+	{
+		std::cout << "- " << enemies[i]->getName() << " | HP: " << enemies[i]->getHealthPoints() << " | ATK: " << enemies[i]->getAttackPoints() << " | DEF: " << enemies[i]->getArmor() << std::endl;
+		std::cout << std::endl;
+	}
 
 	std::cout << "* Enter the number of your next attack (1, 2, 3, 4) | or Enter (0) to access your bag *" << std::endl;
 	int nextMove;
@@ -56,6 +63,7 @@ void Warrior::showCombatLayout(std::vector<NpCharacter*> enemies)
 	if (nextMove == 0) 
 	{
 		this->bag->showBagLayout(enemies, this);
+		this->showCombatLayout(enemies);
 	}
 	else if (nextMove == 1) 
 	{

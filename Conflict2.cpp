@@ -13,20 +13,20 @@ void Conflict2(std::vector <Character*> players, std::vector<NpCharacter*> enemi
 	std::cout << "he draws his sword and charges into you" << std::endl;
 	std::cout << std::endl;
 
-	while (players[0]->isAlive() == true && enemies[0]->isAlive() == true)
+	while (players[0]->isAlive() && enemies[0]->isAlive())
 	{
 		enemies[0]->npcSkillSet(players);
 
-		if (players[0]->isAlive() == true)
+		if (players[0]->isAlive())
 		{
 			players[0]->showCombatLayout(enemies);
 		}
 	}
-	if (enemies[0]->isAlive() == false)
+	if (!enemies[0]->isAlive())
 	{
 		players[0]->defeatEnemy(enemies[0]);
 	}
-	else if (players[0]->isAlive() == false)
+	else if (!players[0]->isAlive())
 	{
 		std::cout << players[0]->getName() << " fall down" << std::endl;
 		std::cout << "You'are dead" << std::endl;

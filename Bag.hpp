@@ -33,7 +33,7 @@ public:
 
 	//Layout Methods
 
-	void showBagLayout(std::vector<NpCharacter*> enemies, Character* player);
+	void showBagLayout(Character* player);
 	void showBag();
 
 	//General Methods
