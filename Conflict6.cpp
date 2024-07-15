@@ -26,38 +26,49 @@ void Conflict6(std::vector <Character*> players, std::vector<NpCharacter*> enemi
 
 	while (players[0]->isAlive() && (enemies[0]->isAlive() || enemies[1]->isAlive()))
 	{
-		players[0]->showCombatLayout(enemies);
-
-		for (size_t i = 0; i < enemies.size(); ++i) {
-			if (enemies[i]->isAlive())
+		for (Character* player : players)
+		{
+			std::cout << "---------------------------------------------------------------------------" << std::endl;
+			if (player->isAlive())
 			{
-				enemies[i]->npcSkillSet(players);
+				player->showCombatLayout(players, enemies);
 			}
 		}
 
+		for (NpCharacter* enemy : enemies)
+		{
+			std::cout << "---------------------------------------------------------------------------" << std::endl;
+			if (enemy->isAlive())
+			{
+				enemy->npcSkillSet(players);
+			}
+		}
 	}
-	if (!enemies[0]->isAlive() && !enemies[1]->isAlive())
-	{
-		players[0]->defeatEnemy(enemies[0]);
-		players[0]->defeatEnemy(enemies[1]);
 
-		std::cout << std::endl;
-		std::cout << "You win this unfair battle, and hear applauses coming from behind you" << std::endl;
-		std::cout << "you look back and theres a man in a hood, he says:" << std::endl;
-		std::cout << std::endl;
-		std::cout << "The unknown has met you, now you are followed by unexpected dangers" << std::endl;
-		std::cout << "but you're lucky that we're following you too, and we need your help" << std::endl;
-		std::cout << "you can call me Tonius, i'm one of the three truth prophets" << std::endl;
-		std::cout << std::endl;
-
-	}
-	else if (!players[0]->isAlive())
+	if (!players[0]->isAlive())
 	{
 		std::cout << players[0]->getName() << " fall down" << std::endl;
 		std::cout << "You'are dead" << std::endl;
 		delete players[0];
 		exit(0);
 	}
+
+	for (NpCharacter* enemy : enemies)
+	{
+		if (!enemy->isAlive())
+		{
+			players[0]->defeatEnemy(enemy);
+		}
+	}
+
+	std::cout << std::endl;
+	std::cout << "You win this unfair battle, and hear applauses coming from behind you" << std::endl;
+	std::cout << "you look back and theres a man in a hood, he says:" << std::endl;
+	std::cout << std::endl;
+	std::cout << "The unknown has met you, now you are followed by unexpected dangers" << std::endl;
+	std::cout << "but you're lucky that we're following you too, and we need your help" << std::endl;
+	std::cout << "you can call me Tonius, i'm one of the three truth prophets" << std::endl;
+	std::cout << std::endl;
 
 
 }

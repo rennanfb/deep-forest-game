@@ -5,8 +5,8 @@ int main()
 {
 	std::cout << std::setprecision(0) << std::fixed;
 
-	Character* player1 = CharacterCreation();
-	std::vector<Character*> players = { player1 };
+	Character* player = CharacterCreation();
+	std::vector<Character*> players = { player };
 
 	Act1(players);
 

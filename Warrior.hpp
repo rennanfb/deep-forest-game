@@ -22,7 +22,7 @@ public:
 
 	//Override Methods
 
-	void showCombatLayout(std::vector<NpCharacter*> enemies) override;
+	void showCombatLayout(std::vector <Character*> allies, std::vector<NpCharacter*> enemies) override;
 	void showSheet() const override;
 	void decreaseHealth(float damage) override;
 	void upgradeAttributes() override;

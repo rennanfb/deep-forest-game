@@ -27,29 +27,44 @@ void Conflict7(std::vector <Character*> players, std::vector<NpCharacter*> enemi
 
 	while (players[0]->isAlive() && enemies[0]->isAlive())
 	{
-		players[0]->showCombatLayout(enemies);
-
-		if (enemies[0]->isAlive())
+		for (Character* player : players)
 		{
-			enemies[0]->npcSkillSet(players);
+			std::cout << "---------------------------------------------------------------------------" << std::endl;
+			if (player->isAlive())
+			{
+				player->showCombatLayout(players, enemies);
+			}
+		}
+
+		for (NpCharacter* enemy : enemies)
+		{
+			std::cout << "---------------------------------------------------------------------------" << std::endl;
+			if (enemy->isAlive())
+			{
+				enemy->npcSkillSet(players);
+			}
 		}
 	}
-	if (!enemies[0]->isAlive())
-	{
-		players[0]->defeatEnemy(enemies[0]);
 
-		std::cout << "You kill your hungry, while thinks about what the prophet told you... messiah?" << std::endl;
-		std::cout << "for a moment you try to understant what was that leaving your body after" << std::endl;
-		std::cout << "kill the Torturer Goblin and the zombie goblin, suddenly passes through your mind" << std::endl;
-		std::cout << "that maybe was that dark magic with the body of the zombie goblin, there was parts" << std::endl;
-		std::cout << "of him in you, you had just ate him to kill your hungry at that moment." << std::endl;
-
-	}
-	else if (!players[0]->isAlive())
+	if (!players[0]->isAlive())
 	{
 		std::cout << players[0]->getName() << " fall down" << std::endl;
 		std::cout << "You'are dead" << std::endl;
 		delete players[0];
 		exit(0);
 	}
+
+	for (NpCharacter* enemy : enemies)
+	{
+		if (!enemy->isAlive())
+		{
+			players[0]->defeatEnemy(enemy);
+		}
+	}
+
+	std::cout << "You kill your hungry, while thinks about what the prophet told you... messiah?" << std::endl;
+	std::cout << "for a moment you try to understant what was that leaving your body after" << std::endl;
+	std::cout << "kill the Torturer Goblin and the zombie goblin, suddenly passes through your mind" << std::endl;
+	std::cout << "that maybe was that dark magic with the body of the zombie goblin, there was parts" << std::endl;
+	std::cout << "of him in you, you had just ate him to kill your hungry at that moment." << std::endl;
 }

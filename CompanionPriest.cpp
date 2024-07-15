@@ -32,11 +32,6 @@ void CompanionPriest::showSheet() const
 	std::cout << std::endl;
 }
 
-void CompanionPriest::showCombatLayout(std::vector<NpCharacter*> enemies)
-{
-	//useless overrided method
-}
-
 void CompanionPriest::showCombatLayout(std::vector<Character*> allies, std::vector<NpCharacter*> enemies)
 {
 	std::cout << "- " << this->getName() << "'s turn -" << std::endl;
@@ -51,6 +46,16 @@ void CompanionPriest::showCombatLayout(std::vector<Character*> allies, std::vect
 	std::cout << "3 - Heal (60MP) (Target: Ally)" << std::endl;
 	std::cout << "4 - Saviour Rain (90MP) (Target: All)" << std::endl;
 	std::cout << std::endl;
+
+	std::cout << "--------------------------------" << std::endl;
+	std::cout << "Possible Targets: " << std::endl;
+	for (size_t i = 0; i < enemies.size(); ++i)
+	{
+		if (enemies[i]->isAlive()) {
+			std::cout << "- " << enemies[i]->getName() << " | HP: " << enemies[i]->getHealthPoints() << " | ATK: " << enemies[i]->getAttackPoints() << " | DEF: " << enemies[i]->getArmor() << std::endl;
+		}
+	}
+	std::cout << "--------------------------------" << std::endl;
 
 	std::cout << "*Type the number of your next attack (1, 2, 3, 4)*" << std::endl;
 	int nextMove;

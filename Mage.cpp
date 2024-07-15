@@ -32,7 +32,7 @@ void Mage::showSheet() const
 	std::cout << std::endl;
 }
 
-void Mage::showCombatLayout(std::vector<NpCharacter*> enemies)
+void Mage::showCombatLayout(std::vector<Character*> allies, std::vector<NpCharacter*> enemies)
 {
 	std::cout << "- " << this->getName() << "'s turn -" << std::endl;
 
@@ -40,19 +40,23 @@ void Mage::showCombatLayout(std::vector<NpCharacter*> enemies)
 	std::cout << " --------- " << this->getName() << " --------- " << std::endl;
 	std::cout << "HP: " << this->getHealthPoints() << " | " << "MP: " << this->getMana();
 	std::cout << std::endl;
-	std::cout << " --------- " << "Skills" << " --------- " << std::endl;
+	std::cout << " ------------ " << "Skills" << " ------------ " << std::endl;
 	std::cout << "|1| - Basic Attack" << std::endl;
 	std::cout << "|2| - Fire Ball (30MP)" << std::endl;
 	std::cout << "|3| - Earthquake (60MP) (Target: all enemies)" << std::endl;
 	std::cout << "|4| - Cloud Strife (90MP)" << std::endl;
 	std::cout << std::endl;
 
+	std::cout << "--------------------------------" << std::endl;
 	std::cout << "Possible Targets: " << std::endl;
 	for (size_t i = 0; i < enemies.size(); ++i)
 	{
-		std::cout << "- " << enemies[i]->getName() << " | HP: " << enemies[i]->getHealthPoints() << " | ATK: " << enemies[i]->getAttackPoints() << " | DEF: " << enemies[i]->getArmor() << std::endl;
-		std::cout << std::endl;
+		if (enemies[i]->isAlive()) {
+			std::cout << "- " << enemies[i]->getName() << " | HP: " << enemies[i]->getHealthPoints() << " | ATK: " << enemies[i]->getAttackPoints() << " | DEF: " << enemies[i]->getArmor() << std::endl;
+		}
 	}
+	std::cout << "--------------------------------" << std::endl;
+	std::cout << std::endl;
 
 	std::cout << "* Enter the number of your next attack (1, 2, 3, 4) or Enter (0) to access your bag *" << std::endl;
 	int nextMove;
@@ -61,7 +65,7 @@ void Mage::showCombatLayout(std::vector<NpCharacter*> enemies)
 
 	if (nextMove == 0) 
 	{
-		this->bag->showBagLayout(enemies, this);
+		this->bag->showBagLayout(this);
 	}
 	else if (nextMove == 1) 
 	{
@@ -86,7 +90,7 @@ void Mage::showCombatLayout(std::vector<NpCharacter*> enemies)
 		else
 		{
 			std::cout << "Insufficient mana, select a possible move" << std::endl;
-			this->showCombatLayout(enemies);
+			this->showCombatLayout(allies, enemies);
 		}
 	}
 	else if (nextMove == 3) 
@@ -98,7 +102,7 @@ void Mage::showCombatLayout(std::vector<NpCharacter*> enemies)
 		else
 		{
 			std::cout << "Insufficient mana, select a possible move" << std::endl;
-			this->showCombatLayout(enemies);
+			this->showCombatLayout(allies, enemies);
 		}
 	}
 	else if (nextMove == 4) 
@@ -115,13 +119,13 @@ void Mage::showCombatLayout(std::vector<NpCharacter*> enemies)
 		else
 		{
 			std::cout << "Insufficient mana, select a possible move" << std::endl;
-			this->showCombatLayout(enemies);
+			this->showCombatLayout(allies, enemies);
 		}
 	}
 	else 
 	{
 		std::cout << "You must write the number of the skill options" << std::endl;
-		this->showCombatLayout(enemies);
+		this->showCombatLayout(allies, enemies);
 
 	}
 }
@@ -288,7 +292,7 @@ void Mage::earthQuake(std::vector<NpCharacter*> enemies)
 			}
 		}
 
-		std::cout << this->getName() << " used Earthquake, all enemies take " << damage << " points of damage" << std::endl;
+		std::cout << this->getName() << " used Earthquake, causing " << damage << " points of area damage" << std::endl;
 		this->increaseMana();
 		std::cout << std::endl;
 	}
@@ -311,7 +315,7 @@ void Mage::earthQuake(std::vector<NpCharacter*> enemies)
 			}
 		}
 
-		std::cout << this->getName() << " used Earthquake, all enemies take " << damage << " points of damage" << std::endl;
+		std::cout << this->getName() << " used Earthquake, causing " << damage << " points of area damage" << std::endl;
 		this->increaseMana();
 		std::cout << std::endl;
 	}

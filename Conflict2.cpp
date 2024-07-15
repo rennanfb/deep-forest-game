@@ -15,22 +15,38 @@ void Conflict2(std::vector <Character*> players, std::vector<NpCharacter*> enemi
 
 	while (players[0]->isAlive() && enemies[0]->isAlive())
 	{
-		enemies[0]->npcSkillSet(players);
-
-		if (players[0]->isAlive())
+		for (NpCharacter* enemy : enemies)
 		{
-			players[0]->showCombatLayout(enemies);
+			std::cout << "---------------------------------------------------------------------------" << std::endl;
+			if (enemy->isAlive())
+			{
+				enemy->npcSkillSet(players);
+			}
+		}
+
+		for (Character* player : players)
+		{
+			std::cout << "---------------------------------------------------------------------------" << std::endl;
+			if (player->isAlive())
+			{
+				player->showCombatLayout(players, enemies);
+			}
 		}
 	}
-	if (!enemies[0]->isAlive())
-	{
-		players[0]->defeatEnemy(enemies[0]);
-	}
-	else if (!players[0]->isAlive())
+
+	if (!players[0]->isAlive())
 	{
 		std::cout << players[0]->getName() << " fall down" << std::endl;
 		std::cout << "You'are dead" << std::endl;
 		delete players[0];
 		exit(0);
+	}
+
+	for (NpCharacter* enemy : enemies)
+	{
+		if (!enemy->isAlive())
+		{
+			players[0]->defeatEnemy(enemy);
+		}
 	}
 }

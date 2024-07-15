@@ -32,7 +32,7 @@ void Warrior::showSheet() const
 	std::cout << std::endl;
 }
 
-void Warrior::showCombatLayout(std::vector<NpCharacter*> enemies)
+void Warrior::showCombatLayout(std::vector <Character*> allies, std::vector<NpCharacter*> enemies)
 {
 	std::cout << "- " << this->getName() << "'s turn -" << std::endl;
 
@@ -40,19 +40,23 @@ void Warrior::showCombatLayout(std::vector<NpCharacter*> enemies)
 	std::cout << " --------- " << this->getName() << " --------- " << std::endl;
 	std::cout << "HP: " << this->getHealthPoints() << " | " << "FP: " << this->getFury();
 	std::cout << std::endl;
-	std::cout << " --------- " << "Skills" << " --------- " << std::endl;
+	std::cout << " ------------ " << "Skills" << " ------------ " << std::endl;
 	std::cout << "|1| - Basic Attack" << std::endl;
 	std::cout << "|2| - Sword Shout (15FP)" << std::endl;
 	std::cout << "|3| - Rock Breaker (30FP)" << std::endl;
 	std::cout << "|4| - Chaos Sword (60FP)" << std::endl;
 	std::cout << std::endl;
 
+	std::cout << "--------------------------------" << std::endl;
 	std::cout << "Possible Targets: " << std::endl;
 	for (size_t i = 0; i < enemies.size(); ++i) 
 	{
-		std::cout << "- " << enemies[i]->getName() << " | HP: " << enemies[i]->getHealthPoints() << " | ATK: " << enemies[i]->getAttackPoints() << " | DEF: " << enemies[i]->getArmor() << std::endl;
-		std::cout << std::endl;
+		if (enemies[i]->isAlive()) {
+			std::cout << "- " << enemies[i]->getName() << " | HP: " << enemies[i]->getHealthPoints() << " | ATK: " << enemies[i]->getAttackPoints() << " | DEF: " << enemies[i]->getArmor() << std::endl;
+		}
 	}
+	std::cout << "--------------------------------" << std::endl;
+	std::cout << std::endl;
 
 	std::cout << "* Enter the number of your next attack (1, 2, 3, 4) | or Enter (0) to access your bag *" << std::endl;
 	int nextMove;
@@ -62,8 +66,8 @@ void Warrior::showCombatLayout(std::vector<NpCharacter*> enemies)
 	
 	if (nextMove == 0) 
 	{
-		this->bag->showBagLayout(enemies, this);
-		this->showCombatLayout(enemies);
+		this->bag->showBagLayout(this);
+		this->showCombatLayout(allies, enemies);
 	}
 	else if (nextMove == 1) 
 	{
@@ -88,7 +92,7 @@ void Warrior::showCombatLayout(std::vector<NpCharacter*> enemies)
 		else
 		{
 			std::cout << "Insufficient Fury, select a possible move" << std::endl;
-			this->showCombatLayout(enemies);
+			this->showCombatLayout(allies, enemies);
 		}
 	}
 	else if (nextMove == 3) 
@@ -105,7 +109,7 @@ void Warrior::showCombatLayout(std::vector<NpCharacter*> enemies)
 		else
 		{
 			std::cout << "Insufficient Fury, select a possible move" << std::endl;
-			this->showCombatLayout(enemies);
+			this->showCombatLayout(allies, enemies);
 		}
 	}
 	else if (nextMove == 4) 
@@ -122,12 +126,12 @@ void Warrior::showCombatLayout(std::vector<NpCharacter*> enemies)
 		else
 		{
 			std::cout << "Insufficient Fury, select a possible move" << std::endl;
-			this->showCombatLayout(enemies);
+			this->showCombatLayout(allies, enemies);
 		}
 	}
 	else {
 		std::cout << "You must write the number of the skill options" << std::endl;
-		this->showCombatLayout(enemies);
+		this->showCombatLayout(allies, enemies);
 
 	}
 }

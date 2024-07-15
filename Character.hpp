@@ -42,7 +42,7 @@ public:
 	//Pure Virtual Methods
 
 	virtual void showSheet() const = 0;
-	virtual void showCombatLayout(std::vector<NpCharacter*> enemies) = 0;
+	virtual void showCombatLayout(std::vector <Character*> allies, std::vector<NpCharacter*> enemies) = 0;
 	virtual void basicAttack(NpCharacter* enemy) = 0;
 	virtual void healStats() = 0;
 	virtual void upgradeAttributes() = 0;

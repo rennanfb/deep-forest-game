@@ -93,7 +93,10 @@ int Character::chooseEnemy(const std::vector<NpCharacter*>& enemies)
 		}
 
 		int choice;
+		std::cout << std::endl;
 		std::cin >> choice;
+		std::cout << std::endl;
+		std::cout << "---------------------------------------------------------------------------" << std::endl;
 
 		if (choice > 0 && choice <= static_cast<int>(enemies.size()))
 		{
@@ -200,6 +203,7 @@ bool Character::isAlive() const
 
 void Character::defeatEnemy(NpCharacter* enemy)
 {
+	std::cout << "---------------------------------------------------------------------------" << std::endl;
 	std::cout << "The " << enemy->getName() << " fall down" << std::endl;
 	this->increaseExp(enemy);
 
@@ -215,6 +219,7 @@ void Character::defeatEnemy(NpCharacter* enemy)
 	}
 
 	delete enemy;
+	std::cout << "---------------------------------------------------------------------------" << std::endl;
 }
 
 //Level Up Methods

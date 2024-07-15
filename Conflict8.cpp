@@ -34,40 +34,26 @@ void Conflict8(std::vector <Character*> players, std::vector<NpCharacter*> enemi
 
 	while (players[0]->isAlive() && (enemies[0]->isAlive() || enemies[1]->isAlive() || enemies[2]->isAlive()))
 	{
-		players[0]->showCombatLayout(enemies);
-
-		if (players[1]->isAlive())
+		for (Character* player : players)
 		{
-			dynamic_cast<CompanionPriest*>(players[1])->showCombatLayout(players, enemies);
-		}
-
-		for (size_t i = 0; i < enemies.size(); ++i) 
-		{
-
-			if (enemies[i]->isAlive())
+			std::cout << "---------------------------------------------------------------------------" << std::endl;
+			if (player->isAlive())
 			{
-				enemies[i]->npcSkillSet(players);
+				player->showCombatLayout(players, enemies);
 			}
-
 		}
 
+		for (NpCharacter* enemy : enemies)
+		{
+			std::cout << "---------------------------------------------------------------------------" << std::endl;
+			if (enemy->isAlive())
+			{
+				enemy->npcSkillSet(players);
+			}
+		}
 	}
-	if (!enemies[0]->isAlive() && !enemies[1]->isAlive() && !enemies[2]->isAlive())
-	{
-		players[0]->defeatEnemy(enemies[0]);
-		players[0]->defeatEnemy(enemies[1]);
-		players[0]->defeatEnemy(enemies[2]);
 
-		std::cout << std::endl;
-		std::cout << "Aztras: We'll met again messiah, you can't run from fate..." << std::endl;
-		std::cout << std::endl;
-		std::cout << "Priestess: You... thank you, my name is Luna, i serve the order" << std::endl;
-		std::cout << "of Sundeva, our mission is to tell the tale of the cosmic energy" << std::endl;
-		std::cout << "of the light in union with the ether. " << std::endl;
-		std::cout << std::endl;
-
-	}
-	else if (!players[0]->isAlive())
+	if (!players[0]->isAlive())
 	{
 		std::cout << players[0]->getName() << " fall down" << std::endl;
 		std::cout << "You'are dead" << std::endl;
@@ -75,5 +61,20 @@ void Conflict8(std::vector <Character*> players, std::vector<NpCharacter*> enemi
 		exit(0);
 	}
 
+	for (NpCharacter* enemy : enemies)
+	{
+		if (!enemy->isAlive())
+		{
+			players[0]->defeatEnemy(enemy);
+		}
+	}
+
+	std::cout << std::endl;
+	std::cout << "Aztras: We'll met again messiah, you can't run from fate..." << std::endl;
+	std::cout << std::endl;
+	std::cout << "Priestess: You... thank you, my name is Luna, i serve the order" << std::endl;
+	std::cout << "of Sundeva, our mission is to tell the tale of the cosmic energy" << std::endl;
+	std::cout << "of the light in union with the ether. " << std::endl;
+	std::cout << std::endl;
 
 }

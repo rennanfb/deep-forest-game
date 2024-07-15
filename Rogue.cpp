@@ -32,7 +32,7 @@ void Rogue::showSheet() const
 	std::cout << std::endl;
 }
 
-void Rogue::showCombatLayout(std::vector<NpCharacter*> enemies)
+void Rogue::showCombatLayout(std::vector <Character*> allies, std::vector<NpCharacter*> enemies)
 {
 	std::cout << "- " << this->getName() << "'s turn -" << std::endl;
 
@@ -40,19 +40,23 @@ void Rogue::showCombatLayout(std::vector<NpCharacter*> enemies)
 	std::cout << " --------- " << this->getName() << " --------- " << std::endl;
 	std::cout << "HP: " << this->getHealthPoints() << " | " << "SP: " << this->getStamina();
 	std::cout << std::endl;
-	std::cout << " --------- " << "Skills" << " --------- " << std::endl;
+	std::cout << " ------------ " << "Skills" << " ------------ " << std::endl;
 	std::cout << "|1| - Basic Attack" << std::endl;
 	std::cout << "|2| - Twin Blades (40SP)" << std::endl;
 	std::cout << "|3| - Deep Wound (60SP)" << std::endl;
 	std::cout << "|4| - Seven Sins (80SP)" << std::endl;
 	std::cout << std::endl;
 
+	std::cout << "--------------------------------" << std::endl;
 	std::cout << "Possible Targets: " << std::endl;
 	for (size_t i = 0; i < enemies.size(); ++i)
 	{
-		std::cout << "- " << enemies[i]->getName() << " | HP: " << enemies[i]->getHealthPoints() << " | ATK: " << enemies[i]->getAttackPoints() << " | DEF: " << enemies[i]->getArmor() << std::endl;
-		std::cout << std::endl;
+		if (enemies[i]->isAlive()) {
+			std::cout << "- " << enemies[i]->getName() << " | HP: " << enemies[i]->getHealthPoints() << " | ATK: " << enemies[i]->getAttackPoints() << " | DEF: " << enemies[i]->getArmor() << std::endl;
+		}
 	}
+	std::cout << "--------------------------------" << std::endl;
+	std::cout << std::endl;
 
 	std::cout << "* Enter the number of your next attack (1, 2, 3, 4) | or Enter (0) to access your bag *" << std::endl;
 
@@ -62,7 +66,7 @@ void Rogue::showCombatLayout(std::vector<NpCharacter*> enemies)
 
 	if (nextMove == 0) 
 	{
-		this->bag->showBagLayout(enemies, this);
+		this->bag->showBagLayout(this);
 	}
 	else if (nextMove == 1) 
 	{
@@ -87,7 +91,7 @@ void Rogue::showCombatLayout(std::vector<NpCharacter*> enemies)
 		else
 		{
 			std::cout << "Insufficient stamina, select a possible move" << std::endl;
-			this->showCombatLayout(enemies);
+			this->showCombatLayout(allies, enemies);
 		}
 	}
 	else if (nextMove == 3) 
@@ -104,7 +108,7 @@ void Rogue::showCombatLayout(std::vector<NpCharacter*> enemies)
 		else
 		{
 			std::cout << "Insufficient stamina, select a possible move" << std::endl;
-			this->showCombatLayout(enemies);
+			this->showCombatLayout(allies, enemies);
 		}
 	}
 	else if (nextMove == 4) 
@@ -121,13 +125,13 @@ void Rogue::showCombatLayout(std::vector<NpCharacter*> enemies)
 		else
 		{
 			std::cout << "Insufficient stamina, select a possible move" << std::endl;
-			this->showCombatLayout(enemies);
+			this->showCombatLayout(allies, enemies);
 		}
 	}
 	else 
 	{
 		std::cout << "You must write the number of the skill options" << std::endl;
-		this->showCombatLayout(enemies);
+		this->showCombatLayout(allies, enemies);
 
 	}
 }
