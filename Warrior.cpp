@@ -34,105 +34,107 @@ void Warrior::showSheet() const
 
 void Warrior::showCombatLayout(std::vector <Character*> allies, std::vector<NpCharacter*> enemies)
 {
-	std::cout << "- " << this->getName() << "'s turn -" << std::endl;
+	std::vector<NpCharacter*> aliveEnemies = filterAliveEnemies(enemies);
 
-	std::cout << std::endl;
-	std::cout << " --------- " << this->getName() << " --------- " << std::endl;
-	std::cout << "HP: " << this->getHealthPoints() << " | " << "FP: " << this->getFury();
-	std::cout << std::endl;
-	std::cout << " ------------ " << "Skills" << " ------------ " << std::endl;
-	std::cout << "|1| - Basic Attack" << std::endl;
-	std::cout << "|2| - Sword Shout (15FP)" << std::endl;
-	std::cout << "|3| - Rock Breaker (30FP)" << std::endl;
-	std::cout << "|4| - Chaos Sword (60FP)" << std::endl;
-	std::cout << std::endl;
-
-	std::cout << "--------------------------------" << std::endl;
-	std::cout << "Possible Targets: " << std::endl;
-	for (size_t i = 0; i < enemies.size(); ++i) 
+	if (!aliveEnemies.empty())
 	{
-		if (enemies[i]->isAlive()) {
-			std::cout << "- " << enemies[i]->getName() << " | HP: " << enemies[i]->getHealthPoints() << " | ATK: " << enemies[i]->getAttackPoints() << " | DEF: " << enemies[i]->getArmor() << std::endl;
-		}
-	}
-	std::cout << "--------------------------------" << std::endl;
-	std::cout << std::endl;
 
-	std::cout << "* Enter the number of your next attack (1, 2, 3, 4) | or Enter (0) to access your bag *" << std::endl;
-	int nextMove;
-	std::cin >> nextMove;
-	std::cout << std::endl;
+		std::cout << "- " << this->getName() << "'s turn -" << std::endl;
 
-	
-	if (nextMove == 0) 
-	{
-		this->bag->showBagLayout(this);
-		this->showCombatLayout(allies, enemies);
-	}
-	else if (nextMove == 1) 
-	{
-		std::vector<NpCharacter*> aliveEnemies = filterAliveEnemies(enemies);
+		std::cout << std::endl;
+		std::cout << " --------- " << this->getName() << " --------- " << std::endl;
+		std::cout << "HP: " << this->getHealthPoints() << " | " << "FP: " << this->getFury();
+		std::cout << std::endl;
+		std::cout << " ------------ " << "Skills" << " ------------ " << std::endl;
+		std::cout << "|1| - Basic Attack" << std::endl;
+		std::cout << "|2| - Sword Shout (15FP)" << std::endl;
+		std::cout << "|3| - Rock Breaker (30FP)" << std::endl;
+		std::cout << "|4| - Chaos Sword (60FP)" << std::endl;
+		std::cout << std::endl;
 
-		int targetIndex = chooseEnemy(aliveEnemies);
-		NpCharacter* target = aliveEnemies[targetIndex];
-
-		this->basicAttack(target);
-	}
-	else if (nextMove == 2) 
-	{
-		if (this->getFury() >= 15)
+		std::cout << "--------------------------------" << std::endl;
+		std::cout << "Possible Targets: " << std::endl;
+		for (size_t i = 0; i < enemies.size(); ++i)
 		{
-			std::vector<NpCharacter*> aliveEnemies = filterAliveEnemies(enemies);
+			if (enemies[i]->isAlive()) {
+				std::cout << "- " << enemies[i]->getName() << " | HP: " << enemies[i]->getHealthPoints() << " | ATK: " << enemies[i]->getAttackPoints() << " | DEF: " << enemies[i]->getArmor() << std::endl;
+			}
+		}
+		std::cout << "--------------------------------" << std::endl;
+		std::cout << std::endl;
 
+		std::cout << "* Enter the number of your next attack (1, 2, 3, 4) | or Enter (0) to access your bag *" << std::endl;
+		int nextMove;
+		std::cin >> nextMove;
+		std::cout << std::endl;
+
+
+		if (nextMove == 0)
+		{
+			this->bag->showBagLayout(this);
+			this->showCombatLayout(allies, enemies);
+		}
+		else if (nextMove == 1)
+		{
 			int targetIndex = chooseEnemy(aliveEnemies);
 			NpCharacter* target = aliveEnemies[targetIndex];
 
-			this->swordShout(target);
+			this->basicAttack(target);
 		}
-		else
+		else if (nextMove == 2)
 		{
-			std::cout << "Insufficient Fury, select a possible move" << std::endl;
+			if (this->getFury() >= 15)
+			{
+				int targetIndex = chooseEnemy(aliveEnemies);
+				NpCharacter* target = aliveEnemies[targetIndex];
+
+				this->swordShout(target);
+			}
+			else
+			{
+				std::cout << "Insufficient Fury, select a possible move" << std::endl;
+				this->showCombatLayout(allies, enemies);
+			}
+		}
+		else if (nextMove == 3)
+		{
+			if (this->getFury() >= 30)
+			{
+				int targetIndex = chooseEnemy(aliveEnemies);
+				NpCharacter* target = aliveEnemies[targetIndex];
+
+				this->rockBreaker(target);
+			}
+			else
+			{
+				std::cout << "Insufficient Fury, select a possible move" << std::endl;
+				this->showCombatLayout(allies, enemies);
+			}
+		}
+		else if (nextMove == 4)
+		{
+			if (this->getFury() >= 60)
+			{
+				int targetIndex = chooseEnemy(aliveEnemies);
+				NpCharacter* target = aliveEnemies[targetIndex];
+
+				this->chaosSword(target);
+			}
+			else
+			{
+				std::cout << "Insufficient Fury, select a possible move" << std::endl;
+				this->showCombatLayout(allies, enemies);
+			}
+		}
+		else {
+			std::cout << "You must write the number of the skill options" << std::endl;
 			this->showCombatLayout(allies, enemies);
+
 		}
 	}
-	else if (nextMove == 3) 
+	else
 	{
-		if (this->getFury() >= 30)
-		{
-			std::vector<NpCharacter*> aliveEnemies = filterAliveEnemies(enemies);
-
-			int targetIndex = chooseEnemy(aliveEnemies);
-			NpCharacter* target = aliveEnemies[targetIndex];
-
-			this->rockBreaker(target);
-		}
-		else
-		{
-			std::cout << "Insufficient Fury, select a possible move" << std::endl;
-			this->showCombatLayout(allies, enemies);
-		}
-	}
-	else if (nextMove == 4) 
-	{
-		if (this->getFury() >= 60)
-		{
-			std::vector<NpCharacter*> aliveEnemies = filterAliveEnemies(enemies);
-
-			int targetIndex = chooseEnemy(aliveEnemies);
-			NpCharacter* target = aliveEnemies[targetIndex];
-
-			this->chaosSword(target);
-		}
-		else
-		{
-			std::cout << "Insufficient Fury, select a possible move" << std::endl;
-			this->showCombatLayout(allies, enemies);
-		}
-	}
-	else {
-		std::cout << "You must write the number of the skill options" << std::endl;
-		this->showCombatLayout(allies, enemies);
-
+		return;
 	}
 }
 

@@ -34,107 +34,110 @@ void Rogue::showSheet() const
 
 void Rogue::showCombatLayout(std::vector <Character*> allies, std::vector<NpCharacter*> enemies)
 {
-	std::cout << "- " << this->getName() << "'s turn -" << std::endl;
+	std::vector<NpCharacter*> aliveEnemies = filterAliveEnemies(enemies);
 
-	std::cout << std::endl;
-	std::cout << " --------- " << this->getName() << " --------- " << std::endl;
-	std::cout << "HP: " << this->getHealthPoints() << " | " << "SP: " << this->getStamina();
-	std::cout << std::endl;
-	std::cout << " ------------ " << "Skills" << " ------------ " << std::endl;
-	std::cout << "|1| - Basic Attack" << std::endl;
-	std::cout << "|2| - Twin Blades (40SP)" << std::endl;
-	std::cout << "|3| - Deep Wound (60SP)" << std::endl;
-	std::cout << "|4| - Seven Sins (80SP)" << std::endl;
-	std::cout << std::endl;
-
-	std::cout << "--------------------------------" << std::endl;
-	std::cout << "Possible Targets: " << std::endl;
-	for (size_t i = 0; i < enemies.size(); ++i)
+	if (!aliveEnemies.empty())
 	{
-		if (enemies[i]->isAlive()) {
-			std::cout << "- " << enemies[i]->getName() << " | HP: " << enemies[i]->getHealthPoints() << " | ATK: " << enemies[i]->getAttackPoints() << " | DEF: " << enemies[i]->getArmor() << std::endl;
-		}
-	}
-	std::cout << "--------------------------------" << std::endl;
-	std::cout << std::endl;
+		std::cout << "- " << this->getName() << "'s turn -" << std::endl;
 
-	std::cout << "* Enter the number of your next attack (1, 2, 3, 4) | or Enter (0) to access your bag *" << std::endl;
+		std::cout << std::endl;
+		std::cout << " --------- " << this->getName() << " --------- " << std::endl;
+		std::cout << "HP: " << this->getHealthPoints() << " | " << "SP: " << this->getStamina();
+		std::cout << std::endl;
+		std::cout << " ------------ " << "Skills" << " ------------ " << std::endl;
+		std::cout << "|1| - Basic Attack" << std::endl;
+		std::cout << "|2| - Twin Blades (40SP)" << std::endl;
+		std::cout << "|3| - Deep Wound (60SP)" << std::endl;
+		std::cout << "|4| - Seven Sins (80SP)" << std::endl;
+		std::cout << std::endl;
 
-	int nextMove;
-	std::cin >> nextMove;
-	std::cout << std::endl;
-
-	if (nextMove == 0) 
-	{
-		this->bag->showBagLayout(this);
-	}
-	else if (nextMove == 1) 
-	{
-		std::vector<NpCharacter*> aliveEnemies = filterAliveEnemies(enemies);
-
-		int targetIndex = chooseEnemy(aliveEnemies);
-		NpCharacter* target = aliveEnemies[targetIndex];
-
-		this->basicAttack(target);
-	}
-	else if (nextMove == 2) 
-	{
-		if (this->getStamina() >= 40)
+		std::cout << "--------------------------------" << std::endl;
+		std::cout << "Possible Targets: " << std::endl;
+		for (size_t i = 0; i < enemies.size(); ++i)
 		{
-			std::vector<NpCharacter*> aliveEnemies = filterAliveEnemies(enemies);
+			if (enemies[i]->isAlive()) {
+				std::cout << "- " << enemies[i]->getName() << " | HP: " << enemies[i]->getHealthPoints() << " | ATK: " << enemies[i]->getAttackPoints() << " | DEF: " << enemies[i]->getArmor() << std::endl;
+			}
+		}
+		std::cout << "--------------------------------" << std::endl;
+		std::cout << std::endl;
 
+		std::cout << "* Enter the number of your next attack (1, 2, 3, 4) | or Enter (0) to access your bag *" << std::endl;
+
+		int nextMove;
+		std::cin >> nextMove;
+		std::cout << std::endl;
+
+		if (nextMove == 0)
+		{
+			this->bag->showBagLayout(this);
+			this->showCombatLayout(allies, enemies);
+		}
+		else if (nextMove == 1)
+		{
 			int targetIndex = chooseEnemy(aliveEnemies);
 			NpCharacter* target = aliveEnemies[targetIndex];
 
-			this->twinBlades(target);
+			this->basicAttack(target);
+		}
+		else if (nextMove == 2)
+		{
+			if (this->getStamina() >= 40)
+			{
+				int targetIndex = chooseEnemy(aliveEnemies);
+				NpCharacter* target = aliveEnemies[targetIndex];
+
+				this->twinBlades(target);
+			}
+			else
+			{
+				std::cout << "Insufficient stamina, select a possible move" << std::endl;
+				this->showCombatLayout(allies, enemies);
+			}
+		}
+		else if (nextMove == 3)
+		{
+			if (this->getStamina() >= 60)
+			{
+				int targetIndex = chooseEnemy(aliveEnemies);
+				NpCharacter* target = aliveEnemies[targetIndex];
+
+				this->deepWound(target);
+			}
+			else
+			{
+				std::cout << "Insufficient stamina, select a possible move" << std::endl;
+				this->showCombatLayout(allies, enemies);
+			}
+		}
+		else if (nextMove == 4)
+		{
+			if (this->getStamina() >= 80)
+			{
+				int targetIndex = chooseEnemy(aliveEnemies);
+				NpCharacter* target = aliveEnemies[targetIndex];
+
+				this->sevenSins(target);
+			}
+			else
+			{
+				std::cout << "Insufficient stamina, select a possible move" << std::endl;
+				this->showCombatLayout(allies, enemies);
+			}
 		}
 		else
 		{
-			std::cout << "Insufficient stamina, select a possible move" << std::endl;
+			std::cout << "You must write the number of the skill options" << std::endl;
 			this->showCombatLayout(allies, enemies);
+
 		}
 	}
-	else if (nextMove == 3) 
+	else
 	{
-		if (this->getStamina() >= 80)
-		{
-			std::vector<NpCharacter*> aliveEnemies = filterAliveEnemies(enemies);
-
-			int targetIndex = chooseEnemy(aliveEnemies);
-			NpCharacter* target = aliveEnemies[targetIndex];
-
-			this->deepWound(target);
-		}
-		else
-		{
-			std::cout << "Insufficient stamina, select a possible move" << std::endl;
-			this->showCombatLayout(allies, enemies);
-		}
-	}
-	else if (nextMove == 4) 
-	{
-		if (this->getStamina() >= 60)
-		{
-			std::vector<NpCharacter*> aliveEnemies = filterAliveEnemies(enemies);
-
-			int targetIndex = chooseEnemy(aliveEnemies);
-			NpCharacter* target = aliveEnemies[targetIndex];
-
-			this->sevenSins(target);
-		}
-		else
-		{
-			std::cout << "Insufficient stamina, select a possible move" << std::endl;
-			this->showCombatLayout(allies, enemies);
-		}
-	}
-	else 
-	{
-		std::cout << "You must write the number of the skill options" << std::endl;
-		this->showCombatLayout(allies, enemies);
-
+		return;
 	}
 }
+
 
 void Rogue::upgradeAttributes()
 {

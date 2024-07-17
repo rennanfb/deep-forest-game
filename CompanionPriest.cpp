@@ -34,73 +34,100 @@ void CompanionPriest::showSheet() const
 
 void CompanionPriest::showCombatLayout(std::vector<Character*> allies, std::vector<NpCharacter*> enemies)
 {
-	std::cout << "- " << this->getName() << "'s turn -" << std::endl;
+	std::vector<NpCharacter*> aliveEnemies = filterAliveEnemies(enemies);
 
-	std::cout << std::endl;
-	std::cout << " --------- " << this->getName() << " --------- " << std::endl;
-	std::cout << "HP: " << this->getHealthPoints() << " | " << "MP: " << this->getMana();
-	std::cout << std::endl;
-	std::cout << " --------- " << "Skills" << " --------- " << std::endl;
-	std::cout << "1 - Basic Attack" << std::endl;
-	std::cout << "2 - Holy Light (30MP)" << std::endl;
-	std::cout << "3 - Heal (60MP) (Target: Ally)" << std::endl;
-	std::cout << "4 - Saviour Rain (90MP) (Target: All)" << std::endl;
-	std::cout << std::endl;
-
-	std::cout << "--------------------------------" << std::endl;
-	std::cout << "Possible Targets: " << std::endl;
-	for (size_t i = 0; i < enemies.size(); ++i)
+	if (!aliveEnemies.empty())
 	{
-		if (enemies[i]->isAlive()) {
-			std::cout << "- " << enemies[i]->getName() << " | HP: " << enemies[i]->getHealthPoints() << " | ATK: " << enemies[i]->getAttackPoints() << " | DEF: " << enemies[i]->getArmor() << std::endl;
+		std::cout << "- " << this->getName() << "'s turn -" << std::endl;
+
+		std::cout << std::endl;
+		std::cout << " --------- " << this->getName() << " --------- " << std::endl;
+		std::cout << "HP: " << this->getHealthPoints() << " | " << "MP: " << this->getMana();
+		std::cout << std::endl;
+		std::cout << " --------- " << "Skills" << " --------- " << std::endl;
+		std::cout << "1 - Basic Attack" << std::endl;
+		std::cout << "2 - Holy Light (30MP)" << std::endl;
+		std::cout << "3 - Heal (60MP) (Target: Ally)" << std::endl;
+		std::cout << "4 - Saviour Rain (90MP) (Target: All)" << std::endl;
+		std::cout << std::endl;
+
+		std::cout << "--------------------------------" << std::endl;
+		std::cout << "Possible Targets: " << std::endl;
+		for (size_t i = 0; i < enemies.size(); ++i)
+		{
+			if (enemies[i]->isAlive()) {
+				std::cout << "- " << enemies[i]->getName() << " | HP: " << enemies[i]->getHealthPoints() << " | ATK: " << enemies[i]->getAttackPoints() << " | DEF: " << enemies[i]->getArmor() << std::endl;
+			}
+		}
+		std::cout << "--------------------------------" << std::endl;
+
+		std::cout << "*Type the number of your next attack (1, 2, 3, 4)*" << std::endl;
+		int nextMove;
+		std::cin >> nextMove;
+		std::cout << std::endl;
+
+		if (nextMove == 1)
+		{
+			int targetIndex = chooseEnemy(aliveEnemies);
+			NpCharacter* target = aliveEnemies[targetIndex];
+
+			this->basicAttack(target);
+		}
+		else if (nextMove == 2)
+		{
+			if (this->getMana() >= 30)
+			{
+				int targetIndex = chooseEnemy(aliveEnemies);
+				NpCharacter* target = aliveEnemies[targetIndex];
+
+				this->holyLight(allies, enemies, target);
+			}
+			else
+			{
+				std::cout << "Insufficient mana, select a possible move" << std::endl;
+				this->showCombatLayout(allies, enemies);
+			}
+		}
+		else if (nextMove == 3)
+		{
+			if (this->getMana() >= 60)
+			{
+				std::vector<Character*> aliveAllies = filterAliveAllies(allies);
+
+				int targetIndex = chooseAlly(aliveAllies);
+				Character* target = aliveAllies[targetIndex];
+
+				this->heal(allies, enemies, target);
+			}
+			else
+			{
+				std::cout << "Insufficient mana, select a possible move" << std::endl;
+				this->showCombatLayout(allies, enemies);
+			}
+		}
+		else if (nextMove == 4)
+		{
+			if (this->getMana() >= 90)
+			{
+				std::vector<Character*> aliveAllies = filterAliveAllies(allies);
+				this->saviourRain(aliveAllies, aliveEnemies);
+			}
+			else
+			{
+				std::cout << "Insufficient mana, select a possible move" << std::endl;
+				this->showCombatLayout(allies, enemies);
+			}
+		}
+		else
+		{
+			std::cout << "You must write the number of the skill options" << std::endl;
+			this->showCombatLayout(allies, enemies);
+
 		}
 	}
-	std::cout << "--------------------------------" << std::endl;
-
-	std::cout << "*Type the number of your next attack (1, 2, 3, 4)*" << std::endl;
-	int nextMove;
-	std::cin >> nextMove;
-	std::cout << std::endl;
-
-	if (nextMove == 1) 
+	else
 	{
-		std::vector<NpCharacter*> aliveEnemies = filterAliveEnemies(enemies);
-
-		int targetIndex = chooseEnemy(aliveEnemies);
-		NpCharacter* target = aliveEnemies[targetIndex];
-
-		this->basicAttack(target);
-	}
-	else if (nextMove == 2) 
-	{
-		std::vector<NpCharacter*> aliveEnemies = filterAliveEnemies(enemies);
-
-		int targetIndex = chooseEnemy(aliveEnemies);
-		NpCharacter* target = aliveEnemies[targetIndex];
-
-		this->holyLight(allies, enemies, target);
-	}
-	else if (nextMove == 3) 
-	{
-		std::vector<Character*> aliveAllies = filterAliveAllies(allies);
-
-		int targetIndex = chooseAlly(aliveAllies);
-		Character* target = aliveAllies[targetIndex];
-
-		this->heal(allies, enemies, target);
-	}
-	else if (nextMove == 4) 
-	{
-		std::vector<Character*> aliveAllies = filterAliveAllies(allies);
-		std::vector<NpCharacter*> aliveEnemies = filterAliveEnemies(enemies);
-
-		this->saviourRain(aliveAllies, aliveEnemies);
-	}
-	else 
-	{
-		std::cout << "You must write the number of the skill options" << std::endl;
-		this->showCombatLayout(allies, enemies);
-
+		return;
 	}
 }
 
@@ -195,162 +222,138 @@ void CompanionPriest::increaseMana()
 
 void CompanionPriest::holyLight(std::vector<Character*> allies, std::vector<NpCharacter*> enemies, NpCharacter* target)
 {
-	if (this->getMana() >= 30)
+	this->mana -= 30;
+
+	if (!target->dodgeAttack())
 	{
-		this->mana -= 30;
-
-		if (!target->dodgeAttack())
+		if (this->criticalHit())
 		{
-			if (this->criticalHit())
+			float skillDamageBonus = this->getMagicAttackPoints() * 0.4f;
+			float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
+			float criticalDamage = skillDamage * 2.0f;
+			float averageDamage = calculateAverageMagicDamage(criticalDamage);
+			float damage = averageDamage - target->damageReduction();
+
+			if (damage < 0.0f)
 			{
-				float skillDamageBonus = this->getMagicAttackPoints() * 0.4f;
-				float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
-				float criticalDamage = skillDamage * 2.0f;
-				float averageDamage = calculateAverageMagicDamage(criticalDamage);
-				float damage = averageDamage - target->damageReduction();
-
-				if (damage < 0.0f)
-				{
-					damage = 0;
-				}
-
-				target->decreaseHealth(damage);
-				std::cout << this->getName() << " used Holy Light against " << target->getName() << " with " << damage << " points of damage" << std::endl;
-				this->increaseMana();
-				std::cout << std::endl;
+				damage = 0;
 			}
-			else
-			{
-				float skillDamageBonus = this->getMagicAttackPoints() * 0.4f;
-				float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
-				float averageDamage = calculateAverageMagicDamage(skillDamage);
-				float damage = averageDamage - target->damageReduction();
 
-				if (damage < 0.0f)
-				{
-					damage = 0.0f;
-				}
-
-				target->decreaseHealth(damage);
-				std::cout << this->getName() << " used Holy Light against " << target->getName() << " with " << damage << " points of damage" << std::endl;
-				this->increaseMana();
-				std::cout << std::endl;
-			}
+			target->decreaseHealth(damage);
+			std::cout << this->getName() << " used Holy Light against " << target->getName() << " with " << damage << " points of damage" << std::endl;
+			this->increaseMana();
+			std::cout << std::endl;
 		}
 		else
 		{
+			float skillDamageBonus = this->getMagicAttackPoints() * 0.4f;
+			float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
+			float averageDamage = calculateAverageMagicDamage(skillDamage);
+			float damage = averageDamage - target->damageReduction();
+
+			if (damage < 0.0f)
+			{
+				damage = 0.0f;
+			}
+
+			target->decreaseHealth(damage);
+			std::cout << this->getName() << " used Holy Light against " << target->getName() << " with " << damage << " points of damage" << std::endl;
 			this->increaseMana();
-			return;
+			std::cout << std::endl;
 		}
 	}
 	else
 	{
-		std::cout << "Insufficient mana, use another skill" << std::endl;
-		this->showCombatLayout(allies, enemies);
+		this->increaseMana();
+		return;
 	}
 
 }
 
 void CompanionPriest::heal(std::vector<Character*> allies, std::vector<NpCharacter*> enemies, Character* target)
 {
-	if (this->getMana() >= 60)
-	{
-		this->mana -= 60;
+	this->mana -= 60;
 
-		float skillDamageBonus = this->getMagicAttackPoints() * 0.8f;
-		float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
-		float averageHeal = calculateAverageMagicDamage(skillDamage);
+	float skillDamageBonus = this->getMagicAttackPoints() * 0.8f;
+	float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
+	float averageHeal = calculateAverageMagicDamage(skillDamage);
 
-		target->restoreHealth(averageHeal);
-		std::cout << this->getName() << " used Heal, " << target->getName() << " got " << averageHeal << " points of health" << std::endl;
-		this->increaseMana();
-		std::cout << std::endl;
-		
-	}
-	else
-	{
-		std::cout << "Insufficient mana, use another skill" << std::endl;
-		this->showCombatLayout(allies, enemies);
-	}
+	target->restoreHealth(averageHeal);
+	std::cout << this->getName() << " used Heal, " << target->getName() << " got " << averageHeal << " points of health" << std::endl;
+	this->increaseMana();
+	std::cout << std::endl;
+
 }
 
 void CompanionPriest::saviourRain(std::vector<Character*> allies, std::vector<NpCharacter*> enemies)
 {
-	if (this->getMana() >= 90)
+	this->mana -= 90;
+
+	if (this->criticalHit())
 	{
-		this->mana -= 90;
+		float skillDamageBonus = this->getMagicAttackPoints() * 0.5f;
+		float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
+		float criticalDamage = skillDamage * 2.0f;
+		float averageDamage = calculateAverageMagicDamage(criticalDamage);
+		float damage = averageDamage;
 
-		if (this->criticalHit())
+		if (damage < 0.0f)
 		{
-			float skillDamageBonus = this->getMagicAttackPoints() * 0.5f;
-			float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
-			float criticalDamage = skillDamage * 2.0f;
-			float averageDamage = calculateAverageMagicDamage(criticalDamage);
-			float damage = averageDamage;
-
-			if (damage < 0.0f)
-			{
-				damage = 0.0f;
-			}
-			std::cout << this->getName() << "Used Saviour Rain" << std::endl;
-
-			for (size_t i = 0; i < enemies.size(); ++i)
-			{
-				if (!enemies[i]->dodgeAttack())
-				{
-					enemies[i]->decreaseHealth(damage - enemies[i]->damageReduction());
-					std::cout << enemies[i]->getName() << " receive " << damage << " points of damage" << std::endl;
-				}
-			}
-
-			for (size_t i = 0; i < allies.size(); ++i)
-			{
-				allies[i]->restoreHealth(damage);
-			}
-			std::cout << "All allies received " << damage << " points of health" << std::endl;
-
-			this->increaseMana();
-			std::cout << std::endl;
+			damage = 0.0f;
 		}
-		else
+		std::cout << this->getName() << "Used Saviour Rain" << std::endl;
+
+		for (size_t i = 0; i < enemies.size(); ++i)
 		{
-			float skillDamageBonus = this->getMagicAttackPoints() * 0.5f;
-			float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
-			float averageDamage = calculateAverageMagicDamage(skillDamage);
-			float damage = averageDamage;
-
-			if (damage < 0.0f)
+			if (!enemies[i]->dodgeAttack())
 			{
-					damage = 0.0f;
+				enemies[i]->decreaseHealth(damage - enemies[i]->damageReduction());
+				std::cout << enemies[i]->getName() << " receive " << damage << " points of damage" << std::endl;
 			}
-
-			std::cout << this->getName() << "Used Saviour Rain" << std::endl;
-
-			for (size_t i = 0; i < enemies.size(); ++i)
-			{
-				if (!enemies[i]->dodgeAttack())
-				{
-					enemies[i]->decreaseHealth(damage - enemies[i]->damageReduction());
-					std::cout << enemies[i]->getName() << " receive " << damage << " points of damage" << std::endl;
-				}
-			}
-
-			for (size_t i = 0; i < allies.size(); ++i)
-			{
-				allies[i]->restoreHealth(damage);
-			}
-			std::cout << "All allies received " << damage << " points of health" << std::endl;
-
-			this->increaseMana();
-			std::cout << std::endl;
 		}
 
+		for (size_t i = 0; i < allies.size(); ++i)
+		{
+			allies[i]->restoreHealth(damage);
+		}
+		std::cout << "All allies received " << damage << " points of health" << std::endl;
+
+		this->increaseMana();
+		std::cout << std::endl;
 	}
 	else
 	{
-		std::cout << "Insufficient mana, use another skill" << std::endl;
-		this->showCombatLayout(allies, enemies);
+		float skillDamageBonus = this->getMagicAttackPoints() * 0.5f;
+		float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
+		float averageDamage = calculateAverageMagicDamage(skillDamage);
+		float damage = averageDamage;
+
+		if (damage < 0.0f)
+		{
+			damage = 0.0f;
+		}
+
+		std::cout << this->getName() << "Used Saviour Rain" << std::endl;
+
+		for (size_t i = 0; i < enemies.size(); ++i)
+		{
+			if (!enemies[i]->dodgeAttack())
+			{
+				enemies[i]->decreaseHealth(damage - enemies[i]->damageReduction());
+				std::cout << enemies[i]->getName() << " receive " << damage << " points of damage" << std::endl;
+			}
+		}
+
+		for (size_t i = 0; i < allies.size(); ++i)
+		{
+			allies[i]->restoreHealth(damage);
+		}
+		std::cout << "All allies received " << damage << " points of health" << std::endl;
+
+		this->increaseMana();
+		std::cout << std::endl;
 	}
+
 }
 
 //Getters

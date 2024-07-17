@@ -1,5 +1,6 @@
 #include "Act1.hpp"
 #include "Act2.hpp"
+#include "Act3.hpp"
 
 int main() 
 {
@@ -12,7 +13,9 @@ int main()
 
 	Act2(players);
 	
-	//Character* luna = CompanionPriest::createCharacter("Luna", "Sundeva", "Human");
-	//players.push_back(luna);
+	Character* luna = CompanionPriest::createCharacter("Luna", "Sundeva", "Human");
+	players.push_back(luna);
+
+	Act3(players);
 
 }

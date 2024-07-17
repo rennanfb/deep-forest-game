@@ -203,7 +203,6 @@ bool Character::isAlive() const
 
 void Character::defeatEnemy(NpCharacter* enemy)
 {
-	std::cout << "---------------------------------------------------------------------------" << std::endl;
 	std::cout << "The " << enemy->getName() << " fall down" << std::endl;
 	this->increaseExp(enemy);
 
@@ -219,7 +218,6 @@ void Character::defeatEnemy(NpCharacter* enemy)
 	}
 
 	delete enemy;
-	std::cout << "---------------------------------------------------------------------------" << std::endl;
 }
 
 //Level Up Methods

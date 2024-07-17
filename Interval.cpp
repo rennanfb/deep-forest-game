@@ -2,11 +2,9 @@
 
 void Interval(std::vector <Character*> players) 
 {
-	for (size_t i = 0; i < players.size(); ++i)
-	{
-		players[i]->healStats();
-		players[i]->showSheet();
-	}
+
+	players[0]->healStats();
+	players[0]->showSheet();
 
 	std::cout << "Continue ? (Enter Y for Yes) | Check you bag ? (Enter B)" << std::endl;
 	std::string answer;
