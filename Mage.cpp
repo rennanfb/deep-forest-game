@@ -24,10 +24,8 @@ void Mage::showSheet() const
 	std::cout << this->getName() << " | Mage Lv: " << this->getLevel() << " | " << this->getRace() << " | " << this->getFaction() << std::endl;
 	std::cout << "Str: " << this->getStrength() << " | Agi: " << this->getAgility() << " | Con: " << this->getConstitution() << " | Int: " << this->getIntelligence() << " | Luk: " << this->getLucky() << std::endl;
 	std::cout << "---- Combat Attributes ---- " << std::endl;
-	std::cout << "P-Attack Power: " << getAttackPoints() << std::endl;
-	std::cout << "M-Attack Power: " << getMagicAttackPoints() << std::endl;
-	std::cout << "Health Points: " << getHealthPoints() << std::endl;
-	std::cout << "Armor Power: " << getArmor() << std::endl;
+	std::cout << "Health Points: " << getHealthPoints() << " | Armor Power: " << getArmor() << std::endl;
+	std::cout << "P-Attack Power: " << getAttackPoints() << " | M-Attack Power: " << getMagicAttackPoints() << std::endl;
 	std::cout << "EXP: " << this->getExp() << " / " << this->getNextLevelExp() << std::endl;
 	std::cout << std::endl;
 }
@@ -81,7 +79,7 @@ void Mage::showCombatLayout(std::vector<Character*> allies, std::vector<NpCharac
 		}
 		else if (nextMove == 2)
 		{
-			if (this->getMana() >= 30)
+			if (this->getMana() >= 29.5f)
 			{
 				int targetIndex = chooseEnemy(aliveEnemies);
 				NpCharacter* target = aliveEnemies[targetIndex];
@@ -96,7 +94,7 @@ void Mage::showCombatLayout(std::vector<Character*> allies, std::vector<NpCharac
 		}
 		else if (nextMove == 3)
 		{
-			if (this->getMana() >= 60)
+			if (this->getMana() >= 59.5f)
 			{
 				this->earthQuake(enemies);
 			}
@@ -108,7 +106,7 @@ void Mage::showCombatLayout(std::vector<Character*> allies, std::vector<NpCharac
 		}
 		else if (nextMove == 4)
 		{
-			if (this->getMana() >= 90)
+			if (this->getMana() >= 89.5f)
 			{
 				int targetIndex = chooseEnemy(aliveEnemies);
 				NpCharacter* target = aliveEnemies[targetIndex];

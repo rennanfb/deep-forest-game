@@ -9,11 +9,16 @@ void Act3(std::vector <Character*> players)
 	NpCharacter* enemy3 = Saberwolf::createEnemy();
 	NpCharacter* enemy4 = Saberwolf::createEnemy();
 	NpCharacter* enemy5 = Saberwolf::createEnemy();
-
 	std::vector<NpCharacter*> enemies = { enemy1, enemy2, enemy3, enemy4, enemy5 };
+
 	Conflict9(players, enemies);
 	enemies.clear();
-
 	Interval(players);
 
+	NpCharacter* enemy6 = Chimera::createEnemy();
+	std::vector<NpCharacter*> enemies2 = { enemy6 };
+
+	Conflict10(players, enemies2);
+	enemies2.clear();
+	Interval(players);
 }

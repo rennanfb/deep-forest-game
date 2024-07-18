@@ -24,10 +24,8 @@ void Rogue::showSheet() const
 	std::cout << this->getName() << " | Rogue Lv: " << this->getLevel() << " | " << this->getRace() << " | " << this->getFaction() << std::endl;
 	std::cout << "Str: " << this->getStrength() << " | Agi: " << this->getAgility() << " | Con: " << this->getConstitution() << " | Int: " << this->getIntelligence() << " | Luk: " << this->getLucky() << std::endl;
 	std::cout << "---- Combat Attributes ---- " << std::endl;
-	std::cout << "P-Attack Power: " << getAttackPoints() << std::endl;
-	std::cout << "M-Attack Power: " << getMagicAttackPoints() << std::endl;
-	std::cout << "Health Points: " << getHealthPoints() << std::endl;
-	std::cout << "Armor Power: " << getArmor() << std::endl;
+	std::cout << "Health Points: " << getHealthPoints() << " | Armor Power: " << getArmor() << std::endl;
+	std::cout << "P-Attack Power: " << getAttackPoints() << " | M-Attack Power: " << getMagicAttackPoints() << std::endl;
 	std::cout << "EXP: " << this->getExp() << " / " << this->getNextLevelExp() << std::endl;
 	std::cout << std::endl;
 }
@@ -82,7 +80,7 @@ void Rogue::showCombatLayout(std::vector <Character*> allies, std::vector<NpChar
 		}
 		else if (nextMove == 2)
 		{
-			if (this->getStamina() >= 40)
+			if (this->getStamina() >= 39.5f)
 			{
 				int targetIndex = chooseEnemy(aliveEnemies);
 				NpCharacter* target = aliveEnemies[targetIndex];
@@ -97,7 +95,7 @@ void Rogue::showCombatLayout(std::vector <Character*> allies, std::vector<NpChar
 		}
 		else if (nextMove == 3)
 		{
-			if (this->getStamina() >= 60)
+			if (this->getStamina() >= 59.5f)
 			{
 				int targetIndex = chooseEnemy(aliveEnemies);
 				NpCharacter* target = aliveEnemies[targetIndex];
@@ -112,7 +110,7 @@ void Rogue::showCombatLayout(std::vector <Character*> allies, std::vector<NpChar
 		}
 		else if (nextMove == 4)
 		{
-			if (this->getStamina() >= 80)
+			if (this->getStamina() >= 79.5f)
 			{
 				int targetIndex = chooseEnemy(aliveEnemies);
 				NpCharacter* target = aliveEnemies[targetIndex];

@@ -24,10 +24,8 @@ void CompanionPriest::showSheet() const
 	std::cout << this->getName() << " | Priest Lv: " << this->getLevel() << " | " << this->getRace() << " | " << this->getFaction() << std::endl;
 	std::cout << "Str: " << this->getStrength() << " | Agi: " << this->getAgility() << " | Con: " << this->getConstitution() << " | Int: " << this->getIntelligence() << " | Luk: " << this->getLucky() << std::endl;
 	std::cout << "---- Combat Attributes ---- " << std::endl;
-	std::cout << "P-Attack Power: " << getAttackPoints() << std::endl;
-	std::cout << "M-Attack Power: " << getMagicAttackPoints() << std::endl;
-	std::cout << "Health Points: " << getHealthPoints() << std::endl;
-	std::cout << "Armor Power: " << getArmor() << std::endl;
+	std::cout << "Health Points: " << getHealthPoints() << " | Armor Power: " << getArmor() << std::endl;
+	std::cout << "P-Attack Power: " << getAttackPoints() << " | M-Attack Power: " << getMagicAttackPoints() << std::endl;
 	std::cout << "EXP: " << this->getExp() << " / " << this->getNextLevelExp() << std::endl;
 	std::cout << std::endl;
 }
@@ -61,12 +59,18 @@ void CompanionPriest::showCombatLayout(std::vector<Character*> allies, std::vect
 		}
 		std::cout << "--------------------------------" << std::endl;
 
-		std::cout << "*Type the number of your next attack (1, 2, 3, 4)*" << std::endl;
+		std::cout << "* Enter the number of your next attack (1, 2, 3, 4) or Enter (0) to access your bag " << std::endl;
 		int nextMove;
 		std::cin >> nextMove;
 		std::cout << std::endl;
 
-		if (nextMove == 1)
+
+		if (nextMove == 0)
+		{
+			this->bag->showBagLayout(this);
+			this->showCombatLayout(allies, enemies);
+		}
+		else if (nextMove == 1)
 		{
 			int targetIndex = chooseEnemy(aliveEnemies);
 			NpCharacter* target = aliveEnemies[targetIndex];
@@ -75,7 +79,7 @@ void CompanionPriest::showCombatLayout(std::vector<Character*> allies, std::vect
 		}
 		else if (nextMove == 2)
 		{
-			if (this->getMana() >= 30)
+			if (this->getMana() >= 29.5f)
 			{
 				int targetIndex = chooseEnemy(aliveEnemies);
 				NpCharacter* target = aliveEnemies[targetIndex];
@@ -90,7 +94,7 @@ void CompanionPriest::showCombatLayout(std::vector<Character*> allies, std::vect
 		}
 		else if (nextMove == 3)
 		{
-			if (this->getMana() >= 60)
+			if (this->getMana() >= 59.5f)
 			{
 				std::vector<Character*> aliveAllies = filterAliveAllies(allies);
 
@@ -107,7 +111,7 @@ void CompanionPriest::showCombatLayout(std::vector<Character*> allies, std::vect
 		}
 		else if (nextMove == 4)
 		{
-			if (this->getMana() >= 90)
+			if (this->getMana() >= 89.5f)
 			{
 				std::vector<Character*> aliveAllies = filterAliveAllies(allies);
 				this->saviourRain(aliveAllies, aliveEnemies);

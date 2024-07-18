@@ -10,7 +10,9 @@
 #include "NpCharacter.hpp"
 #include "Saberwolf.hpp"
 #include "SaberwolfAlpha.hpp"
+#include "Chimera.hpp"
 #include "Interval.hpp"
 #include "Conflict9.hpp"
+#include "Conflict10.hpp"
 
 void Act3(std::vector <Character*> players);

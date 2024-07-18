@@ -2,9 +2,13 @@
 
 void Interval(std::vector <Character*> players) 
 {
-
-	players[0]->healStats();
-	players[0]->showSheet();
+	std::cout << "------------------ Party ------------------" << std::endl;
+	for (Character* player : players)
+	{
+		player->healStats();
+		player->showSheet();
+	}
+	std::cout << "-------------------------------------------" << std::endl;
 
 	std::cout << "Continue ? (Enter Y for Yes) | Check you bag ? (Enter B)" << std::endl;
 	std::string answer;
@@ -16,8 +20,29 @@ void Interval(std::vector <Character*> players)
 	}
 	else if (answer == "B" || answer == "b")
 	{
-		players[0]->bag->showBag();
-		Interval(players);
+		if (players.size() > 1)
+		{
+			std::cout << "Whose bag do you want to see?" << std::endl;
+
+			int i = 1;
+			for (Character* player : players)
+			{
+				std::cout << player->getName() << " - Enter (" << i << ")" << std::endl;
+				++i;
+			}
+			int intAnswer;
+			std::cin >> intAnswer;
+
+			std::cout << "Showing " << players[intAnswer - 1]->getName() << "'s bag:" << std::endl;
+			players[intAnswer - 1]->bag->showBag();
+			Interval(players);
+
+		}
+		else
+		{
+			players[0]->bag->showBag();
+			Interval(players);
+		}
 	}
 	else
 	{
