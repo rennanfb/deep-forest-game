@@ -2,8 +2,8 @@
 
 //Constructor
 
-GoblinWarrior::GoblinWarrior(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float lucky, int exp) :
-	NpCharacter(name, faction, race, strength, agility, constitution, intelligence, lucky, exp)
+GoblinWarrior::GoblinWarrior(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float dexterity, float lucky, int exp) :
+	NpCharacter(name, faction, race, strength, agility, constitution, intelligence, dexterity, lucky, exp)
 {
 	this->bag = createNpcBag();
 	calculateCombatStatus();
@@ -13,7 +13,7 @@ GoblinWarrior::GoblinWarrior(std::string name, std::string faction, std::string 
 
 GoblinWarrior* GoblinWarrior::createEnemy()
 {
-		return new GoblinWarrior("Warrior Gobnier", "Gobnier", "Goblin", 10.0f, 7.0f, 12.0f, 3.0f, 10.0f, 45);
+		return new GoblinWarrior("Warrior Gobnier", "Gobnier", "Goblin", 10.0f, 7.0f, 12.0f, 3.0f, 8.0f, 10.0f, 45);
 	
 }
 

@@ -23,6 +23,7 @@ protected:
 	float magicAttackPoints;
 	float armor;
 	float dodge;
+	float precision;
 	float criticalChance;
 
 	//Experience
@@ -37,7 +38,7 @@ public:
 
 	//Constructor
 
-	Character(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float lucky, int exp, int level, int nextLevelExp);
+	Character(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float dexterity, float lucky, int exp, int level, int nextLevelExp);
 
 	//Pure Virtual Methods
 
@@ -47,6 +48,7 @@ public:
 	virtual void healStats() = 0;
 	virtual void upgradeAttributes() = 0;
 	virtual void restoreEnergy(float energyAmount) = 0;
+	virtual void calculateCombatStatus() = 0;
 
 	//Combat Methods
 
@@ -59,7 +61,7 @@ public:
 	float damageReduction() const;
 	void restoreHealth(float heal);
 	virtual void decreaseHealth(float damage);
-	bool dodgeAttack() const;
+	bool dodgeAttack(NpCharacter* enemy) const;
 	bool criticalHit() const; 
 	bool isAlive() const;
 	void defeatEnemy(NpCharacter* enemy);
@@ -72,7 +74,6 @@ public:
 
 	//Uppers
 
-	void calculateCombatStatus();
 	void upNextLevelExp(int restExp);
 
 	//Getters
@@ -83,6 +84,7 @@ public:
 	float getMagicAttackPoints() const;
 	float getAverageMagicAttackBase() const;
 	float getArmor() const;
+	float getPrecision() const;
 	int getExp() const;
 	int getLevel() const;
 	int getNextLevelExp() const;
@@ -93,6 +95,7 @@ public:
 	void setAttackPoints(float attackPoints);
 	void setMagicAttackPoints(float magicAttackPoints);
 	void setArmor(float armor);
+	void setPrecision(float precision);
 	void setExp(int exp);
 	void setLevel(int level);
 	void setNextLevelExp(int nextLevelExp);

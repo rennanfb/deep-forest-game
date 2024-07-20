@@ -2,8 +2,8 @@
 
 //Contructor 
 
-NpCharacter::NpCharacter(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float lucky, int exp) :
-	Creature(name, faction, race, strength, agility, constitution, intelligence, lucky),
+NpCharacter::NpCharacter(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float dexterity, float lucky, int exp) :
+	Creature(name, faction, race, strength, agility, constitution, intelligence, dexterity, lucky),
 	exp(exp)
 {
 	calculateCombatStatus();
@@ -62,6 +62,7 @@ void NpCharacter::calculateCombatStatus()
 	this->magicAttackPoints = this->getIntelligence() * 2.0f;
 	this->armor = this->getConstitution() * 3.0f;
 	this->dodge = this->getAgility() / 2.0f;
+	this->precision = this->getDexterity() / 2.0f;
 	this->criticalChance = this->getLucky() / 2.0f;
 }
 
@@ -90,13 +91,16 @@ float NpCharacter::damageReduction() const
 	return damageReduction;
 }
 
-bool NpCharacter::dodgeAttack() const
+bool NpCharacter::dodgeAttack(Character* enemy) const
 {
 	std::random_device rd;
 	std::mt19937 gen(rd());
-	std::uniform_int_distribution<> dis(1, 100);
+	std::uniform_real_distribution<float> dis(1, 100);
 
-	int chance = dis(gen);
+	float chance = dis(gen);
+
+	chance += enemy->getPrecision() / 2;
+
 
 	if (chance < this->dodge) 
 	{
@@ -146,7 +150,7 @@ bool NpCharacter::isAlive() const
 
 void NpCharacter::basicAttack(Character* enemy)
 {
-	if (!enemy->dodgeAttack()) 
+	if (!enemy->dodgeAttack(this)) 
 	{
 		if (this->criticalHit())
 		{
@@ -187,7 +191,7 @@ void NpCharacter::basicAttack(Character* enemy)
 
 void NpCharacter::bite(Character* enemy) 
 {
-	if (!enemy->dodgeAttack())
+	if (!enemy->dodgeAttack(this))
 	{
 		if (this->criticalHit())
 		{
@@ -230,7 +234,7 @@ void NpCharacter::bite(Character* enemy)
 }
 void NpCharacter::clawStrike(Character* enemy)
 {
-	if (!enemy->dodgeAttack())
+	if (!enemy->dodgeAttack(this))
 	{
 		if (this->criticalHit())
 		{
@@ -274,7 +278,7 @@ void NpCharacter::clawStrike(Character* enemy)
 
 void NpCharacter::throwDagger(Character* enemy)
 {
-	if (!enemy->dodgeAttack())
+	if (!enemy->dodgeAttack(this))
 	{
 		if (this->criticalHit())
 		{
@@ -318,7 +322,7 @@ void NpCharacter::throwDagger(Character* enemy)
 
 void NpCharacter::stockCharge(Character* enemy)
 {
-	if (!enemy->dodgeAttack())
+	if (!enemy->dodgeAttack(this))
 	{
 		if (this->criticalHit())
 		{
@@ -362,7 +366,7 @@ void NpCharacter::stockCharge(Character* enemy)
 
 void NpCharacter::spinningSlash(Character* enemy)
 {
-	if (!enemy->dodgeAttack())
+	if (!enemy->dodgeAttack(this))
 	{
 		if (this->criticalHit())
 		{
@@ -406,7 +410,7 @@ void NpCharacter::spinningSlash(Character* enemy)
 
 void NpCharacter::shieldBash(Character* enemy)
 {
-	if (!enemy->dodgeAttack())
+	if (!enemy->dodgeAttack(this))
 	{
 		if (this->criticalHit())
 		{
@@ -450,7 +454,7 @@ void NpCharacter::shieldBash(Character* enemy)
 
 void NpCharacter::shadowEmbrace(Character* enemy)
 {
-	if (!enemy->dodgeAttack())
+	if (!enemy->dodgeAttack(this))
 	{
 		if (this->criticalHit())
 		{
@@ -541,6 +545,11 @@ float NpCharacter::getArmor() const
 	return armor;
 }
 
+float NpCharacter::getPrecision() const
+{
+	return precision;
+}
+
 int NpCharacter::getExp() const
 {
 	return exp;
@@ -563,4 +572,8 @@ void NpCharacter::setMagicAttackPoints(float magicAttackPoints)
 void NpCharacter::setArmor(float armor)
 {
 	this->armor = armor;
+}
+void NpCharacter::setPrecision(float precision)
+{
+	this->precision = precision;
 }

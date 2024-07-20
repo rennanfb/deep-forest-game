@@ -2,8 +2,8 @@
 
 //Constructor
 
-BoarColossal::BoarColossal(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float lucky, int exp) :
-	NpCharacter(name, faction, race, strength, agility, constitution, intelligence, lucky, exp)
+BoarColossal::BoarColossal(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float dexterity, float lucky, int exp) :
+	NpCharacter(name, faction, race, strength, agility, constitution, intelligence, dexterity, lucky, exp)
 {
 	this->bag = createNpcBag();
 	calculateCombatStatus();
@@ -13,7 +13,7 @@ BoarColossal::BoarColossal(std::string name, std::string faction, std::string ra
 
 BoarColossal* BoarColossal::createEnemy()
 {
-	return new BoarColossal("Colossal Boar", "Forest", "Boar", 18.0f, 8.0f, 30.0f, 3.0f, 30.0f, 160);
+	return new BoarColossal("Colossal Boar", "Forest", "Boar", 18.0f, 8.0f, 30.0f, 3.0f, 18.0f, 30.0f, 160);
 
 }
 

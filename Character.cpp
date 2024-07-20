@@ -4,14 +4,14 @@
 
 //Constructor
 
-Character::Character(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float lucky, int exp, int level, int nextLevelExp) :
-	Creature(name, faction, race, strength, agility, constitution, intelligence, lucky),
+Character::Character(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float dexterity, float lucky, int exp, int level, int nextLevelExp) :
+	Creature(name, faction, race, strength, agility, constitution, intelligence, dexterity, lucky),
 	exp(exp),
 	level(level),
 	nextLevelExp(nextLevelExp),
 	bag(Bag::createInitialBag())
 {
-	calculateCombatStatus();
+
 }
 
 //Combat Methods
@@ -139,13 +139,16 @@ float Character::damageReduction() const
 	return damageReduction;
 }
 
-bool Character::dodgeAttack() const
+bool Character::dodgeAttack(NpCharacter* enemy) const
 {
 	std::random_device rd;
 	std::mt19937 gen(rd());
-	std::uniform_int_distribution<> dis(1, 100);
+	std::uniform_real_distribution<float> dis(1, 100);
 
-	int chance = dis(gen);
+	float chance = dis(gen);
+
+	chance += enemy->getPrecision() / 2;
+
 
 	if (chance < this->dodge) 
 	{
@@ -258,16 +261,6 @@ void Character::increaseExp(NpCharacter* enemy)
 
 //Uppers
 
-void Character::calculateCombatStatus() 
-{
-	this->healthPoints = this->getConstitution() * 10.0f;
-	this->attackPoints = this->getStrength() * 2.0f;
-	this->magicAttackPoints = this->getIntelligence() * 2.0f;
-	this->armor = this->getConstitution() * 3.0f;
-	this->dodge = this->getAgility() / 2.0f;
-	this->criticalChance = this->getLucky() / 2.0f;
-}
-
 
 void Character::upNextLevelExp(int restExp)
 {
@@ -323,7 +316,10 @@ float Character::getArmor() const
 {
 	return armor;
 }
-
+float Character::getPrecision() const
+{
+	return precision;
+}
 int Character::getExp() const
 {
 	return exp;
@@ -354,6 +350,10 @@ void Character::setMagicAttackPoints(float magicAttackPoints)
 void Character::setArmor(float armor)
 {
 	this->armor = armor;
+}
+void Character::setPrecision(float precision)
+{
+	this->precision = precision;
 }
 
 void Character::setExp(int exp) 

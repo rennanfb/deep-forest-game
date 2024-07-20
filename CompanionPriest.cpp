@@ -2,8 +2,8 @@
 
 //Constructor
 
-CompanionPriest::CompanionPriest(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float lucky, int exp, int level, int nextLevelExp, float mana) :
-	Character(name, faction, race, strength, agility, constitution, intelligence, lucky, exp, level, nextLevelExp),
+CompanionPriest::CompanionPriest(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float dexterity, float lucky, int exp, int level, int nextLevelExp, float mana) :
+	Character(name, faction, race, strength, agility, constitution, intelligence, dexterity, lucky, exp, level, nextLevelExp),
 	mana(mana)
 {
 	calculateCombatStatus();
@@ -13,7 +13,7 @@ CompanionPriest::CompanionPriest(std::string name, std::string faction, std::str
 
 CompanionPriest* CompanionPriest::createCharacter(std::string name, std::string faction, std::string race)
 {
-	return new CompanionPriest(name, faction, race, 5.0f, 5.0f, 15.0f, 20.0f, 5.0f, 0, 1, 100, 100.0f);
+	return new CompanionPriest(name, faction, race, 5.0f, 5.0f, 15.0f, 20.0f, 10.0f, 5.0f, 0, 1, 100, 100.0f);
 }
 
 //Override Methods
@@ -43,10 +43,10 @@ void CompanionPriest::showCombatLayout(std::vector<Character*> allies, std::vect
 		std::cout << "HP: " << this->getHealthPoints() << " | " << "MP: " << this->getMana();
 		std::cout << std::endl;
 		std::cout << " --------- " << "Skills" << " --------- " << std::endl;
-		std::cout << "1 - Basic Attack" << std::endl;
-		std::cout << "2 - Holy Light (30MP)" << std::endl;
-		std::cout << "3 - Heal (60MP) (Target: Ally)" << std::endl;
-		std::cout << "4 - Saviour Rain (90MP) (Target: All)" << std::endl;
+		std::cout << "|1| - Basic Attack" << std::endl;
+		std::cout << "|2| - Holy Light (30MP)" << std::endl;
+		std::cout << "|3| - Heal (60MP) (Target: Ally)" << std::endl;
+		std::cout << "|4| - Saviour Rain (90MP) (Target: All)" << std::endl;
 		std::cout << std::endl;
 
 		std::cout << "--------------------------------" << std::endl;
@@ -139,9 +139,10 @@ void CompanionPriest::upgradeAttributes()
 {
 	this->upStrength(2.0f);
 	this->upAgility(2.0f);
-	this->upConstitution(4.0);
-	this->upIntelligence(5.0);
-	this->upLucky(3.0);
+	this->upConstitution(3.0f);
+	this->upIntelligence(4.0f);
+	this->upDexterity(2.0f);
+	this->upLucky(3.0f);
 	calculateCombatStatus();
 }
 
@@ -155,7 +156,7 @@ void CompanionPriest::healStats()
 
 void CompanionPriest::basicAttack(NpCharacter* target)
 {
-	if (!target->dodgeAttack())
+	if (!target->dodgeAttack(this))
 	{
 		if (this->criticalHit())
 		{
@@ -206,6 +207,17 @@ void CompanionPriest::restoreEnergy(float energyAmount)
 	}
 }
 
+void CompanionPriest::calculateCombatStatus()
+{
+	this->healthPoints = this->getConstitution() * 7.0f;
+	this->attackPoints = this->getStrength() * 1.5f;
+	this->magicAttackPoints = this->getIntelligence() * 1.8f;
+	this->armor = this->getConstitution() * 1.5f;
+	this->dodge = this->getAgility() / 2.0f;
+	this->precision = this->getDexterity() / 2.0f;
+	this->criticalChance = this->getLucky() / 2.0f;
+}
+
 //Combat Methods
 
 void CompanionPriest::calculateMana()
@@ -228,7 +240,7 @@ void CompanionPriest::holyLight(std::vector<Character*> allies, std::vector<NpCh
 {
 	this->mana -= 30;
 
-	if (!target->dodgeAttack())
+	if (!target->dodgeAttack(this))
 	{
 		if (this->criticalHit())
 		{
@@ -309,7 +321,7 @@ void CompanionPriest::saviourRain(std::vector<Character*> allies, std::vector<Np
 
 		for (size_t i = 0; i < enemies.size(); ++i)
 		{
-			if (!enemies[i]->dodgeAttack())
+			if (!enemies[i]->dodgeAttack(this))
 			{
 				enemies[i]->decreaseHealth(damage - enemies[i]->damageReduction());
 				std::cout << enemies[i]->getName() << " receive " << damage << " points of damage" << std::endl;
@@ -341,7 +353,7 @@ void CompanionPriest::saviourRain(std::vector<Character*> allies, std::vector<Np
 
 		for (size_t i = 0; i < enemies.size(); ++i)
 		{
-			if (!enemies[i]->dodgeAttack())
+			if (!enemies[i]->dodgeAttack(this))
 			{
 				enemies[i]->decreaseHealth(damage - enemies[i]->damageReduction());
 				std::cout << enemies[i]->getName() << " receive " << damage << " points of damage" << std::endl;

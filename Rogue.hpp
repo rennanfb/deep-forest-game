@@ -13,7 +13,7 @@ public:
 
 	//Constructor
 
-	Rogue(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float lucky, int exp, int level, int nextLevelExp, float stamina);
+	Rogue(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float dexterity, float lucky, int exp, int level, int nextLevelExp, float stamina);
 	
 	//Creator
 
@@ -27,9 +27,11 @@ public:
 	void healStats() override;
 	void basicAttack(NpCharacter* enemy) override;
 	void restoreEnergy(float energyAmount) override;
+	void calculateCombatStatus() override;
 
 	//Combat Methods
 
+	void calculateStamina();
 	void increaseStamina();
 	void twinBlades(NpCharacter* target);
 	void deepWound(NpCharacter* target);

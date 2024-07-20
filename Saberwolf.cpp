@@ -2,8 +2,8 @@
 
 //Constructor
 
-Saberwolf::Saberwolf(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float lucky, int exp) :
-	NpCharacter(name, faction, race, strength, agility, constitution, intelligence, lucky, exp)
+Saberwolf::Saberwolf(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float dexterity, float lucky, int exp) :
+	NpCharacter(name, faction, race, strength, agility, constitution, intelligence, dexterity, lucky, exp)
 {
 	this->bag = createNpcBag();
 	calculateCombatStatus();
@@ -13,7 +13,7 @@ Saberwolf::Saberwolf(std::string name, std::string faction, std::string race, fl
 
 Saberwolf* Saberwolf::createEnemy()
 {
-	return new Saberwolf("Rabid Saberwolf", "Forest", "Beast", 22.0f, 22.0f, 20.0f, 18.0f, 20.0f, 140);
+	return new Saberwolf("Rabid Saberwolf", "Forest", "Beast", 22.0f, 22.0f, 20.0f, 18.0f, 18.0f, 20.0f, 140);
 
 }
 

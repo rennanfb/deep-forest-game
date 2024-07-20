@@ -2,8 +2,8 @@
 
 //Constructor
 
-Warrior::Warrior(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float lucky, int exp, int level, int nextLevelExp, float fury) :
-	Character(name, faction, race, strength, agility, constitution, intelligence, lucky, exp, level, nextLevelExp),
+Warrior::Warrior(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float dexterity, float lucky, int exp, int level, int nextLevelExp, float fury) :
+	Character(name, faction, race, strength, agility, constitution, intelligence, dexterity, lucky, exp, level, nextLevelExp),
 	fury(fury)
 {
 	calculateCombatStatus();
@@ -13,7 +13,7 @@ Warrior::Warrior(std::string name, std::string faction, std::string race, float 
 
 Warrior* Warrior::createCharacter(std::string name, std::string faction, std::string race)
 {
-	return new Warrior(name, faction, race, 12.0f, 10.0f, 18.0f, 3.0f, 10.0f, 0, 1, 100, 0);
+	return new Warrior(name, faction, race, 12.0f, 10.0f, 18.0f, 3.0f, 8.0f, 10.0f, 0, 1, 100, 0);
 }
 
 //Override Methods
@@ -147,9 +147,10 @@ void Warrior::upgradeAttributes()
 {
 	this->upStrength(5.0f);
 	this->upAgility(2.0f);
-	this->upConstitution(5.0);
-	this->upIntelligence(2.0);
-	this->upLucky(3.0);
+	this->upConstitution(5.0f);
+	this->upIntelligence(2.0f);
+	this->upDexterity(1.0f);
+	this->upLucky(3.0f);
 	calculateCombatStatus();
 }
 
@@ -161,7 +162,7 @@ void Warrior::healStats()
 
 void Warrior::basicAttack(NpCharacter* target)
 {
-	if (!target->dodgeAttack())
+	if (!target->dodgeAttack(this))
 	{
 		if (this->criticalHit())
 		{
@@ -209,6 +210,17 @@ void Warrior::restoreEnergy(float energyAmount)
 	}
 }
 
+void Warrior::calculateCombatStatus()
+{
+	this->healthPoints = this->getConstitution() * 11.0f;
+	this->attackPoints = this->getStrength() * 1.5f;
+	this->magicAttackPoints = this->getIntelligence() * 1.5f;
+	this->armor = this->getConstitution() * 3.5f;
+	this->dodge = this->getAgility() / 2.5f;
+	this->precision = this->getDexterity() / 2.5f;
+	this->criticalChance = this->getLucky() / 1.5f;
+}
+
 //Combat Methods
 
 void Warrior::increaseFury(float damageTaken) 
@@ -229,7 +241,7 @@ void Warrior::swordShout(NpCharacter* target)
 {
 	this->fury -= 15.0f;
 
-	if (!target->dodgeAttack())
+	if (!target->dodgeAttack(this))
 	{
 
 		if (this->criticalHit()) 
@@ -277,7 +289,7 @@ void Warrior::rockBreaker(NpCharacter* target)
 {
 	this->fury -= 30.0f;
 
-	if (!target->dodgeAttack())
+	if (!target->dodgeAttack(this))
 	{
 		if (this->criticalHit()) 
 		{
@@ -324,7 +336,7 @@ void Warrior::chaosSword(NpCharacter* target)
 
 	this->fury -= 60.0f;
 
-	if (!target->dodgeAttack())
+	if (!target->dodgeAttack(this))
 	{
 		if (this->criticalHit())
 		{

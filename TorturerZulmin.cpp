@@ -2,8 +2,8 @@
 
 //Constructor
 
-TorturerZulmin::TorturerZulmin(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float lucky, int exp) :
-	NpCharacter(name, faction, race, strength, agility, constitution, intelligence, lucky, exp)
+TorturerZulmin::TorturerZulmin(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float dexterity, float lucky, int exp) :
+	NpCharacter(name, faction, race, strength, agility, constitution, intelligence, dexterity, lucky, exp)
 {
 	this->bag = createNpcBag();
 	calculateCombatStatus();
@@ -13,7 +13,7 @@ TorturerZulmin::TorturerZulmin(std::string name, std::string faction, std::strin
 
 TorturerZulmin* TorturerZulmin::createEnemy()
 {
-	return new TorturerZulmin("Torturer Zulmin", "Gobnier", "Goblin", 12.0f, 12.0f, 20.0f, 18.0f, 12.0f, 85);
+	return new TorturerZulmin("Torturer Zulmin", "Gobnier", "Goblin", 12.0f, 12.0f, 20.0f, 18.0f, 16.0f, 12.0f, 85);
 
 }
 

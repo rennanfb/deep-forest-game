@@ -2,8 +2,8 @@
 
 //Constructor
 
-Mage::Mage(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float lucky, int exp, int level, int nextLevelExp, float mana) :
-	Character(name, faction, race, strength, agility, constitution, intelligence, lucky, exp, level, nextLevelExp),
+Mage::Mage(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float dexterity, float lucky, int exp, int level, int nextLevelExp, float mana) :
+	Character(name, faction, race, strength, agility, constitution, intelligence, dexterity, lucky, exp, level, nextLevelExp),
 	mana(mana)
 {
 	calculateCombatStatus();
@@ -13,7 +13,7 @@ Mage::Mage(std::string name, std::string faction, std::string race, float streng
 
 Mage* Mage::createCharacter(std::string name, std::string faction, std::string race)
 {
-	return new Mage(name, faction, race, 5.0f, 5.0f, 12.0f, 20.0f, 13.0f, 0, 1, 100, 100.0);
+	return new Mage(name, faction, race, 5.0f, 5.0f, 12.0f, 20.0f, 10.0f, 13.0f, 0, 1, 100, 100.0);
 }
 
 //Override Methods
@@ -136,9 +136,10 @@ void Mage::upgradeAttributes()
 {
 	this->upStrength(2.0f);
 	this->upAgility(2.0f);
-	this->upConstitution(3.0);
-	this->upIntelligence(6.0);
-	this->upLucky(3.0);
+	this->upConstitution(3.0f);
+	this->upIntelligence(6.0f);
+	this->upDexterity(2.0f);
+	this->upLucky(3.0f);
 	calculateCombatStatus();
 }
 
@@ -152,7 +153,7 @@ void Mage::healStats()
 
 void Mage::basicAttack(NpCharacter* target)
 {
-	if (!target->dodgeAttack())
+	if (!target->dodgeAttack(this))
 	{
 		if (this->criticalHit())
 		{
@@ -197,17 +198,28 @@ void Mage::restoreEnergy(float energyAmount)
 {
 	this->mana += energyAmount;
 
-	if (this->mana > getIntelligence() * 5.0f)
+	if (this->mana > 100+ (this->getIntelligence() * 2))
 	{
-		this->setMana(getIntelligence() * 5.0f);
+		this->calculateMana();
 	}
+}
+
+void Mage::calculateCombatStatus()
+{
+	this->healthPoints = this->getConstitution() * 6.0f;
+	this->attackPoints = this->getStrength() * 1.5f;
+	this->magicAttackPoints = this->getIntelligence() * 2.2f;
+	this->armor = this->getConstitution() * 1.5f;
+	this->dodge = this->getAgility() / 2.0f;
+	this->precision = this->getDexterity() / 2.0f;
+	this->criticalChance = this->getLucky() / 2.0f;
 }
 
 //Combat Methods
 
-void Mage::calculeMana() 
+void Mage::calculateMana() 
 {
-	this->mana = getIntelligence() * 5.0f;
+	this->mana = 100 + (this->getIntelligence() * 2);
 }
 
 void Mage::increaseMana() 
@@ -215,9 +227,9 @@ void Mage::increaseMana()
 	this->mana += 10.0f;
 	std::cout << this->getName() << " meditated and recovered 10MP" << std::endl;
 
-	if (this->mana > getIntelligence() * 5.0f) 
+	if (this->mana > 100 + (this->getIntelligence() * 2))
 	{
-		this->setMana(getIntelligence() * 5.0f);
+		this->calculateMana();
 	}
 }
 
@@ -225,7 +237,7 @@ void Mage::fireBall(NpCharacter* target)
 {
 	this->mana -= 30;
 
-	if (!target->dodgeAttack())
+	if (!target->dodgeAttack(this))
 	{
 		if (this->criticalHit())
 		{
@@ -288,7 +300,7 @@ void Mage::earthQuake(std::vector<NpCharacter*> enemies)
 
 		for (size_t i = 0; i < enemies.size(); ++i)
 		{
-			if (!enemies[i]->dodgeAttack())
+			if (!enemies[i]->dodgeAttack(this))
 			{
 				enemies[i]->decreaseHealth(damage - enemies[i]->damageReduction());
 			}
@@ -311,7 +323,7 @@ void Mage::earthQuake(std::vector<NpCharacter*> enemies)
 
 		for (size_t i = 0; i < enemies.size(); ++i)
 		{
-			if (!enemies[i]->dodgeAttack())
+			if (!enemies[i]->dodgeAttack(this))
 			{
 				enemies[i]->decreaseHealth(damage - enemies[i]->damageReduction());
 			}
@@ -327,7 +339,7 @@ void Mage::cloudStrife(NpCharacter* target)
 {
 	this->mana -= 90;
 
-	if (!target->dodgeAttack())
+	if (!target->dodgeAttack(this))
 	{
 		if (this->criticalHit())
 		{

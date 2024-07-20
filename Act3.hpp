@@ -3,6 +3,7 @@
 #include "Creature.hpp"
 #include "Character.hpp"
 #include "CompanionPriest.hpp"
+#include "CompanionHunter.hpp"
 #include "CharacterCreation.hpp"
 #include "Warrior.hpp"
 #include "Mage.hpp"

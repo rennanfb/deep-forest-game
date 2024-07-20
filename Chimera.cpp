@@ -2,8 +2,8 @@
 
 //Constructor
 
-Chimera::Chimera(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float lucky, int exp) :
-	NpCharacter(name, faction, race, strength, agility, constitution, intelligence, lucky, exp)
+Chimera::Chimera(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float dexterity, float lucky, int exp) :
+	NpCharacter(name, faction, race, strength, agility, constitution, intelligence, dexterity, lucky, exp)
 {
 	this->bag = createNpcBag();
 	calculateCombatStatus();
@@ -13,7 +13,7 @@ Chimera::Chimera(std::string name, std::string faction, std::string race, float 
 
 Chimera* Chimera::createEnemy()
 {
-	return new Chimera("Ancient Quimera", "Unknown", "Beast", 25.0f, 20.0f, 80.0f, 3.0f, 20.0f, 493);
+	return new Chimera("Ancient Quimera", "Unknown", "Beast", 25.0f, 20.0f, 80.0f, 3.0f, 20.0f, 20.0f, 493);
 
 }
 

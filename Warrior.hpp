@@ -14,7 +14,7 @@ public:
 
 	//Constructor
 
-	Warrior(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float lucky, int exp, int level, int nextLevelExp, float fury);
+	Warrior(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float dexterity, float lucky, int exp, int level, int nextLevelExp, float fury);
 	
 	//Creator
 
@@ -29,6 +29,7 @@ public:
 	void healStats() override;
 	void basicAttack(NpCharacter* enemy) override;
 	void restoreEnergy(float energyAmount) override;
+	void calculateCombatStatus() override;
 
 	//Combat Methods
 

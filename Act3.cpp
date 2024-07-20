@@ -21,4 +21,6 @@ void Act3(std::vector <Character*> players)
 	Conflict10(players, enemies2);
 	enemies2.clear();
 	Interval(players);
+
+	Character* Qing = CompanionHunter::createCharacter("Qing", "Azaya", "Human");
 }

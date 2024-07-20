@@ -2,8 +2,8 @@
 
 //Constructor
 
-EgoShadow::EgoShadow(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float lucky, int exp) :
-	NpCharacter(name, faction, race, strength, agility, constitution, intelligence, lucky, exp)
+EgoShadow::EgoShadow(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float dexterity, float lucky, int exp) :
+	NpCharacter(name, faction, race, strength, agility, constitution, intelligence, dexterity, lucky, exp)
 {
 	this->bag = createNpcBag();
 	calculateCombatStatus();
@@ -13,7 +13,7 @@ EgoShadow::EgoShadow(std::string name, std::string faction, std::string race, fl
 
 EgoShadow* EgoShadow::createEnemy()
 {
-	return new EgoShadow("Ego Shadow", "Unknown", "Unknown", 20.0f, 15.0f, 20.0f, 5.0f, 15.0f, 125);
+	return new EgoShadow("Ego Shadow", "Unknown", "Unknown", 20.0f, 15.0f, 20.0f, 5.0f, 13.0f, 15.0f, 125);
 
 }
 

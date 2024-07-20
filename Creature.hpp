@@ -19,13 +19,14 @@ private:
 	float agility;
 	float constitution;
 	float intelligence;
+	float dexterity;
 	float lucky;
 
 public:
 
 	//Constructor
 
-	Creature(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float lucky);
+	Creature(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float dexterity, float lucky);
 
 	//Uppers
 
@@ -34,6 +35,7 @@ public:
 	void upAgility(float upgrade);
 	void upConstitution(float upgrade);
 	void upIntelligence(float upgrade);
+	void upDexterity(float upgrade);
 	void upLucky(float upgrade);
 
 	//Getters
@@ -45,6 +47,7 @@ public:
 	float getAgility() const;
 	float getConstitution() const;
 	float getIntelligence() const;
+	float getDexterity() const;
 	float getLucky() const;
 
 	//Setters
@@ -53,6 +56,7 @@ public:
 	void setAgility(float agility);
 	void setConstitution(float constitution);
 	void setIntelligence(float intelligence);
+	void setDexterity(float dexterity);
 	void setLucky(float lucky);
 	void setName(std::string name);
 	void setFaction(std::string faction);

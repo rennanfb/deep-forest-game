@@ -2,8 +2,8 @@
 
 //Constructor
 
-DemonAztras::DemonAztras(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float lucky, int exp) :
-	NpCharacter(name, faction, race, strength, agility, constitution, intelligence, lucky, exp)
+DemonAztras::DemonAztras(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float dexterity, float lucky, int exp) :
+	NpCharacter(name, faction, race, strength, agility, constitution, intelligence, dexterity, lucky, exp)
 {
 	this->bag = createNpcBag();
 	calculateCombatStatus();
@@ -13,7 +13,7 @@ DemonAztras::DemonAztras(std::string name, std::string faction, std::string race
 
 DemonAztras* DemonAztras::createEnemy()
 {
-	return new DemonAztras("Aztras", "Unknown", "Demon", 25.0f, 20.0f, 25.0f, 20.0f, 20.0f, 125);
+	return new DemonAztras("Aztras", "Unknown", "Demon", 25.0f, 20.0f, 25.0f, 20.0f, 20.0f, 20.0f, 125);
 }
 
 Bag* DemonAztras::createNpcBag()

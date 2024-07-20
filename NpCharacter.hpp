@@ -21,6 +21,7 @@ protected:
 	float magicAttackPoints;
 	float armor;
 	float dodge;
+	float precision;
 	float criticalChance;
 	int exp;
 
@@ -28,7 +29,7 @@ public:
 
 	//Constructor
 
-	NpCharacter(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float lucky, int exp);
+	NpCharacter(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float dexterity, float lucky, int exp);
 
 	//Pure Virtual Methos
 
@@ -42,7 +43,7 @@ public:
 	virtual void calculateCombatStatus();
 	size_t chooseEnemy(const std::vector<Character*>& players);
 	void decreaseHealth(float damage);
-	bool dodgeAttack() const;
+	bool dodgeAttack(Character* enemy) const;
 	bool criticalHit() const;
 	float damageReduction() const;
 	bool isAlive() const;
@@ -66,6 +67,7 @@ public:
 	float getMagicAttackPoints() const;
 	float getAverageMagicAttackBase() const;
 	float getArmor() const;
+	float getPrecision() const;
 	int getExp() const;
 
 	//Setters
@@ -74,5 +76,6 @@ public:
 	void setAttackPoints(float attackPower);
 	void setMagicAttackPoints(float magicAttackPower);
 	void setArmor(float armor);
+	void setPrecision(float precision);
 };
 

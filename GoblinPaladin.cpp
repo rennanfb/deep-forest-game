@@ -2,8 +2,8 @@
 
 //Constructor
 
-GoblinPaladin::GoblinPaladin(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float lucky, int exp) :
-	NpCharacter(name, faction, race, strength, agility, constitution, intelligence, lucky, exp)
+GoblinPaladin::GoblinPaladin(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float dexterity, float lucky, int exp) :
+	NpCharacter(name, faction, race, strength, agility, constitution, intelligence, dexterity, lucky, exp)
 {
 	this->bag = createNpcBag();
 	calculateCombatStatus();
@@ -13,7 +13,7 @@ GoblinPaladin::GoblinPaladin(std::string name, std::string faction, std::string 
 
 GoblinPaladin* GoblinPaladin::createEnemy()
 {
-	return new GoblinPaladin("Paladin Gobnier", "Gobnier", "Goblin", 12.0f, 4.0f, 15.0f, 7.0f, 8.0f, 60);
+	return new GoblinPaladin("Paladin Gobnier", "Gobnier", "Goblin", 12.0f, 4.0f, 15.0f, 7.0f, 8.0f, 8.0f, 60);
 
 }
 

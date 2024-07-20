@@ -7,7 +7,7 @@ public:
 
 	//Constructor
 
-	GoblinZombie(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float lucky, int exp);
+	GoblinZombie(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float dexterity, float lucky, int exp);
 
 	//Creator
 

@@ -1,27 +1,27 @@
-#include "Rogue.hpp"
+#include "CompanionHunter.hpp"
 
-//Cosntructor
+//Constructor
 
-Rogue::Rogue(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float dexterity, float lucky, int exp, int level, int nextLevelExp, float stamina) :
+CompanionHunter::CompanionHunter(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float dexterity, float lucky, int exp, int level, int nextLevelExp, float focus) :
 	Character(name, faction, race, strength, agility, constitution, intelligence, dexterity, lucky, exp, level, nextLevelExp),
-	stamina(stamina)
+	focus(focus)
 {
 	calculateCombatStatus();
 }
 
 //Creator
 
-Rogue* Rogue::createCharacter(std::string name, std::string faction, std::string race)
+CompanionHunter* CompanionHunter::createCharacter(std::string name, std::string faction, std::string race)
 {
-	return new Rogue(name, faction, race, 14.0f, 16.0f, 14.0f, 5.0f, 16.0f, 16.0f, 0, 1, 100, 100.0f);
+	return new CompanionHunter(name, faction, race, 5.0f, 20.0f, 17.0f, 10.0f, 30.0f, 20.0f, 0, 1, 100, 100.0f);
 }
 
 //Override Methods
 
-void Rogue::showSheet() const
+void CompanionHunter::showSheet() const
 {
 	std::cout << std::endl;
-	std::cout << this->getName() << " | Rogue Lv: " << this->getLevel() << " | " << this->getRace() << " | " << this->getFaction() << std::endl;
+	std::cout << this->getName() << " | Priest Lv: " << this->getLevel() << " | " << this->getRace() << " | " << this->getFaction() << std::endl;
 	std::cout << "Str: " << this->getStrength() << " | Agi: " << this->getAgility() << " | Con: " << this->getConstitution() << " | Int: " << this->getIntelligence() << " | Luk: " << this->getLucky() << std::endl;
 	std::cout << "---- Combat Attributes ---- " << std::endl;
 	std::cout << "Health Points: " << getHealthPoints() << " | Armor Power: " << getArmor() << std::endl;
@@ -30,7 +30,7 @@ void Rogue::showSheet() const
 	std::cout << std::endl;
 }
 
-void Rogue::showCombatLayout(std::vector <Character*> allies, std::vector<NpCharacter*> enemies)
+void CompanionHunter::showCombatLayout(std::vector<Character*> allies, std::vector<NpCharacter*> enemies)
 {
 	std::vector<NpCharacter*> aliveEnemies = filterAliveEnemies(enemies);
 
@@ -40,13 +40,13 @@ void Rogue::showCombatLayout(std::vector <Character*> allies, std::vector<NpChar
 
 		std::cout << std::endl;
 		std::cout << " --------- " << this->getName() << " --------- " << std::endl;
-		std::cout << "HP: " << this->getHealthPoints() << " | " << "SP: " << this->getStamina();
+		std::cout << "HP: " << this->getHealthPoints() << " | " << "FP: " << this->getFocus();
 		std::cout << std::endl;
-		std::cout << " ------------ " << "Skills" << " ------------ " << std::endl;
+		std::cout << " --------- " << "Skills" << " --------- " << std::endl;
 		std::cout << "|1| - Basic Attack" << std::endl;
-		std::cout << "|2| - Twin Blades (40SP)" << std::endl;
-		std::cout << "|3| - Deep Wound (60SP)" << std::endl;
-		std::cout << "|4| - Seven Sins (80SP)" << std::endl;
+		std::cout << "|2| - Double Shot (30MP)" << std::endl;
+		std::cout << "|3| - Piercing Arrow (70MP)" << std::endl;
+		std::cout << "|4| - Arrow Storm (100MP) (Target: All)" << std::endl;
 		std::cout << std::endl;
 
 		std::cout << "--------------------------------" << std::endl;
@@ -58,13 +58,12 @@ void Rogue::showCombatLayout(std::vector <Character*> allies, std::vector<NpChar
 			}
 		}
 		std::cout << "--------------------------------" << std::endl;
-		std::cout << std::endl;
 
-		std::cout << "* Enter the number of your next attack (1, 2, 3, 4) | or Enter (0) to access your bag *" << std::endl;
-
+		std::cout << "* Enter the number of your next attack (1, 2, 3, 4) or Enter (0) to access your bag " << std::endl;
 		int nextMove;
 		std::cin >> nextMove;
 		std::cout << std::endl;
+
 
 		if (nextMove == 0)
 		{
@@ -80,46 +79,43 @@ void Rogue::showCombatLayout(std::vector <Character*> allies, std::vector<NpChar
 		}
 		else if (nextMove == 2)
 		{
-			if (this->getStamina() >= 39.5f)
+			if (this->getFocus() >= 29.5f)
 			{
 				int targetIndex = chooseEnemy(aliveEnemies);
 				NpCharacter* target = aliveEnemies[targetIndex];
 
-				this->twinBlades(target);
+				this->doubleShot(allies, enemies, target);
 			}
 			else
 			{
-				std::cout << "Insufficient stamina, select a possible move" << std::endl;
+				std::cout << "Insufficient focus, select a possible move" << std::endl;
 				this->showCombatLayout(allies, enemies);
 			}
 		}
 		else if (nextMove == 3)
 		{
-			if (this->getStamina() >= 59.5f)
+			if (this->getFocus() >= 69.5f)
 			{
 				int targetIndex = chooseEnemy(aliveEnemies);
 				NpCharacter* target = aliveEnemies[targetIndex];
 
-				this->deepWound(target);
+				this->piercingArrow(allies, enemies, target);
 			}
 			else
 			{
-				std::cout << "Insufficient stamina, select a possible move" << std::endl;
+				std::cout << "Insufficient focus, select a possible move" << std::endl;
 				this->showCombatLayout(allies, enemies);
 			}
 		}
 		else if (nextMove == 4)
 		{
-			if (this->getStamina() >= 79.5f)
+			if (this->getFocus() >= 99.5f)
 			{
-				int targetIndex = chooseEnemy(aliveEnemies);
-				NpCharacter* target = aliveEnemies[targetIndex];
-
-				this->sevenSins(target);
+				this->arrowStorm(allies, aliveEnemies);
 			}
 			else
 			{
-				std::cout << "Insufficient stamina, select a possible move" << std::endl;
+				std::cout << "Insufficient focus, select a possible move" << std::endl;
 				this->showCombatLayout(allies, enemies);
 			}
 		}
@@ -136,25 +132,26 @@ void Rogue::showCombatLayout(std::vector <Character*> allies, std::vector<NpChar
 	}
 }
 
-
-void Rogue::upgradeAttributes()
+void CompanionHunter::upgradeAttributes()
 {
-	this->upStrength(4.0f);
-	this->upAgility(5.0f);
-	this->upConstitution(3.0f);
-	this->upIntelligence(2.0f);
-	this->upDexterity(3.0f);
-	this->upLucky(5.0f);
+	this->upStrength(1.0f);
+	this->upAgility(3.0f);
+	this->upConstitution(2.0);
+	this->upIntelligence(3.0);
+	this->upDexterity(5.0f);
+	this->upLucky(3.0);
 	calculateCombatStatus();
 }
 
-void Rogue::healStats()
+void CompanionHunter::healStats()
 {
+
 	this->setHealthPoints(this->getConstitution() * 10.0f);
-	this->setStamina(100.0f);
+	this->setFocus(this->getDexterity() * 5.0f);
+
 }
 
-void Rogue::basicAttack(NpCharacter* target)
+void CompanionHunter::basicAttack(NpCharacter* target)
 {
 	if (!target->dodgeAttack(this))
 	{
@@ -166,13 +163,12 @@ void Rogue::basicAttack(NpCharacter* target)
 
 			if (damage < 0.0f)
 			{
-				damage = 0.0f;
+				damage = 0;
 			}
-
 
 			target->decreaseHealth(damage);
 			std::cout << this->getName() << " attacked " << target->getName() << " with " << criticalDamage << " points of damage" << std::endl;
-			this->increaseStamina();
+			this->increaseFocus();
 			std::cout << std::endl;
 		}
 		else
@@ -182,64 +178,65 @@ void Rogue::basicAttack(NpCharacter* target)
 
 			if (damage < 0.0f)
 			{
-				damage = 0.0f;
+				damage = 0;
 			}
 
 			target->decreaseHealth(damage);
 			std::cout << this->getName() << " attacked " << target->getName() << " with " << damage << " points of damage" << std::endl;
-			this->increaseStamina();
+			this->increaseFocus();
 			std::cout << std::endl;
 		}
 	}
 	else
 	{
-		this->increaseStamina();
+		this->increaseFocus();
 		return;
 	}
 }
 
-void Rogue::restoreEnergy(float energyAmount) 
+void CompanionHunter::restoreEnergy(float energyAmount)
 {
-	this->stamina += energyAmount;
+	this->focus += energyAmount;
 
-	if (this->stamina > 100 + (this->getAgility() * 2))
+	if (this->focus > 100.0f + (getDexterity() * 2.0f))
 	{
-		this->calculateStamina();
+		this->calculateFocus();
 	}
 }
 
-void Rogue::calculateCombatStatus()
+void CompanionHunter::calculateCombatStatus()
 {
-	this->healthPoints = this->getConstitution() * 8.0f;
-	this->attackPoints = this->getStrength() * 2.5f;
-	this->magicAttackPoints = this->getIntelligence() * 2.0f;
-	this->armor = this->getConstitution() * 2.0f;
-	this->dodge = this->getAgility() / 1.5f;
-	this->precision = this->getDexterity() / 1.5f;
-	this->criticalChance = this->getLucky() / 1.5f;
+	this->healthPoints = this->getConstitution() * 6.0f;
+	this->attackPoints = this->getDexterity() * 2.0f;
+	this->magicAttackPoints = this->getIntelligence() * 1.5f;
+	this->armor = this->getConstitution() * 3.0f;
+	this->dodge = this->getAgility() / 1.3f;
+	this->precision = this->getStrength() / 2.0f;
+	this->criticalChance = this->getLucky() / 1.8f;
 }
 
 //Combat Methods
 
-void Rogue::calculateStamina()
+void CompanionHunter::calculateFocus()
 {
-	this->stamina = 100 + (this->getAgility() * 2);
+	this->focus = 100.0f + (getDexterity() * 2.0f);
 }
 
-void Rogue::increaseStamina() 
+void CompanionHunter::increaseFocus()
 {
-	this->stamina += 15.0f;
-	std::cout << this->getName() << " breathes and regenerates 15 SP" << std::endl;
+	this->focus += 10;
+	std::cout << this->getName() << " concentrates and recovered 10FP" << std::endl;
 
-	if (this->stamina > 100 + (this->getAgility() * 2)) {
-		this->calculateStamina();
+	if (this->focus > 100.0f + (getDexterity() * 2.0f))
+	{
+		this->calculateFocus();
 	}
 }
 
-
-void Rogue::twinBlades(NpCharacter* target)
+void CompanionHunter::doubleShot(std::vector<Character*> allies, std::vector<NpCharacter*> enemies, NpCharacter* target)
 {
-	this->stamina -= 40.0f;
+	this->focus -= 30;
+
 
 	if (!target->dodgeAttack(this))
 	{
@@ -257,8 +254,8 @@ void Rogue::twinBlades(NpCharacter* target)
 			}
 
 			target->decreaseHealth(damage);
-			std::cout << this->getName() << " used Twin Blades against " << target->getName() << " with " << criticalDamage << " points of damage" << std::endl;
-			this->increaseStamina();
+			std::cout << this->getName() << " used Double Shot against " << target->getName() << " with " << criticalDamage << " points of damage" << std::endl;
+			this->increaseFocus();
 			std::cout << std::endl;
 		}
 		else
@@ -274,21 +271,21 @@ void Rogue::twinBlades(NpCharacter* target)
 			}
 
 			target->decreaseHealth(damage);
-			std::cout << this->getName() << " used Twin Blades against " << target->getName() << " with " << damage << " points of damage" << std::endl;
-			this->increaseStamina();
+			std::cout << this->getName() << " used Double Shot against " << target->getName() << " with " << damage << " points of damage" << std::endl;
+			this->increaseFocus();
 			std::cout << std::endl;
 		}
 	}
 	else
 	{
-		this->increaseStamina();
+		this->increaseFocus();
 		return;
 	}
 }
 
-void Rogue::deepWound(NpCharacter* target)
+void CompanionHunter::piercingArrow(std::vector<Character*> allies, std::vector<NpCharacter*> enemies, NpCharacter* target)
 {
-	this->stamina -= 60.0f;
+	this->focus -= 60;
 
 	if (!target->dodgeAttack(this))
 	{
@@ -306,8 +303,8 @@ void Rogue::deepWound(NpCharacter* target)
 			}
 
 			target->decreaseHealth(damage);
-			std::cout << this->getName() << " used Deep Wound against " << target->getName() << " with " << criticalDamage << " points of damage" << std::endl;
-			this->increaseStamina();
+			std::cout << this->getName() << " used Piercing Arrow against " << target->getName() << " with " << criticalDamage << " points of damage" << std::endl;
+			this->increaseFocus();
 			std::cout << std::endl;
 		}
 		else
@@ -323,78 +320,83 @@ void Rogue::deepWound(NpCharacter* target)
 			}
 
 			target->decreaseHealth(damage);
-			std::cout << this->getName() << " used Deep Wound against " << target->getName() << " with " << damage << " points of damage" << std::endl;
-			this->increaseStamina();
+			std::cout << this->getName() << " used Piercing Arrow against " << target->getName() << " with " << damage << " points of damage" << std::endl;
+			this->increaseFocus();
 			std::cout << std::endl;
 		}
 	}
 	else
 	{
-		this->increaseStamina();
+		this->increaseFocus();
 		return;
 	}
 
 }
 
-void Rogue::sevenSins(NpCharacter* target)
+void CompanionHunter::arrowStorm(std::vector<Character*> allies, std::vector<NpCharacter*> enemies)
 {
-	this->stamina -= 80.0f;
+	this->focus -= 100;
 
-	if (!target->dodgeAttack(this))
+	if (this->criticalHit())
 	{
-		if (this->criticalHit())
+		float skillDamageBonus = this->getMagicAttackPoints() * 0.7f;
+		float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
+		float criticalDamage = skillDamage * 2.0f;
+		float damage = calculateAverageMagicDamage(criticalDamage);
+
+		if (damage < 0.0f)
 		{
-			float skillDamageBonus = this->getAttackPoints() * 1.2f;
-			float skillDamage = this->getAttackPoints() + skillDamageBonus;
-			float criticalDamage = skillDamage * 2.0f;
-			float averageDamage = calculateAverageDamage(criticalDamage);
-			float damage = averageDamage - target->damageReduction();
-
-			if (damage < 0.0f)
-			{
-				damage = 0.0f;
-			}
-
-			target->decreaseHealth(damage);
-			std::cout << this->getName() << " used Seven Sins against " << target->getName() << " with " << criticalDamage << " points of damage" << std::endl;
-			this->increaseStamina();
-			std::cout << std::endl;
+			damage = 0.0f;
 		}
-		else
+
+		for (size_t i = 0; i < enemies.size(); ++i)
 		{
-			float skillDamageBonus = this->getAttackPoints() * 1.2f;
-			float skillDamage = this->getAttackPoints() + skillDamageBonus;
-			float averageDamage = calculateAverageDamage(skillDamage);
-			float damage = averageDamage - target->damageReduction();
-
-			if (damage < 0.0f)
+			if (!enemies[i]->dodgeAttack(this))
 			{
-				damage = 0.0f;
+				enemies[i]->decreaseHealth(damage - enemies[i]->damageReduction());
 			}
-
-			target->decreaseHealth(damage);
-			std::cout << this->getName() << " used Seven Sins against " << target->getName() << " with " << damage << " points of damage" << std::endl;
-			this->increaseStamina();
-			std::cout << std::endl;
 		}
+
+		std::cout << this->getName() << " used Arrow Storm, causing " << damage << " points of area damage" << std::endl;
+		this->increaseFocus();
+		std::cout << std::endl;
 	}
 	else
 	{
-		this->increaseStamina();
-		return;
+		float skillDamageBonus = this->getMagicAttackPoints() * 0.7f;
+		float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
+		float damage = calculateAverageMagicDamage(skillDamage);
+
+		if (damage < 0.0f)
+		{
+			damage = 0.0f;
+		}
+
+		for (size_t i = 0; i < enemies.size(); ++i)
+		{
+			if (!enemies[i]->dodgeAttack(this))
+			{
+				enemies[i]->decreaseHealth(damage - enemies[i]->damageReduction());
+			}
+		}
+
+		std::cout << this->getName() << " used Arrow Storm, causing " << damage << " points of area damage" << std::endl;
+		this->increaseFocus();
+		std::cout << std::endl;
 	}
+
 }
 
 //Getters
 
-float Rogue::getStamina() const
+float CompanionHunter::getFocus() const
 {
-	return stamina;
+	return focus;
 }
 
 //Setters
 
-void Rogue::setStamina(float stamina)
+void CompanionHunter::setFocus(float mana)
 {
-	this->stamina = stamina;
+	this->focus = mana;
 }

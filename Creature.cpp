@@ -1,6 +1,6 @@
 #include "Creature.hpp"
 
-Creature::Creature(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float lucky):
+Creature::Creature(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float dexterity, float lucky) :
 	name(name),
 	faction(faction),
 	race(race),
@@ -8,6 +8,7 @@ Creature::Creature(std::string name, std::string faction, std::string race, floa
 	agility(agility),
 	constitution(constitution),
 	intelligence(intelligence),
+	dexterity(dexterity),
 	lucky(lucky)
 {}
 
@@ -49,6 +50,10 @@ void Creature::upIntelligence(float upgrade)
 {
 	this->intelligence += upgrade;
 }
+void Creature::upDexterity(float upgrade)
+{
+	this->dexterity += upgrade;
+}
 void Creature::upLucky(float upgrade)
 {
 	this->lucky += upgrade;
@@ -83,6 +88,10 @@ float Creature::getConstitution() const
 float Creature::getIntelligence() const 
 {
 	return intelligence;
+}
+float Creature::getDexterity() const
+{
+	return dexterity;
 }
 float Creature::getLucky() const 
 {
@@ -143,6 +152,10 @@ void Creature::setConstitution(float constitution)
 void Creature::setIntelligence(float intelligence)
 {
 	this->intelligence = intelligence;
+}
+void Creature::setDexterity(float intelligence)
+{
+	this->dexterity = dexterity;
 }
 void Creature::setLucky(float lucky)
 {
