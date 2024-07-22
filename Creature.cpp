@@ -18,19 +18,21 @@ void Creature::raceBonus(std::string race)
 {
 	if (this->race == "Human") 
 	{
-		this->strength += 2;
-		this->lucky += 4;
+		this->strength += 3;
+		this->constitution += 2;
+		this->dexterity += 3;
 
 	}
 	else if (this->race == "Orc")
 	{
-		this->constitution += 3;
-		this->strength += 3;
+		this->constitution += 4;
+		this->strength += 4;
 	}
 	else if (this->race == "Elf") 
 	{
-		this->intelligence += 2;
-		this->agility += 4;
+		this->intelligence += 3;
+		this->agility += 2;
+		this->dexterity += 3;
 	}
 }
 
@@ -111,9 +113,9 @@ void Creature::setFaction(std::string faction)
 std::string Creature::setRace() 
 {
 	std::cout << "Which is your race?" << std::endl;
-	std::cout << "Enter (1) - Human: STR+2, LUK+4" << std::endl;
-	std::cout << "Enter (2) - Orc: STR+3, CON+3" << std::endl;
-	std::cout << "Enter (3) - Elf: INT+2, AGI+4" << std::endl;
+	std::cout << "Enter (1) - Human: STR +3 | CON +2 | DEX +3" << std::endl;
+	std::cout << "Enter (2) - Orc: STR +4 | CON +4" << std::endl;
+	std::cout << "Enter (3) - Elf: INT+3 | AGI+2 | DEX +3" << std::endl;
 	std::string raceAnswer;
 	std::string raceName;
 

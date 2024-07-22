@@ -2,8 +2,8 @@
 #include <iomanip>
 #include "Creature.hpp"
 #include "Character.hpp"
-#include "CompanionPriest.hpp"
-#include "CompanionHunter.hpp"
+#include "Priest.hpp"
+#include "Hunter.hpp"
 #include "CharacterCreation.hpp"
 #include "Warrior.hpp"
 #include "Mage.hpp"

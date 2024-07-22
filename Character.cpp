@@ -170,7 +170,7 @@ bool Character::criticalHit() const
 	int chance = dis(gen);
 
 	if (chance < this->criticalChance) {
-		std::cout << this->getName() << " * Critical Damage * " << std::endl;
+		std::cout <<  " * Critical Damage * " << std::endl;
 		return true;
 	}
 	else {
@@ -180,6 +180,8 @@ bool Character::criticalHit() const
 
 void Character::restoreHealth(float heal)
 {
+	std::cout << this->getName() << " received " << heal << " health points!" << std::endl;
+
 	this->healthPoints += heal;
 	if (this->healthPoints > this->getConstitution() * 10.0f) 
 	{
@@ -191,6 +193,7 @@ void Character::restoreHealth(float heal)
 void Character::decreaseHealth(float damage)
 {
 	this->healthPoints -= damage;
+	std::cout << this->getName() << " received " << damage << " points of damage!" << std::endl;
 }
 
 bool Character::isAlive() const 

@@ -49,6 +49,7 @@ Bag* DemonAztras::createNpcBag()
 void DemonAztras::npcSkillSet(std::vector <Character*> players)
 {
 	std::cout << "- " << this->getName() << "'s turn -" << std::endl;
+	std::cout << std::endl;
 
 	size_t target = chooseEnemy(players);
 

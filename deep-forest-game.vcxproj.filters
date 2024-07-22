@@ -99,7 +99,7 @@
     <ClInclude Include="DemonAztras.hpp">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
-    <ClInclude Include="CompanionPriest.hpp">
+    <ClInclude Include="Priest.hpp">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
     <ClInclude Include="Item.hpp">
@@ -144,7 +144,7 @@
     <ClInclude Include="Chimera.hpp">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
-    <ClInclude Include="CompanionHunter.hpp">
+    <ClInclude Include="Hunter.hpp">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
   </ItemGroup>
@@ -236,7 +236,7 @@
     <ClCompile Include="DemonAztras.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
-    <ClCompile Include="CompanionPriest.cpp">
+    <ClCompile Include="Priest.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
     <ClCompile Include="Item.cpp">
@@ -281,7 +281,7 @@
     <ClCompile Include="Chimera.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
-    <ClCompile Include="CompanionHunter.cpp">
+    <ClCompile Include="Hunter.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
   </ItemGroup>

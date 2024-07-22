@@ -123,7 +123,7 @@ bool NpCharacter::criticalHit() const
 
 	if (chance < this->criticalChance) 
 	{
-		std::cout << this->getName() << " * Critical Damage * " << std::endl;
+		std::cout << " * Critical Damage * " << std::endl;
 		return true;
 	}
 	else 
@@ -132,9 +132,22 @@ bool NpCharacter::criticalHit() const
 	}
 }
 
+void NpCharacter::restoreHealth(float heal)
+{
+	std::cout << this->getName() << " received " << heal << " health points!" << std::endl;
+
+	this->healthPoints += heal;
+	if (this->healthPoints > this->getConstitution() * 10.0f)
+	{
+		this->healthPoints = this->getConstitution() * 10.0f;
+	}
+
+}
+
 void NpCharacter::decreaseHealth(float damage)
 {
 	this->healthPoints -= damage;
+	std::cout << this->getName() << " received " << damage << " points of damage!" << std::endl;
 }
 
 bool NpCharacter::isAlive() const 
@@ -150,6 +163,8 @@ bool NpCharacter::isAlive() const
 
 void NpCharacter::basicAttack(Character* enemy)
 {
+	std::cout << this->getName() << " attacked " << enemy->getName() << std::endl;
+
 	if (!enemy->dodgeAttack(this)) 
 	{
 		if (this->criticalHit())
@@ -163,7 +178,6 @@ void NpCharacter::basicAttack(Character* enemy)
 				damage = 0.0f;
 			}
 			enemy->decreaseHealth(damage);
-			std::cout << this->getName() << " attacked " << enemy->getName() << " with " << damage << " points of damage" << std::endl;
 			std::cout << std::endl;
 		}
 		else
@@ -177,7 +191,6 @@ void NpCharacter::basicAttack(Character* enemy)
 			}
 
 			enemy->decreaseHealth(damage);
-			std::cout << this->getName() << " attacked " << enemy->getName() << " with " << damage << " points of damage" << std::endl;
 			std::cout << std::endl;
 		}
 	}
@@ -191,6 +204,8 @@ void NpCharacter::basicAttack(Character* enemy)
 
 void NpCharacter::bite(Character* enemy) 
 {
+	std::cout << this->getName() << " used Bite against " << enemy->getName() << std::endl;
+
 	if (!enemy->dodgeAttack(this))
 	{
 		if (this->criticalHit())
@@ -207,7 +222,6 @@ void NpCharacter::bite(Character* enemy)
 			}
 
 			enemy->decreaseHealth(damage);
-			std::cout << this->getName() << " used Bite against " << enemy->getName() << " with " << damage << " points of damage" << std::endl;
 			std::cout << std::endl;
 		}
 		else
@@ -223,7 +237,6 @@ void NpCharacter::bite(Character* enemy)
 			}
 
 			enemy->decreaseHealth(damage);
-			std::cout << this->getName() << " used Bite against " << enemy->getName() << " with " << damage << " points of damage" << std::endl;
 			std::cout << std::endl;
 		}
 	}
@@ -234,6 +247,8 @@ void NpCharacter::bite(Character* enemy)
 }
 void NpCharacter::clawStrike(Character* enemy)
 {
+	std::cout << this->getName() << " used Claw Strike against " << enemy->getName() << std::endl;
+
 	if (!enemy->dodgeAttack(this))
 	{
 		if (this->criticalHit())
@@ -250,7 +265,6 @@ void NpCharacter::clawStrike(Character* enemy)
 			}
 
 			enemy->decreaseHealth(damage);
-			std::cout << this->getName() << " used Claw Strike against " << enemy->getName() << " with " << damage << " points of damage" << std::endl;
 			std::cout << std::endl;
 		}
 		else
@@ -266,7 +280,6 @@ void NpCharacter::clawStrike(Character* enemy)
 			}
 
 			enemy->decreaseHealth(damage);
-			std::cout << this->getName() << " used Claw Strike against " << enemy->getName() << " with " << damage << " points of damage" << std::endl;
 			std::cout << std::endl;
 		}
 	}
@@ -278,6 +291,8 @@ void NpCharacter::clawStrike(Character* enemy)
 
 void NpCharacter::throwDagger(Character* enemy)
 {
+	std::cout << this->getName() << " used Throw Dagger against " << enemy->getName() << std::endl;
+
 	if (!enemy->dodgeAttack(this))
 	{
 		if (this->criticalHit())
@@ -294,7 +309,6 @@ void NpCharacter::throwDagger(Character* enemy)
 			}
 
 			enemy->decreaseHealth(damage);
-			std::cout << this->getName() << " used Throw Dagger against " << enemy->getName() << " with " << damage << " points of damage" << std::endl;
 			std::cout << std::endl;
 		}
 		else
@@ -310,7 +324,6 @@ void NpCharacter::throwDagger(Character* enemy)
 			}
 
 			enemy->decreaseHealth(damage);
-			std::cout << this->getName() << " used Throw Dagger against " << enemy->getName() << " with " << damage << " points of damage" << std::endl;
 			std::cout << std::endl;
 		}
 	}
@@ -322,6 +335,8 @@ void NpCharacter::throwDagger(Character* enemy)
 
 void NpCharacter::stockCharge(Character* enemy)
 {
+	std::cout << this->getName() << " used Stock Charge against " << enemy->getName() << std::endl;
+
 	if (!enemy->dodgeAttack(this))
 	{
 		if (this->criticalHit())
@@ -338,7 +353,6 @@ void NpCharacter::stockCharge(Character* enemy)
 			}
 
 			enemy->decreaseHealth(damage);
-			std::cout << this->getName() << " used Stock Charge against " << enemy->getName() << " with " << damage << " points of damage" << std::endl;
 			std::cout << std::endl;
 		}
 		else
@@ -354,7 +368,6 @@ void NpCharacter::stockCharge(Character* enemy)
 			}
 
 			enemy->decreaseHealth(damage);
-			std::cout << this->getName() << " used Stock Charge against " << enemy->getName() << " with " << damage << " points of damage" << std::endl;
 			std::cout << std::endl;
 		}
 	}
@@ -366,6 +379,8 @@ void NpCharacter::stockCharge(Character* enemy)
 
 void NpCharacter::spinningSlash(Character* enemy)
 {
+	std::cout << this->getName() << " used Spinning Slash against " << enemy->getName() << std::endl;
+
 	if (!enemy->dodgeAttack(this))
 	{
 		if (this->criticalHit())
@@ -382,7 +397,6 @@ void NpCharacter::spinningSlash(Character* enemy)
 			}
 
 			enemy->decreaseHealth(damage);
-			std::cout << this->getName() << " used Spinning Slash against " << enemy->getName() << " with " << damage << " points of damage" << std::endl;
 			std::cout << std::endl;
 		}
 		else
@@ -398,7 +412,6 @@ void NpCharacter::spinningSlash(Character* enemy)
 			}
 
 			enemy->decreaseHealth(damage);
-			std::cout << this->getName() << " used Spinning Slash against " << enemy->getName() << " with " << damage << " points of damage" << std::endl;
 			std::cout << std::endl;
 		}
 	}
@@ -410,6 +423,8 @@ void NpCharacter::spinningSlash(Character* enemy)
 
 void NpCharacter::shieldBash(Character* enemy)
 {
+	std::cout << this->getName() << " used Shield Bash against " << enemy->getName() << std::endl;
+
 	if (!enemy->dodgeAttack(this))
 	{
 		if (this->criticalHit())
@@ -426,7 +441,6 @@ void NpCharacter::shieldBash(Character* enemy)
 			}
 
 			enemy->decreaseHealth(damage);
-			std::cout << this->getName() << " used Shield Bash against " << enemy->getName() << " with " << damage << " points of damage" << std::endl;
 			std::cout << std::endl;
 		}
 		else
@@ -442,7 +456,6 @@ void NpCharacter::shieldBash(Character* enemy)
 			}
 
 			enemy->decreaseHealth(damage);
-			std::cout << this->getName() << " used Shield Bash against " << enemy->getName() << " with " << damage << " points of damage" << std::endl;
 			std::cout << std::endl;
 		}
 	}
@@ -454,6 +467,8 @@ void NpCharacter::shieldBash(Character* enemy)
 
 void NpCharacter::shadowEmbrace(Character* enemy)
 {
+	std::cout << this->getName() << " used Shadow Embrace against " << enemy->getName() << std::endl;
+
 	if (!enemy->dodgeAttack(this))
 	{
 		if (this->criticalHit())
@@ -471,7 +486,6 @@ void NpCharacter::shadowEmbrace(Character* enemy)
 			}
 
 			enemy->decreaseHealth(damage);
-			std::cout << this->getName() << " used Shadow Embrace against " << enemy->getName() << " with " << damage << " points of damage" << std::endl;
 			std::cout << std::endl;
 		}
 		else
@@ -487,7 +501,6 @@ void NpCharacter::shadowEmbrace(Character* enemy)
 			}
 
 			enemy->decreaseHealth(damage);
-			std::cout << this->getName() << " used Shadow Embrace against " << enemy->getName() << " with " << damage << " points of damage" << std::endl;
 			std::cout << std::endl;
 		}
 	}

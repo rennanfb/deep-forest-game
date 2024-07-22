@@ -42,6 +42,7 @@ public:
 	float calculateAverageMagicDamage(float damage);
 	virtual void calculateCombatStatus();
 	size_t chooseEnemy(const std::vector<Character*>& players);
+	void restoreHealth(float heal);
 	void decreaseHealth(float damage);
 	bool dodgeAttack(Character* enemy) const;
 	bool criticalHit() const;

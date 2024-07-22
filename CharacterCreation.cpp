@@ -13,6 +13,8 @@ Character* CharacterCreation()
 	std::cout << "Enter (1) - Warrior" << std::endl;
 	std::cout << "Enter (2) - Rogue" << std::endl;
 	std::cout << "Enter (3) - Mage" << std::endl;
+	std::cout << "Enter (4) - Hunter" << std::endl;
+	std::cout << "Enter (5) - Priest" << std::endl;
 
 	std::string classChoice;
 	std::cin >> classChoice;
@@ -32,6 +34,18 @@ Character* CharacterCreation()
 	else if (classChoice == "3") 
 	{
 		Character* player1 = Mage::createCharacter(charName, "Nomad", raceName);
+		player1->raceBonus(raceName);
+		return player1;
+	}
+	else if (classChoice == "4")
+	{
+		Character* player1 = Hunter::createCharacter(charName, "Nomad", raceName);
+		player1->raceBonus(raceName);
+		return player1;
+	}
+	else if (classChoice == "5")
+	{
+		Character* player1 = Priest::createCharacter(charName, "Nomad", raceName);
 		player1->raceBonus(raceName);
 		return player1;
 	}

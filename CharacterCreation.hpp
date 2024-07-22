@@ -4,6 +4,8 @@
 #include "Warrior.hpp"
 #include "Rogue.hpp"
 #include "Mage.hpp"
+#include "Hunter.hpp"
+#include "Priest.hpp"
 #include <iostream>
 
 Character* CharacterCreation();

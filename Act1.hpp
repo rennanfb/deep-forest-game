@@ -6,6 +6,8 @@
 #include "Warrior.hpp"
 #include "Mage.hpp"
 #include "Rogue.hpp"
+#include "Priest.hpp"
+#include "Hunter.hpp"
 #include "NpCharacter.hpp"
 #include "GoblinRebel.hpp"
 #include "GoblinWarrior.hpp"

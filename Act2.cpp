@@ -26,7 +26,7 @@ void Act2(std::vector <Character*> players)
 	enemies3.clear();
 	Interval(players);
 
-	Character* luna = CompanionPriest::createCharacter("Priestess of the Sun", "Sundeva", "Human");
+	Character* luna = Priest::createCharacter("Priestess of the Sun", "Sundeva", "Human");
 	players.push_back(luna);
 	NpCharacter* enemy5 = DemonAztras::createEnemy();
 	NpCharacter* enemy6 = GoblinPaladin::createEnemy();

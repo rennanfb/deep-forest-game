@@ -13,7 +13,7 @@ int main()
 
 	Act2(players);
 	
-	Character* luna = CompanionPriest::createCharacter("Luna", "Sundeva", "Human");
+	Character* luna = Priest::createCharacter("Luna", "Sundeva", "Human");
 	players.push_back(luna);
 
 	Act3(players);

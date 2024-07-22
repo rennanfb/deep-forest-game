@@ -1,8 +1,8 @@
-#include "Mage.hpp"
+#include "Priest.hpp"
 
 //Constructor
 
-Mage::Mage(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float dexterity, float lucky, int exp, int level, int nextLevelExp, float mana) :
+Priest::Priest(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float dexterity, float lucky, int exp, int level, int nextLevelExp, float mana) :
 	Character(name, faction, race, strength, agility, constitution, intelligence, dexterity, lucky, exp, level, nextLevelExp),
 	mana(mana)
 {
@@ -11,17 +11,17 @@ Mage::Mage(std::string name, std::string faction, std::string race, float streng
 
 //Creator
 
-Mage* Mage::createCharacter(std::string name, std::string faction, std::string race)
+Priest* Priest::createCharacter(std::string name, std::string faction, std::string race)
 {
-	return new Mage(name, faction, race, 5.0f, 5.0f, 12.0f, 20.0f, 10.0f, 13.0f, 0, 1, 100, 100.0);
+	return new Priest(name, faction, race, 5.0f, 5.0f, 15.0f, 18.0f, 10.0f, 5.0f, 0, 1, 100, 100.0f);
 }
 
 //Override Methods
 
-void Mage::showSheet() const 
+void Priest::showSheet() const
 {
 	std::cout << std::endl;
-	std::cout << this->getName() << " | Mage Lv: " << this->getLevel() << " | " << this->getRace() << " | " << this->getFaction() << std::endl;
+	std::cout << this->getName() << " | Priest Lv: " << this->getLevel() << " | " << this->getRace() << " | " << this->getFaction() << std::endl;
 	std::cout << "Str: " << this->getStrength() << " | Agi: " << this->getAgility() << " | Con: " << this->getConstitution() << " | Int: " << this->getIntelligence() << " | Dex: " << this->getDexterity() << " | Luk: " << this->getLucky() << std::endl;
 	std::cout << "---- Combat Attributes ---- " << std::endl;
 	std::cout << "Health Points: " << getHealthPoints() << " | Armor Power: " << getArmor() << std::endl;
@@ -30,7 +30,7 @@ void Mage::showSheet() const
 	std::cout << std::endl;
 }
 
-void Mage::showCombatLayout(std::vector<Character*> allies, std::vector<NpCharacter*> enemies)
+void Priest::showCombatLayout(std::vector<Character*> allies, std::vector<NpCharacter*> enemies)
 {
 	std::vector<NpCharacter*> aliveEnemies = filterAliveEnemies(enemies);
 
@@ -42,11 +42,11 @@ void Mage::showCombatLayout(std::vector<Character*> allies, std::vector<NpCharac
 		std::cout << " --------- " << this->getName() << " --------- " << std::endl;
 		std::cout << "HP: " << this->getHealthPoints() << " | " << "MP: " << this->getMana();
 		std::cout << std::endl;
-		std::cout << " ------------ " << "Skills" << " ------------ " << std::endl;
+		std::cout << " --------- " << "Skills" << " --------- " << std::endl;
 		std::cout << "|1| - Basic Attack" << std::endl;
-		std::cout << "|2| - Fire Ball (30MP)" << std::endl;
-		std::cout << "|3| - Earthquake (60MP) (Target: all enemies)" << std::endl;
-		std::cout << "|4| - Cloud Strife (90MP)" << std::endl;
+		std::cout << "|2| - Holy Light (30MP)" << std::endl;
+		std::cout << "|3| - Heal (60MP) (Target: Ally)" << std::endl;
+		std::cout << "|4| - Saviour Rain (90MP) (Target: All)" << std::endl;
 		std::cout << std::endl;
 
 		std::cout << "--------------------------------" << std::endl;
@@ -58,12 +58,12 @@ void Mage::showCombatLayout(std::vector<Character*> allies, std::vector<NpCharac
 			}
 		}
 		std::cout << "--------------------------------" << std::endl;
-		std::cout << std::endl;
 
-		std::cout << "* Enter the number of your next attack (1, 2, 3, 4) or Enter (0) to access your bag *" << std::endl;
+		std::cout << "* Enter the number of your next attack (1, 2, 3, 4) or Enter (0) to access your bag " << std::endl;
 		int nextMove;
 		std::cin >> nextMove;
 		std::cout << std::endl;
+
 
 		if (nextMove == 0)
 		{
@@ -84,7 +84,7 @@ void Mage::showCombatLayout(std::vector<Character*> allies, std::vector<NpCharac
 				int targetIndex = chooseEnemy(aliveEnemies);
 				NpCharacter* target = aliveEnemies[targetIndex];
 
-				this->fireBall(target);
+				this->holyLight(allies, enemies, target);
 			}
 			else
 			{
@@ -96,7 +96,12 @@ void Mage::showCombatLayout(std::vector<Character*> allies, std::vector<NpCharac
 		{
 			if (this->getMana() >= 59.5f)
 			{
-				this->earthQuake(enemies);
+				std::vector<Character*> aliveAllies = filterAliveAllies(allies);
+
+				int targetIndex = chooseAlly(aliveAllies);
+				Character* target = aliveAllies[targetIndex];
+
+				this->heal(allies, enemies, target);
 			}
 			else
 			{
@@ -108,10 +113,8 @@ void Mage::showCombatLayout(std::vector<Character*> allies, std::vector<NpCharac
 		{
 			if (this->getMana() >= 89.5f)
 			{
-				int targetIndex = chooseEnemy(aliveEnemies);
-				NpCharacter* target = aliveEnemies[targetIndex];
-
-				this->cloudStrife(target);
+				std::vector<Character*> aliveAllies = filterAliveAllies(allies);
+				this->saviourRain(aliveAllies, aliveEnemies);
 			}
 			else
 			{
@@ -132,18 +135,18 @@ void Mage::showCombatLayout(std::vector<Character*> allies, std::vector<NpCharac
 	}
 }
 
-void Mage::upgradeAttributes()
+void Priest::upgradeAttributes()
 {
 	this->upStrength(2.0f);
 	this->upAgility(2.0f);
 	this->upConstitution(3.0f);
-	this->upIntelligence(6.0f);
+	this->upIntelligence(4.0f);
 	this->upDexterity(2.0f);
 	this->upLucky(3.0f);
 	calculateCombatStatus();
 }
 
-void Mage::healStats()
+void Priest::healStats()
 {
 
 	this->setHealthPoints(this->getConstitution() * 10.0f);
@@ -151,7 +154,7 @@ void Mage::healStats()
 
 }
 
-void Mage::basicAttack(NpCharacter* target)
+void Priest::basicAttack(NpCharacter* target)
 {
 	std::cout << this->getName() << " attacked " << target->getName() << std::endl;
 
@@ -163,9 +166,9 @@ void Mage::basicAttack(NpCharacter* target)
 			float averageDamage = calculateAverageDamage(criticalDamage);
 			float damage = averageDamage - target->damageReduction();
 
-			if (damage < 0.0f) 
+			if (damage < 0.0f)
 			{
-				damage = 0.0f;
+				damage = 0;
 			}
 
 			target->decreaseHealth(damage);
@@ -177,9 +180,9 @@ void Mage::basicAttack(NpCharacter* target)
 			float averageDamage = calculateAverageDamage(this->getAttackPoints());
 			float damage = averageDamage - target->damageReduction();
 
-			if (damage < 0.0f) 
+			if (damage < 0.0f)
 			{
-				damage = 0.0f;
+				damage = 0;
 			}
 
 			target->decreaseHealth(damage);
@@ -187,28 +190,28 @@ void Mage::basicAttack(NpCharacter* target)
 			std::cout << std::endl;
 		}
 	}
-	else 
+	else
 	{
 		this->increaseMana();
 		return;
 	}
 }
 
-void Mage::restoreEnergy(float energyAmount)
+void Priest::restoreEnergy(float energyAmount)
 {
 	this->mana += energyAmount;
 
-	if (this->mana > 100.0f + (this->getIntelligence() / 3.0f))
+	if (this->mana > 100.0f + (getIntelligence() / 3.0f))
 	{
 		this->calculateMana();
 	}
 }
 
-void Mage::calculateCombatStatus()
+void Priest::calculateCombatStatus()
 {
-	this->healthPoints = this->getConstitution() * 6.0f;
+	this->healthPoints = this->getConstitution() * 7.0f;
 	this->attackPoints = this->getStrength() * 1.5f;
-	this->magicAttackPoints = this->getIntelligence() * 2.2f;
+	this->magicAttackPoints = this->getIntelligence() * 1.8f;
 	this->armor = this->getConstitution() * 1.5f;
 	this->dodge = this->getAgility() / 2.0f;
 	this->precision = this->getDexterity() / 2.0f;
@@ -217,33 +220,33 @@ void Mage::calculateCombatStatus()
 
 //Combat Methods
 
-void Mage::calculateMana() 
+void Priest::calculateMana()
 {
-	this->mana = 100.0f + (this->getIntelligence() / 3.0f);
+	this->mana = 100.0f + (getIntelligence() / 3.0f);
 }
 
-void Mage::increaseMana() 
+void Priest::increaseMana()
 {
 	this->mana += 10.0f;
-	std::cout << this->getName() << " meditated and recovered 10MP" << std::endl;
+	std::cout << this->getName() << " prayed and recovered 10MP" << std::endl;
 
-	if (this->mana > 100.0f + (this->getIntelligence() / 3.0f))
+	if (this->mana > 100.0f + (getIntelligence() / 3.0f))
 	{
-		this->calculateMana();
+		calculateMana();
 	}
 }
 
-void Mage::fireBall(NpCharacter* target)
+void Priest::holyLight(std::vector<Character*> allies, std::vector<NpCharacter*> enemies, NpCharacter* target)
 {
 	this->mana -= 30.0f;
 
-	std::cout << this->getName() << " used Fire Ball against " << target->getName() << std::endl;
+	std::cout << this->getName() << " used Holy Light against " << target->getName() << std::endl;
 
 	if (!target->dodgeAttack(this))
 	{
 		if (this->criticalHit())
 		{
-			float skillDamageBonus = this->getMagicAttackPoints() * 0.5f;
+			float skillDamageBonus = this->getMagicAttackPoints() * 0.4f;
 			float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
 			float criticalDamage = skillDamage * 2.0f;
 			float averageDamage = calculateAverageMagicDamage(criticalDamage);
@@ -251,7 +254,7 @@ void Mage::fireBall(NpCharacter* target)
 
 			if (damage < 0.0f)
 			{
-				damage = 0.0f;
+				damage = 0;
 			}
 
 			target->decreaseHealth(damage);
@@ -260,7 +263,7 @@ void Mage::fireBall(NpCharacter* target)
 		}
 		else
 		{
-			float skillDamageBonus = this->getMagicAttackPoints() * 0.5f;
+			float skillDamageBonus = this->getMagicAttackPoints() * 0.4f;
 			float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
 			float averageDamage = calculateAverageMagicDamage(skillDamage);
 			float damage = averageDamage - target->damageReduction();
@@ -273,127 +276,109 @@ void Mage::fireBall(NpCharacter* target)
 			target->decreaseHealth(damage);
 			this->increaseMana();
 			std::cout << std::endl;
-			}
 		}
+	}
 	else
 	{
 		this->increaseMana();
 		return;
 	}
+
 }
 
-void Mage::earthQuake(std::vector<NpCharacter*> enemies)
+void Priest::heal(std::vector<Character*> allies, std::vector<NpCharacter*> enemies, Character* target)
 {
 	this->mana -= 60.0f;
 
-	std::cout << this->getName() << " used Earthquake " << std::endl;
+	std::cout << this->getName() << " Healed " << target->getName() << std::endl;
 
-	if (this->criticalHit())
-	{
-		float skillDamageBonus = this->getMagicAttackPoints() * 0.7f;
-		float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
-		float criticalDamage = skillDamage * 2.0f;
-		float damage = calculateAverageMagicDamage(criticalDamage);
+	float skillDamageBonus = this->getMagicAttackPoints() * 0.8f;
+	float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
+	float averageHeal = calculateAverageMagicDamage(skillDamage);
 
-		if (damage < 0.0f)
-		{
-			damage = 0.0f;
-		}
+	target->restoreHealth(averageHeal);
+	this->increaseMana();
+	std::cout << std::endl;
 
-		for (size_t i = 0; i < enemies.size(); ++i)
-		{
-			if (!enemies[i]->dodgeAttack(this))
-			{
-				enemies[i]->decreaseHealth(damage - enemies[i]->damageReduction());
-			}
-		}
-
-		this->increaseMana();
-		std::cout << std::endl;
-	}
-	else
-	{
-		float skillDamageBonus = this->getMagicAttackPoints() * 0.7f;
-		float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
-		float damage = calculateAverageMagicDamage(skillDamage);
-
-		if (damage < 0.0f)
-		{
-			damage = 0.0f;
-		}
-
-		for (size_t i = 0; i < enemies.size(); ++i)
-		{
-			if (!enemies[i]->dodgeAttack(this))
-			{
-				enemies[i]->decreaseHealth(damage - enemies[i]->damageReduction());
-			}
-		}
-
-		this->increaseMana();
-		std::cout << std::endl;
-	}
 }
 
-void Mage::cloudStrife(NpCharacter* target)
+void Priest::saviourRain(std::vector<Character*> allies, std::vector<NpCharacter*> enemies)
 {
 	this->mana -= 90.0f;
 
-	std::cout << this->getName() << " used Cloud Strife against " << target->getName() << std::endl;
+	std::cout << this->getName() << "Used Saviour Rain" << std::endl;
 
-	if (!target->dodgeAttack(this))
+	if (this->criticalHit())
 	{
-		if (this->criticalHit())
+		float skillDamageBonus = this->getMagicAttackPoints() * 0.5f;
+		float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
+		float criticalDamage = skillDamage * 2.0f;
+		float averageDamage = calculateAverageMagicDamage(criticalDamage);
+		float damage = averageDamage;
+
+		if (damage < 0.0f)
 		{
-			float skillDamageBonus = this->getMagicAttackPoints() * 1.5f;
-			float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
-			float criticalDamage = skillDamage * 2.0f;
-			float averageDamage = calculateAverageMagicDamage(criticalDamage);
-			float damage = averageDamage - target->damageReduction();
-
-			if (damage < 0.0f)
-			{
-				damage = 0.0f;
-			}
-
-			target->decreaseHealth(damage);
-			this->increaseMana();
-			std::cout << std::endl;
+			damage = 0.0f;
 		}
-		else
+
+		for (size_t i = 0; i < enemies.size(); ++i)
 		{
-			float skillDamageBonus = this->getMagicAttackPoints() * 1.5f;
-			float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
-			float averageDamage = calculateAverageMagicDamage(skillDamage);
-			float damage = averageDamage - target->damageReduction();
-
-			if (damage < 0.0f)
+			if (!enemies[i]->dodgeAttack(this))
 			{
-				damage = 0.0f;
+				enemies[i]->decreaseHealth(damage - enemies[i]->damageReduction());
 			}
-
-			target->decreaseHealth(damage);
-			this->increaseMana();
-			std::cout << std::endl;
 		}
+
+		for (size_t i = 0; i < allies.size(); ++i)
+		{
+			allies[i]->restoreHealth(damage);
+		}
+
+		this->increaseMana();
+		std::cout << std::endl;
 	}
 	else
 	{
+		float skillDamageBonus = this->getMagicAttackPoints() * 0.5f;
+		float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
+		float averageDamage = calculateAverageMagicDamage(skillDamage);
+		float damage = averageDamage;
+
+		if (damage < 0.0f)
+		{
+			damage = 0.0f;
+		}
+
+
+		for (size_t i = 0; i < enemies.size(); ++i)
+		{
+			if (!enemies[i]->dodgeAttack(this))
+			{
+				enemies[i]->decreaseHealth(damage - enemies[i]->damageReduction());
+			}
+		}
+
+		for (size_t i = 0; i < allies.size(); ++i)
+		{
+			allies[i]->restoreHealth(damage);
+		}
+
 		this->increaseMana();
-		return;
+		std::cout << std::endl;
 	}
+
 }
 
 //Getters
 
-float Mage::getMana() const
+float Priest::getMana() const
 {
 	return mana;
 }
 
 //Setters
 
-void Mage::setMana(float mana)
+void Priest::setMana(float mana)
 {
 	this->mana = mana;
 }

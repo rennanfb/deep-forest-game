@@ -22,7 +22,7 @@ void Rogue::showSheet() const
 {
 	std::cout << std::endl;
 	std::cout << this->getName() << " | Rogue Lv: " << this->getLevel() << " | " << this->getRace() << " | " << this->getFaction() << std::endl;
-	std::cout << "Str: " << this->getStrength() << " | Agi: " << this->getAgility() << " | Con: " << this->getConstitution() << " | Int: " << this->getIntelligence() << " | Luk: " << this->getLucky() << std::endl;
+	std::cout << "Str: " << this->getStrength() << " | Agi: " << this->getAgility() << " | Con: " << this->getConstitution() << " | Int: " << this->getIntelligence() << " | Dex: " << this->getDexterity() << " | Luk: " << this->getLucky() << std::endl;
 	std::cout << "---- Combat Attributes ---- " << std::endl;
 	std::cout << "Health Points: " << getHealthPoints() << " | Armor Power: " << getArmor() << std::endl;
 	std::cout << "P-Attack Power: " << getAttackPoints() << " | M-Attack Power: " << getMagicAttackPoints() << std::endl;
@@ -151,11 +151,13 @@ void Rogue::upgradeAttributes()
 void Rogue::healStats()
 {
 	this->setHealthPoints(this->getConstitution() * 10.0f);
-	this->setStamina(100.0f);
+	this->calculateStamina();
 }
 
 void Rogue::basicAttack(NpCharacter* target)
 {
+	std::cout << this->getName() << " attacked " << target->getName() << std::endl;
+
 	if (!target->dodgeAttack(this))
 	{
 		if (this->criticalHit())
@@ -171,7 +173,6 @@ void Rogue::basicAttack(NpCharacter* target)
 
 
 			target->decreaseHealth(damage);
-			std::cout << this->getName() << " attacked " << target->getName() << " with " << criticalDamage << " points of damage" << std::endl;
 			this->increaseStamina();
 			std::cout << std::endl;
 		}
@@ -186,7 +187,6 @@ void Rogue::basicAttack(NpCharacter* target)
 			}
 
 			target->decreaseHealth(damage);
-			std::cout << this->getName() << " attacked " << target->getName() << " with " << damage << " points of damage" << std::endl;
 			this->increaseStamina();
 			std::cout << std::endl;
 		}
@@ -202,7 +202,7 @@ void Rogue::restoreEnergy(float energyAmount)
 {
 	this->stamina += energyAmount;
 
-	if (this->stamina > 100 + (this->getAgility() * 2))
+	if (this->stamina > 100.0f + (this->getConstitution() / 3.0f))
 	{
 		this->calculateStamina();
 	}
@@ -223,7 +223,7 @@ void Rogue::calculateCombatStatus()
 
 void Rogue::calculateStamina()
 {
-	this->stamina = 100 + (this->getAgility() * 2);
+	this->stamina = 100.0f + (this->getConstitution() / 3.0f);
 }
 
 void Rogue::increaseStamina() 
@@ -231,7 +231,7 @@ void Rogue::increaseStamina()
 	this->stamina += 15.0f;
 	std::cout << this->getName() << " breathes and regenerates 15 SP" << std::endl;
 
-	if (this->stamina > 100 + (this->getAgility() * 2)) {
+	if (this->stamina > 100.0f + (this->getConstitution() / 3.0f)) {
 		this->calculateStamina();
 	}
 }
@@ -240,6 +240,8 @@ void Rogue::increaseStamina()
 void Rogue::twinBlades(NpCharacter* target)
 {
 	this->stamina -= 40.0f;
+
+	std::cout << this->getName() << " used Twin Blades against " << target->getName() << std::endl;
 
 	if (!target->dodgeAttack(this))
 	{
@@ -257,7 +259,6 @@ void Rogue::twinBlades(NpCharacter* target)
 			}
 
 			target->decreaseHealth(damage);
-			std::cout << this->getName() << " used Twin Blades against " << target->getName() << " with " << criticalDamage << " points of damage" << std::endl;
 			this->increaseStamina();
 			std::cout << std::endl;
 		}
@@ -274,7 +275,6 @@ void Rogue::twinBlades(NpCharacter* target)
 			}
 
 			target->decreaseHealth(damage);
-			std::cout << this->getName() << " used Twin Blades against " << target->getName() << " with " << damage << " points of damage" << std::endl;
 			this->increaseStamina();
 			std::cout << std::endl;
 		}
@@ -290,6 +290,8 @@ void Rogue::deepWound(NpCharacter* target)
 {
 	this->stamina -= 60.0f;
 
+	std::cout << this->getName() << " used Deep Wound against " << target->getName() << std::endl;
+
 	if (!target->dodgeAttack(this))
 	{
 		if (this->criticalHit())
@@ -306,7 +308,6 @@ void Rogue::deepWound(NpCharacter* target)
 			}
 
 			target->decreaseHealth(damage);
-			std::cout << this->getName() << " used Deep Wound against " << target->getName() << " with " << criticalDamage << " points of damage" << std::endl;
 			this->increaseStamina();
 			std::cout << std::endl;
 		}
@@ -323,7 +324,6 @@ void Rogue::deepWound(NpCharacter* target)
 			}
 
 			target->decreaseHealth(damage);
-			std::cout << this->getName() << " used Deep Wound against " << target->getName() << " with " << damage << " points of damage" << std::endl;
 			this->increaseStamina();
 			std::cout << std::endl;
 		}
@@ -340,6 +340,8 @@ void Rogue::sevenSins(NpCharacter* target)
 {
 	this->stamina -= 80.0f;
 
+	std::cout << this->getName() << " used Seven Sins against " << target->getName() << std::endl;
+
 	if (!target->dodgeAttack(this))
 	{
 		if (this->criticalHit())
@@ -356,7 +358,6 @@ void Rogue::sevenSins(NpCharacter* target)
 			}
 
 			target->decreaseHealth(damage);
-			std::cout << this->getName() << " used Seven Sins against " << target->getName() << " with " << criticalDamage << " points of damage" << std::endl;
 			this->increaseStamina();
 			std::cout << std::endl;
 		}
@@ -373,7 +374,6 @@ void Rogue::sevenSins(NpCharacter* target)
 			}
 
 			target->decreaseHealth(damage);
-			std::cout << this->getName() << " used Seven Sins against " << target->getName() << " with " << damage << " points of damage" << std::endl;
 			this->increaseStamina();
 			std::cout << std::endl;
 		}

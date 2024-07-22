@@ -3,6 +3,8 @@
 #include "Warrior.hpp"
 #include "Rogue.hpp"
 #include "Mage.hpp"
+#include "Hunter.hpp"
+#include "Priest.hpp"
 #include "NpCharacter.hpp"
 
 void Conflict1(std::vector <Character*> players, std::vector<NpCharacter*> enemies);
