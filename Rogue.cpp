@@ -148,6 +148,21 @@ void Rogue::upgradeAttributes()
 	calculateCombatStatus();
 }
 
+void Rogue::checkLevelAttributes()
+{
+	for (size_t i = 0; i < this->getLevel(); ++i)
+	{
+		this->upStrength(4.0f);
+		this->upAgility(5.0f);
+		this->upConstitution(3.0f);
+		this->upIntelligence(2.0f);
+		this->upDexterity(3.0f);
+		this->upLucky(5.0f);
+		this->nextLevelExp += 100;
+	}
+	calculateCombatStatus();
+}
+
 void Rogue::healStats()
 {
 	this->setHealthPoints(this->getConstitution() * 10.0f);

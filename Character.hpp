@@ -47,6 +47,7 @@ public:
 	virtual void basicAttack(NpCharacter* enemy) = 0;
 	virtual void healStats() = 0;
 	virtual void upgradeAttributes() = 0;
+	virtual void checkLevelAttributes() = 0;
 	virtual void restoreEnergy(float energyAmount) = 0;
 	virtual void calculateCombatStatus() = 0;
 

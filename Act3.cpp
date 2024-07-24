@@ -1,7 +1,8 @@
 #include "Act3.hpp"
 
-void Act3(std::vector <Character*> players)
+void Act3(std::vector <Character*>& players, Character*& qing)
 {
+
 	Interval(players);
 
 	NpCharacter* enemy1 = SaberwolfAlpha::createEnemy();
@@ -22,5 +23,7 @@ void Act3(std::vector <Character*> players)
 	enemies2.clear();
 	Interval(players);
 
-	Character* Qing = Hunter::createCharacter("Qing", "Azaya", "Human");
+	qing = Hunter::createQing(3);
+	qing->checkLevelAttributes();
+	players.push_back(qing);
 }

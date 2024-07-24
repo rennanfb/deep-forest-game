@@ -16,6 +16,11 @@ Hunter* Hunter::createCharacter(std::string name, std::string faction, std::stri
 	return new Hunter(name, faction, race, 5.0f, 13.0f, 12.0f, 8.0f, 20.0f, 13.0f, 0, 1, 100, 100.0f);
 }
 
+Hunter* Hunter::createQing(int level)
+{
+	return new Hunter("Qing", "Azaya", "Human", 5.0f, 13.0f, 12.0f, 8.0f, 20.0f, 13.0f, 0, level, 100, 100.0f);
+}
+
 //Override Methods
 
 void Hunter::showSheet() const
@@ -140,6 +145,21 @@ void Hunter::upgradeAttributes()
 	this->upIntelligence(3.0);
 	this->upDexterity(5.0f);
 	this->upLucky(3.0);
+	calculateCombatStatus();
+}
+
+void Hunter::checkLevelAttributes()
+{
+	for (size_t i = 0; i < this->getLevel(); ++i)
+	{
+		this->upStrength(1.0f);
+		this->upAgility(3.0f);
+		this->upConstitution(2.0);
+		this->upIntelligence(3.0);
+		this->upDexterity(5.0f);
+		this->upLucky(3.0);
+		this->nextLevelExp += 100;
+	}
 	calculateCombatStatus();
 }
 

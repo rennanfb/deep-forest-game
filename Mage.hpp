@@ -24,6 +24,7 @@ public:
 	void showSheet() const override;
 	void showCombatLayout(std::vector <Character*> allies, std::vector<NpCharacter*> enemies) override;
 	void upgradeAttributes() override;
+	void checkLevelAttributes() override;
 	void healStats() override;
 	void basicAttack(NpCharacter* enemy) override;
 	void restoreEnergy(float energyAmount) override;

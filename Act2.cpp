@@ -1,6 +1,6 @@
 #include "Act2.hpp"
 
-void Act2(std::vector <Character*> players)
+void Act2(std::vector <Character*>& players, Character*& luna)
 {
 	Interval(players);
 
@@ -26,8 +26,10 @@ void Act2(std::vector <Character*> players)
 	enemies3.clear();
 	Interval(players);
 
-	Character* luna = Priest::createCharacter("Priestess of the Sun", "Sundeva", "Human");
+	luna = Priest::createLuna(2);
+	luna->checkLevelAttributes();
 	players.push_back(luna);
+
 	NpCharacter* enemy5 = DemonAztras::createEnemy();
 	NpCharacter* enemy6 = GoblinPaladin::createEnemy();
 	NpCharacter* enemy7 = GoblinPaladin::createEnemy();
@@ -35,6 +37,5 @@ void Act2(std::vector <Character*> players)
 	
 	Conflict8(players, enemies4);
 	enemies.clear();
-	players.pop_back();
 
 }

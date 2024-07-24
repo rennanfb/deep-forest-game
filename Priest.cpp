@@ -16,6 +16,11 @@ Priest* Priest::createCharacter(std::string name, std::string faction, std::stri
 	return new Priest(name, faction, race, 5.0f, 5.0f, 15.0f, 18.0f, 10.0f, 5.0f, 0, 1, 100, 100.0f);
 }
 
+Priest* Priest::createLuna(int level)
+{
+	return new Priest("Luna", "Sundeva", "Human", 5.0f, 5.0f, 15.0f, 18.0f, 10.0f, 5.0f, 0, level, 100, 100.0f);
+}
+
 //Override Methods
 
 void Priest::showSheet() const
@@ -137,12 +142,27 @@ void Priest::showCombatLayout(std::vector<Character*> allies, std::vector<NpChar
 
 void Priest::upgradeAttributes()
 {
-	this->upStrength(2.0f);
+	this->upStrength(1.0f);
 	this->upAgility(2.0f);
 	this->upConstitution(3.0f);
 	this->upIntelligence(4.0f);
 	this->upDexterity(2.0f);
 	this->upLucky(3.0f);
+	calculateCombatStatus();
+}
+
+void Priest::checkLevelAttributes()
+{
+	for (size_t i = 0; i < this->getLevel(); ++i)
+	{
+		this->upStrength(1.0f);
+		this->upAgility(2.0f);
+		this->upConstitution(3.0f);
+		this->upIntelligence(4.0f);
+		this->upDexterity(2.0f);
+		this->upLucky(3.0f);
+		this->nextLevelExp += 100;
+	}
 	calculateCombatStatus();
 }
 
@@ -290,7 +310,7 @@ void Priest::heal(std::vector<Character*> allies, std::vector<NpCharacter*> enem
 {
 	this->mana -= 60.0f;
 
-	std::cout << this->getName() << " Healed " << target->getName() << std::endl;
+	std::cout << this->getName() << " healed " << target->getName() << std::endl;
 
 	float skillDamageBonus = this->getMagicAttackPoints() * 0.8f;
 	float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
@@ -306,7 +326,7 @@ void Priest::saviourRain(std::vector<Character*> allies, std::vector<NpCharacter
 {
 	this->mana -= 90.0f;
 
-	std::cout << this->getName() << "Used Saviour Rain" << std::endl;
+	std::cout << this->getName() << " used Saviour Rain" << std::endl;
 
 	if (this->criticalHit())
 	{

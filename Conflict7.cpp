@@ -34,6 +34,10 @@ void Conflict7(std::vector <Character*> players, std::vector<NpCharacter*> enemi
 			{
 				player->showCombatLayout(players, enemies);
 			}
+			else
+			{
+				std::cout << player->getName() << " is down" << std::endl;
+			}
 		}
 
 		for (NpCharacter* enemy : enemies)
@@ -58,6 +62,22 @@ void Conflict7(std::vector <Character*> players, std::vector<NpCharacter*> enemi
 	{
 		if (!enemy->isAlive())
 		{
+			if (players.size() == 2)
+			{
+				players[1]->increaseExp(enemy);
+			}
+			else if (players.size() == 3)
+			{
+				players[1]->increaseExp(enemy);
+				players[2]->increaseExp(enemy);
+			}
+			else if (players.size() == 4)
+			{
+				players[1]->increaseExp(enemy);
+				players[2]->increaseExp(enemy);
+				players[3]->increaseExp(enemy);
+			}
+
 			players[0]->defeatEnemy(enemy);
 		}
 	}

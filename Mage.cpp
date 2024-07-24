@@ -40,7 +40,7 @@ void Mage::showCombatLayout(std::vector<Character*> allies, std::vector<NpCharac
 
 		std::cout << std::endl;
 		std::cout << " --------- " << this->getName() << " --------- " << std::endl;
-		std::cout << "HP: " << this->getHealthPoints() << " | " << "MP: " << this->getMana();
+		std::cout << "HP: " << this->getHealthPoints() << " | " << "MP: " << this->getMana() << std::endl;
 		std::cout << std::endl;
 		std::cout << " ------------ " << "Skills" << " ------------ " << std::endl;
 		std::cout << "|1| - Basic Attack" << std::endl;
@@ -137,9 +137,24 @@ void Mage::upgradeAttributes()
 	this->upStrength(2.0f);
 	this->upAgility(2.0f);
 	this->upConstitution(3.0f);
-	this->upIntelligence(6.0f);
+	this->upIntelligence(5.0f);
 	this->upDexterity(2.0f);
 	this->upLucky(3.0f);
+	calculateCombatStatus();
+}
+
+void Mage::checkLevelAttributes()
+{
+	for (size_t i = 0; i < this->getLevel(); ++i)
+	{
+		this->upStrength(2.0f);
+		this->upAgility(2.0f);
+		this->upConstitution(3.0f);
+		this->upIntelligence(5.0f);
+		this->upDexterity(2.0f);
+		this->upLucky(3.0f);
+		this->nextLevelExp += 100;
+	}
 	calculateCombatStatus();
 }
 

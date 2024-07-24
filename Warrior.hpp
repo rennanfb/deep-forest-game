@@ -26,6 +26,7 @@ public:
 	void showSheet() const override;
 	void decreaseHealth(float damage) override;
 	void upgradeAttributes() override;
+	void checkLevelAttributes() override;
 	void healStats() override;
 	void basicAttack(NpCharacter* enemy) override;
 	void restoreEnergy(float energyAmount) override;
