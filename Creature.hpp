@@ -1,3 +1,4 @@
+
 #pragma once
 #include <iostream>
 #include <string>
@@ -5,7 +6,7 @@
 
 class Creature
 {
-private:
+protected:
 
 	//Identification
 
@@ -27,6 +28,7 @@ public:
 	//Constructor
 
 	Creature(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float dexterity, float lucky);
+
 
 	//Uppers
 
@@ -52,14 +54,14 @@ public:
 
 	//Setters
 
+	void setName(std::string name);
+	void setFaction(std::string faction);
+	static std::string setRace();
 	void setStrength(float strength);
 	void setAgility(float agility);
 	void setConstitution(float constitution);
 	void setIntelligence(float intelligence);
 	void setDexterity(float dexterity);
 	void setLucky(float lucky);
-	void setName(std::string name);
-	void setFaction(std::string faction);
-	static std::string setRace();
-};
 
+};

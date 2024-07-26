@@ -327,7 +327,7 @@ void Hunter::huntingArrow(std::vector<NpCharacter*> enemies, NpCharacter* target
 			
 			std::random_device rd;
 			std::mt19937 gen(rd());
-			std::uniform_int_distribution<> dis(0, (enemies.size() - 1));
+			std::uniform_int_distribution<> dis(0, (static_cast<int>(enemies.size()) - 1));
 
 			int target2 = dis(gen);
 

@@ -1,6 +1,6 @@
 #include "Act1.hpp"
 
-void Act1(std::vector <Character*> players) 
+void Act1(std::vector <Character*>& players) 
 {
 	Interval(players);
 

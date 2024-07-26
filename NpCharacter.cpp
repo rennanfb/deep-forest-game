@@ -1,4 +1,6 @@
 #include "NpCharacter.hpp"
+#include "Buff.hpp"
+#include "BuffBurning.hpp"
 
 //Contructor 
 
@@ -11,7 +13,7 @@ NpCharacter::NpCharacter(std::string name, std::string faction, std::string race
 
 //Combat Methods
 
-float NpCharacter::calculateAverageDamage(float damage)
+float NpCharacter::calculateAverageDamage(float damage) const
 {
 	std::random_device rd;
 	std::mt19937 gen(rd());
@@ -33,7 +35,7 @@ float NpCharacter::calculateAverageDamage(float damage)
 	return damage;
 }
 
-float NpCharacter::calculateAverageMagicDamage(float damage)
+float NpCharacter::calculateAverageMagicDamage(float damage) const
 {
 	std::random_device rd;
 	std::mt19937 gen(rd());
@@ -83,6 +85,17 @@ size_t NpCharacter::chooseEnemy(const std::vector<Character*>& enemies)
 		return 0;
 	}
 
+}
+
+void NpCharacter::applyBuff(Buff* buff)
+{
+	this->buffList.push_back(buff);
+
+}
+
+void NpCharacter::removeBuff(Buff* buff)
+{
+	return;
 }
 
 float NpCharacter::damageReduction() const
@@ -566,6 +579,23 @@ float NpCharacter::getPrecision() const
 int NpCharacter::getExp() const
 {
 	return exp;
+}
+
+std::vector<Buff*> NpCharacter::getBuffList() const
+{
+	return buffList;
+}
+
+bool NpCharacter::isBuffed()
+{
+	if (this->buffList.size() > 0)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 //Setters

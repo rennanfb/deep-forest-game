@@ -6,6 +6,7 @@
 #include <random>
 
 class Bag;
+class Buff;
 class NpCharacter;
 
 class Character : public Creature
@@ -18,21 +19,21 @@ protected:
 
 	//Combat Stats
 
-	float healthPoints;
-	float attackPoints;
-	float magicAttackPoints;
-	float armor;
-	float dodge;
-	float precision;
-	float criticalChance;
+	float healthPoints = 0.0f;
+	float attackPoints = 0.0f;
+	float magicAttackPoints = 0.0f;
+	float armor = 0.0f;
+	float dodge = 0.0f;
+	float precision = 0.0f;
+	float criticalChance = 0.0f;
 
 	//Experience
 
-	int exp;
-	int level;
-	int nextLevelExp;
+	int exp = 0;
+	int level = 1;
+	int nextLevelExp = 100;
 
-
+	std::vector<Buff*> buffList;
 
 public:
 
@@ -53,12 +54,14 @@ public:
 
 	//Combat Methods
 
-	float calculateAverageDamage(float damage);
-	float calculateAverageMagicDamage(float damage);
+	float calculateAverageDamage(float damage) const;
+	float calculateAverageMagicDamage(float damage) const;
 	std::vector<NpCharacter*> filterAliveEnemies(std::vector<NpCharacter*> enemies);
 	std::vector<Character*> filterAliveAllies(std::vector<Character*> allies);
 	int chooseEnemy(const std::vector<NpCharacter*>& enemies);
 	int chooseAlly(const std::vector<Character*>& allies);
+	void applyBuff(Buff* buff);
+	void removeBuff(Buff* buff);
 	float damageReduction() const;
 	void restoreHealth(float heal);
 	virtual void decreaseHealth(float damage);
@@ -89,6 +92,8 @@ public:
 	int getExp() const;
 	int getLevel() const;
 	int getNextLevelExp() const;
+	std::vector<Buff*> getBuffList() const;
+	bool isBuffed();
 
 	//Setters
 

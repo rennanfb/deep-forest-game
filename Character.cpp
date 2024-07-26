@@ -1,6 +1,8 @@
 #include "Character.hpp"
 #include "NpCharacter.hpp"
 #include "Bag.hpp"
+#include "Buff.hpp"
+#include "BuffBurning.hpp"
 
 //Constructor
 
@@ -16,7 +18,7 @@ Character::Character(std::string name, std::string faction, std::string race, fl
 
 //Combat Methods
 
-float Character::calculateAverageDamage(float damage) 
+float Character::calculateAverageDamage(float damage) const
 {
 	float averageDamageBonus = this->getAverageAttackBase();
 
@@ -36,7 +38,7 @@ float Character::calculateAverageDamage(float damage)
 	return damage;
 }
 
-float Character::calculateAverageMagicDamage(float damage)
+float Character::calculateAverageMagicDamage(float damage) const
 {
 	float averageDamageBonus = this->getAverageMagicAttackBase();
 
@@ -130,6 +132,16 @@ int Character::chooseAlly(const std::vector<Character*>& allies)
 			std::cout << "Please enter a valid number between 1 and " << allies.size() << std::endl;
 		}
 	}
+}
+
+void Character::applyBuff(Buff* buff)
+{
+	this->buffList.push_back(buff);
+}
+
+void Character::removeBuff(Buff* buff)
+{
+	return;
 }
 
 
@@ -334,6 +346,23 @@ int Character::getLevel() const
 int Character::getNextLevelExp() const
 {
 	return nextLevelExp;
+}
+
+std::vector<Buff*> Character::getBuffList() const
+{
+	return buffList;
+}
+
+bool Character::isBuffed()
+{
+	if (this->buffList.size() > 0)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 //Setters

@@ -50,7 +50,7 @@ void Bag::showBagLayout(Character* player)
 	std::cout << std::endl;
 	std::cout << "- Enter the number of the item to use it, or Enter (0) to return -" << std::endl;
 
-	int answer;
+	size_t answer;
 	std::cin >> answer;
 
 	if (answer >= 1 && answer <= items.size())

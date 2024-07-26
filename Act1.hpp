@@ -2,6 +2,8 @@
 #include <iomanip>
 #include "Creature.hpp"
 #include "Character.hpp"
+#include "Buff.hpp"
+#include "BuffBurning.hpp"
 #include "CharacterCreation.hpp"
 #include "Warrior.hpp"
 #include "Mage.hpp"
@@ -20,4 +22,4 @@
 #include "Conflict3.hpp"
 #include "Conflict4.hpp"
 
-void Act1(std::vector <Character*> players);
+void Act1(std::vector <Character*>& players);

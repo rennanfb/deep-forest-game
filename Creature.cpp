@@ -136,7 +136,7 @@ std::string Creature::setRace()
 	{
 		std::cout << "You must type a available Race Number (1, 2, 3)" << std::endl;
 		setRace();
-	}
+	};
 	return raceName;
 }
 void Creature::setStrength(float strength)
@@ -155,7 +155,7 @@ void Creature::setIntelligence(float intelligence)
 {
 	this->intelligence = intelligence;
 }
-void Creature::setDexterity(float intelligence)
+void Creature::setDexterity(float dexterity)
 {
 	this->dexterity = dexterity;
 }

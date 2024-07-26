@@ -51,7 +51,7 @@ Character* CharacterCreation()
 	}
 	else 
 	{
-		std::cout << "You had to enter the class number as the exemple (1 - Warrior | 2 - Rogue | 3 - Mage)" << std::endl;
+		std::cout << "You had to enter the class number as the exemple (1 - Warrior | 2 - Rogue | 3 - Mage | 4 - Hunter | 5 - Priest)" << std::endl;
 		return CharacterCreation();
 	}
 

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <map>
 #include "Item.hpp"
+#include "Creature.hpp"
 #include "Character.hpp"
 #include "NpCharacter.hpp"
 #include "ElixirSmall.hpp"

@@ -13,17 +13,41 @@ void Conflict1(std::vector <Character*> players, std::vector<NpCharacter*> enemi
 
 	while (players[0]->isAlive() && enemies[0]->isAlive())
 	{
+
+
+
 		for (NpCharacter* enemy : enemies) 
 		{
+			if (enemy->isBuffed())
+			{
+				for (auto buff : enemy->getBuffList())
+				{
+					buff->applyEffectOnNpc();
+					buff->decreaseDuration();
+				}
+			}
+
 			std::cout << "---------------------------------------------------------------------------" << std::endl;
+
 			if (enemy->isAlive())
 			{
 				enemy->npcSkillSet(players);
 			}
 		}
+
 		for (Character* player : players) 
 		{
+			if (player->isBuffed())
+			{
+				for (auto buff : player->getBuffList())
+				{
+					buff->applyEffectOnPlayer();
+					buff->decreaseDuration();
+				}
+			}
+
 			std::cout << "---------------------------------------------------------------------------" << std::endl;
+
 			if (player->isAlive())
 			{
 				player->showCombatLayout(players, enemies);
@@ -33,6 +57,9 @@ void Conflict1(std::vector <Character*> players, std::vector<NpCharacter*> enemi
 				std::cout << player->getName() << " is down" << std::endl;
 			}
 		}
+
+
+
 	}
 
 	if (!players[0]->isAlive())

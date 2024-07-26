@@ -6,6 +6,7 @@
 #include <random>
 
 class Bag;
+class Buff;
 class Character;
 
 class NpCharacter : public Creature
@@ -16,14 +17,17 @@ public:
 
 protected:
 
-	float healthPoints;
-	float attackPoints;
-	float magicAttackPoints;
-	float armor;
-	float dodge;
-	float precision;
-	float criticalChance;
-	int exp;
+	float healthPoints = 0.0f;
+	float attackPoints = 0.0f;
+	float magicAttackPoints = 0.0f;
+	float armor = 0.0f;
+	float dodge = 0.0f;
+	float precision = 0.0f;
+	float criticalChance = 0.0f;
+
+	int exp = 0;
+
+	std::vector<Buff*> buffList;
 
 public:
 
@@ -38,10 +42,12 @@ public:
 
 	//Combat Methods
 
-	float calculateAverageDamage(float damage);
-	float calculateAverageMagicDamage(float damage);
+	float calculateAverageDamage(float damage) const;
+	float calculateAverageMagicDamage(float damage) const;
 	virtual void calculateCombatStatus();
 	size_t chooseEnemy(const std::vector<Character*>& players);
+	void applyBuff(Buff* buff);
+	void removeBuff(Buff* buff);
 	void restoreHealth(float heal);
 	void decreaseHealth(float damage);
 	bool dodgeAttack(Character* enemy) const;
@@ -70,6 +76,8 @@ public:
 	float getArmor() const;
 	float getPrecision() const;
 	int getExp() const;
+	std::vector<Buff*> getBuffList() const;
+	bool isBuffed();
 
 	//Setters
 

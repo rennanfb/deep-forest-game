@@ -1,4 +1,6 @@
 #include "Mage.hpp"
+#include "Buff.hpp"
+#include "BuffBurning.hpp"
 
 //Constructor
 
@@ -13,7 +15,7 @@ Mage::Mage(std::string name, std::string faction, std::string race, float streng
 
 Mage* Mage::createCharacter(std::string name, std::string faction, std::string race)
 {
-	return new Mage(name, faction, race, 5.0f, 5.0f, 12.0f, 20.0f, 10.0f, 13.0f, 0, 1, 100, 100.0);
+	return new Mage(name, faction, race, 5.0f, 5.0f, 120.0f, 10.0f, 10.0f, 13.0f, 0, 1, 100, 100.0);
 }
 
 //Override Methods
@@ -288,8 +290,12 @@ void Mage::fireBall(NpCharacter* target)
 			target->decreaseHealth(damage);
 			this->increaseMana();
 			std::cout << std::endl;
-			}
 		}
+
+
+		Buff* burn = BuffBurning::create(this, target);
+		target->applyBuff(burn);
+	}
 	else
 	{
 		this->increaseMana();
