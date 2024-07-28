@@ -1,4 +1,5 @@
 #include "Rogue.hpp"
+#include "DebuffBleeding.hpp"
 
 //Cosntructor
 
@@ -42,6 +43,7 @@ void Rogue::showCombatLayout(std::vector <Character*> allies, std::vector<NpChar
 		std::cout << " --------- " << this->getName() << " --------- " << std::endl;
 		std::cout << "HP: " << this->getHealthPoints() << " | " << "SP: " << this->getStamina();
 		std::cout << std::endl;
+		std::cout << "Str: " << this->getStrength() << " | Agi: " << this->getAgility() << " | Con: " << this->getConstitution() << " | Int: " << this->getIntelligence() << " | Dex: " << this->getDexterity() << " | Luk: " << this->getLucky() << std::endl;
 		std::cout << " ------------ " << "Skills" << " ------------ " << std::endl;
 		std::cout << "|1| - Basic Attack" << std::endl;
 		std::cout << "|2| - Twin Blades (40SP)" << std::endl;
@@ -342,6 +344,10 @@ void Rogue::deepWound(NpCharacter* target)
 			this->increaseStamina();
 			std::cout << std::endl;
 		}
+
+		Debuff* bleed = DebuffBleeding::create(this, target);
+		target->applyDebuff(bleed);
+
 	}
 	else
 	{

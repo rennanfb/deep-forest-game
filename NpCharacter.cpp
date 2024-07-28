@@ -1,6 +1,10 @@
 #include "NpCharacter.hpp"
 #include "Buff.hpp"
-#include "BuffBurning.hpp"
+#include "DebuffBurning.hpp"
+#include "DebuffBleeding.hpp"
+#include "DebuffPoisoned.hpp"
+#include "FindBuffIndexByName.hpp"
+#include "FindDebuffIndexByName.hpp"
 
 //Contructor 
 
@@ -89,13 +93,70 @@ size_t NpCharacter::chooseEnemy(const std::vector<Character*>& enemies)
 
 void NpCharacter::applyBuff(Buff* buff)
 {
-	this->buffList.push_back(buff);
+	for (const auto& it : buffList)
+	{
+		if (it->getName() == buff->getName())
+		{
+			it->restartDuration();
+			return;
+		}
+	}
 
+	this->buffList.push_back(buff);
 }
 
 void NpCharacter::removeBuff(Buff* buff)
 {
-	return;
+	int buffIndex = FindBuffIndexByName(this->buffList, buff->getName());
+
+	if (buffIndex != -1 && this->buffList[buffIndex]->getDuration() == 0)
+	{
+		this->buffList.erase(this->buffList.begin() + buffIndex);
+	}
+}
+
+void NpCharacter::clearBuffs()
+{
+	for (auto buff : buffList)
+	{
+		delete buff;
+	}
+	buffList.clear();
+}
+
+void NpCharacter::applyDebuff(Debuff* debuff)
+{
+	for (const auto& it : debuffList)
+	{
+		if (it->getName() == debuff->getName())
+		{
+			it->restartDuration();
+			return;
+		}
+	}
+
+	this->debuffList.push_back(debuff);
+
+}
+
+void NpCharacter::removeDebuff(Debuff* debuff)
+{
+	int debuffIndex = FindDebuffIndexByName(this->debuffList, debuff->getName());
+
+	if (debuffIndex != -1 && this->debuffList[debuffIndex]->getDuration() == 0)
+	{
+		this->debuffList.erase(this->debuffList.begin() + debuffIndex);
+	}
+}
+
+void NpCharacter::clearDebuffs()
+{
+	for (auto debuff : debuffList)
+	{
+		delete debuff;
+	}
+
+	debuffList.clear();
 }
 
 float NpCharacter::damageReduction() const
@@ -339,6 +400,10 @@ void NpCharacter::throwDagger(Character* enemy)
 			enemy->decreaseHealth(damage);
 			std::cout << std::endl;
 		}
+
+		Debuff* poison = DebuffPoisoned::create(this, enemy);
+		enemy->applyDebuff(poison);
+
 	}
 	else
 	{
@@ -383,6 +448,10 @@ void NpCharacter::stockCharge(Character* enemy)
 			enemy->decreaseHealth(damage);
 			std::cout << std::endl;
 		}
+
+		Debuff* bleed = DebuffBleeding::create(this, enemy);
+		enemy->applyDebuff(bleed);
+
 	}
 	else
 	{
@@ -586,9 +655,26 @@ std::vector<Buff*> NpCharacter::getBuffList() const
 	return buffList;
 }
 
+std::vector<Debuff*> NpCharacter::getDebuffList() const
+{
+	return debuffList;
+}
+
 bool NpCharacter::isBuffed()
 {
 	if (this->buffList.size() > 0)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+bool NpCharacter::isDebuffed()
+{
+	if (this->debuffList.size() > 0)
 	{
 		return true;
 	}

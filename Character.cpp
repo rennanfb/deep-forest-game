@@ -2,7 +2,9 @@
 #include "NpCharacter.hpp"
 #include "Bag.hpp"
 #include "Buff.hpp"
-#include "BuffBurning.hpp"
+#include "DebuffBurning.hpp"
+#include "FindBuffIndexByName.hpp"
+#include "FindDebuffIndexByName.hpp"
 
 //Constructor
 
@@ -136,12 +138,72 @@ int Character::chooseAlly(const std::vector<Character*>& allies)
 
 void Character::applyBuff(Buff* buff)
 {
+	for (const auto& it : buffList)
+	{
+		if (it->getName() == buff->getName())
+		{
+			it->restartDuration();
+			return;
+		}
+	}
+
 	this->buffList.push_back(buff);
+
 }
 
 void Character::removeBuff(Buff* buff)
 {
-	return;
+	int buffIndex = FindBuffIndexByName(this->buffList, buff->getName());
+
+	if (buffIndex != -1 && this->buffList[buffIndex]->getDuration() == 0)
+	{
+		this->buffList.erase(this->buffList.begin() + buffIndex);
+	}
+}
+
+void Character::clearBuffs()
+{
+	for (auto buff : buffList)
+	{
+		delete buff;
+	}
+
+	buffList.clear();
+}
+
+void Character::applyDebuff(Debuff* debuff)
+{
+	for (const auto& it : debuffList)
+	{
+		if (it->getName() == debuff->getName())
+		{
+			it->restartDuration();
+			return;
+		}
+	}
+
+	this->debuffList.push_back(debuff);
+
+}
+
+void Character::removeDebuff(Debuff* debuff)
+{
+	int debuffIndex = FindDebuffIndexByName(this->debuffList, debuff->getName());
+
+	if (debuffIndex != -1 && this->debuffList[debuffIndex]->getDuration() == 0)
+	{
+		this->debuffList.erase(this->debuffList.begin() + debuffIndex);
+	}
+}
+
+void Character::clearDebuffs()
+{
+	for (auto debuff : debuffList)
+	{
+		delete debuff;
+	}
+
+	debuffList.clear();
 }
 
 
@@ -353,9 +415,26 @@ std::vector<Buff*> Character::getBuffList() const
 	return buffList;
 }
 
+std::vector<Debuff*> Character::getDebuffList() const
+{
+	return debuffList;
+}
+
 bool Character::isBuffed()
 {
 	if (this->buffList.size() > 0)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+bool Character::isDebuffed()
+{
+	if (this->debuffList.size() > 0)
 	{
 		return true;
 	}

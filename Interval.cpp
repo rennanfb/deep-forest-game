@@ -3,14 +3,18 @@
 void Interval(std::vector <Character*> players) 
 {
 	std::cout << "------------------ Party ------------------" << std::endl;
+
 	for (Character* player : players)
 	{
 		player->healStats();
+		player->clearBuffs();
 		player->showSheet();
 	}
+
 	std::cout << "-------------------------------------------" << std::endl;
 
 	std::cout << "Continue ? (Enter Y for Yes) | Check you bag ? (Enter B)" << std::endl;
+
 	std::string answer;
 	std::cin >> answer;
 

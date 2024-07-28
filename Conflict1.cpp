@@ -13,18 +13,11 @@ void Conflict1(std::vector <Character*> players, std::vector<NpCharacter*> enemi
 
 	while (players[0]->isAlive() && enemies[0]->isAlive())
 	{
-
-
-
-		for (NpCharacter* enemy : enemies) 
+		for (NpCharacter* enemy : enemies)
 		{
-			if (enemy->isBuffed())
+			if (enemy->isDebuffed())
 			{
-				for (auto buff : enemy->getBuffList())
-				{
-					buff->applyEffectOnNpc();
-					buff->decreaseDuration();
-				}
+				CombatDebuffMechanic(enemy);
 			}
 
 			std::cout << "---------------------------------------------------------------------------" << std::endl;
@@ -32,18 +25,25 @@ void Conflict1(std::vector <Character*> players, std::vector<NpCharacter*> enemi
 			if (enemy->isAlive())
 			{
 				enemy->npcSkillSet(players);
+
+			}
+		}
+		for (NpCharacter* enemy : enemies)
+		{
+			if (enemy->isAlive())
+			{
+				if (enemy->isBuffed())
+				{
+					CombatBuffMechanic(enemy);
+				}
 			}
 		}
 
-		for (Character* player : players) 
+		for (Character* player : players)
 		{
-			if (player->isBuffed())
+			if (player->isDebuffed())
 			{
-				for (auto buff : player->getBuffList())
-				{
-					buff->applyEffectOnPlayer();
-					buff->decreaseDuration();
-				}
+				CombatDebuffMechanic(player);
 			}
 
 			std::cout << "---------------------------------------------------------------------------" << std::endl;
@@ -56,10 +56,19 @@ void Conflict1(std::vector <Character*> players, std::vector<NpCharacter*> enemi
 			{
 				std::cout << player->getName() << " is down" << std::endl;
 			}
+
 		}
 
-
-
+		for (Character* player : players)
+		{
+			if (player->isAlive())
+			{
+				if (player->isBuffed())
+				{
+					CombatBuffMechanic(player);
+				}
+			}
+		}
 	}
 
 	if (!players[0]->isAlive())

@@ -28,7 +28,13 @@ void Conflict6(std::vector <Character*> players, std::vector<NpCharacter*> enemi
 	{
 		for (Character* player : players)
 		{
+			if (player->isDebuffed())
+			{
+				CombatDebuffMechanic(player);
+			}
+
 			std::cout << "---------------------------------------------------------------------------" << std::endl;
+
 			if (player->isAlive())
 			{
 				player->showCombatLayout(players, enemies);
@@ -37,14 +43,43 @@ void Conflict6(std::vector <Character*> players, std::vector<NpCharacter*> enemi
 			{
 				std::cout << player->getName() << " is down" << std::endl;
 			}
+
+		}
+
+		for (Character* player : players)
+		{
+			if (player->isAlive())
+			{
+				if (player->isBuffed())
+				{
+					CombatBuffMechanic(player);
+				}
+			}
 		}
 
 		for (NpCharacter* enemy : enemies)
 		{
+			if (enemy->isDebuffed())
+			{
+				CombatDebuffMechanic(enemy);
+			}
+
 			std::cout << "---------------------------------------------------------------------------" << std::endl;
+
 			if (enemy->isAlive())
 			{
 				enemy->npcSkillSet(players);
+
+			}
+		}
+		for (NpCharacter* enemy : enemies)
+		{
+			if (enemy->isAlive())
+			{
+				if (enemy->isBuffed())
+				{
+					CombatBuffMechanic(enemy);
+				}
 			}
 		}
 	}

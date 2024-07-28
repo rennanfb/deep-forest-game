@@ -1,4 +1,5 @@
 #include "Priest.hpp"
+#include "BuffBlessed.hpp"
 
 //Constructor
 
@@ -47,10 +48,11 @@ void Priest::showCombatLayout(std::vector<Character*> allies, std::vector<NpChar
 		std::cout << " --------- " << this->getName() << " --------- " << std::endl;
 		std::cout << "HP: " << this->getHealthPoints() << " | " << "MP: " << this->getMana();
 		std::cout << std::endl;
+		std::cout << "Str: " << this->getStrength() << " | Agi: " << this->getAgility() << " | Con: " << this->getConstitution() << " | Int: " << this->getIntelligence() << " | Dex: " << this->getDexterity() << " | Luk: " << this->getLucky() << std::endl;
 		std::cout << " --------- " << "Skills" << " --------- " << std::endl;
 		std::cout << "|1| - Basic Attack" << std::endl;
-		std::cout << "|2| - Holy Light (30MP)" << std::endl;
-		std::cout << "|3| - Heal (60MP) (Target: Ally)" << std::endl;
+		std::cout << "|2| - Heal (30MP) (Target: Ally)" << std::endl;
+		std::cout << "|3| - Holy Light(60MP)" << std::endl;
 		std::cout << "|4| - Saviour Rain (90MP) (Target: All)" << std::endl;
 		std::cout << std::endl;
 
@@ -86,27 +88,26 @@ void Priest::showCombatLayout(std::vector<Character*> allies, std::vector<NpChar
 		{
 			if (this->getMana() >= 29.5f)
 			{
-				int targetIndex = chooseEnemy(aliveEnemies);
-				NpCharacter* target = aliveEnemies[targetIndex];
-
-				this->holyLight(allies, enemies, target);
-			}
-			else
-			{
-				std::cout << "Insufficient mana, select a possible move" << std::endl;
-				this->showCombatLayout(allies, enemies);
-			}
-		}
-		else if (nextMove == 3)
-		{
-			if (this->getMana() >= 59.5f)
-			{
 				std::vector<Character*> aliveAllies = filterAliveAllies(allies);
 
 				int targetIndex = chooseAlly(aliveAllies);
 				Character* target = aliveAllies[targetIndex];
 
 				this->heal(allies, enemies, target);
+			}
+			else
+			{
+				std::cout << "Insufficient mana, select a possible move" << std::endl;
+				this->showCombatLayout(allies, enemies);
+			}
+
+		}
+		else if (nextMove == 3)
+		{
+			if (this->getMana() >= 59.5f)
+			{
+				std::vector<Character*> aliveAllies = filterAliveAllies(allies);
+				this->holyLight(aliveAllies);
 			}
 			else
 			{
@@ -256,69 +257,33 @@ void Priest::increaseMana()
 	}
 }
 
-void Priest::holyLight(std::vector<Character*> allies, std::vector<NpCharacter*> enemies, NpCharacter* target)
+void Priest::heal(std::vector<Character*> allies, std::vector<NpCharacter*> enemies, Character* target)
 {
 	this->mana -= 30.0f;
 
-	std::cout << this->getName() << " used Holy Light against " << target->getName() << std::endl;
-
-	if (!target->dodgeAttack(this))
-	{
-		if (this->criticalHit())
-		{
-			float skillDamageBonus = this->getMagicAttackPoints() * 0.4f;
-			float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
-			float criticalDamage = skillDamage * 2.0f;
-			float averageDamage = calculateAverageMagicDamage(criticalDamage);
-			float damage = averageDamage - target->damageReduction();
-
-			if (damage < 0.0f)
-			{
-				damage = 0;
-			}
-
-			target->decreaseHealth(damage);
-			this->increaseMana();
-			std::cout << std::endl;
-		}
-		else
-		{
-			float skillDamageBonus = this->getMagicAttackPoints() * 0.4f;
-			float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
-			float averageDamage = calculateAverageMagicDamage(skillDamage);
-			float damage = averageDamage - target->damageReduction();
-
-			if (damage < 0.0f)
-			{
-				damage = 0.0f;
-			}
-
-			target->decreaseHealth(damage);
-			this->increaseMana();
-			std::cout << std::endl;
-		}
-	}
-	else
-	{
-		this->increaseMana();
-		return;
-	}
-
-}
-
-void Priest::heal(std::vector<Character*> allies, std::vector<NpCharacter*> enemies, Character* target)
-{
-	this->mana -= 60.0f;
-
 	std::cout << this->getName() << " healed " << target->getName() << std::endl;
 
-	float skillDamageBonus = this->getMagicAttackPoints() * 0.8f;
+	float skillDamageBonus = this->getMagicAttackPoints() * 0.5f;
 	float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
 	float averageHeal = calculateAverageMagicDamage(skillDamage);
 
 	target->restoreHealth(averageHeal);
 	this->increaseMana();
 	std::cout << std::endl;
+
+}
+
+void Priest::holyLight(std::vector<Character*> allies)
+{
+	this->mana -= 60.0f;
+
+	std::cout << "All allies had been blessed by the Holy Light" << std::endl;
+
+	for (auto ally : allies)
+	{
+		Buff* bless = BuffBlessed::create(this, ally);
+		ally->applyBuff(bless);
+	}
 
 }
 

@@ -7,6 +7,7 @@
 
 class Bag;
 class Buff;
+class Debuff;
 class NpCharacter;
 
 class Character : public Creature
@@ -34,6 +35,7 @@ protected:
 	int nextLevelExp = 100;
 
 	std::vector<Buff*> buffList;
+	std::vector<Debuff*> debuffList;
 
 public:
 
@@ -62,9 +64,13 @@ public:
 	int chooseAlly(const std::vector<Character*>& allies);
 	void applyBuff(Buff* buff);
 	void removeBuff(Buff* buff);
-	float damageReduction() const;
+	void clearBuffs();
+	void applyDebuff(Debuff* buff);
+	void removeDebuff(Debuff* debuff);
+	void clearDebuffs();
+	float damageReduction() const override;
 	void restoreHealth(float heal);
-	virtual void decreaseHealth(float damage);
+	virtual void decreaseHealth(float damage) override;
 	bool dodgeAttack(NpCharacter* enemy) const;
 	bool criticalHit() const; 
 	bool isAlive() const;
@@ -93,7 +99,9 @@ public:
 	int getLevel() const;
 	int getNextLevelExp() const;
 	std::vector<Buff*> getBuffList() const;
+	std::vector<Debuff*> getDebuffList() const;
 	bool isBuffed();
+	bool isDebuffed();
 
 	//Setters
 

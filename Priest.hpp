@@ -32,8 +32,8 @@ public:
 
 	void calculateMana();
 	void increaseMana();
-	void holyLight(std::vector<Character*> allies, std::vector<NpCharacter*> enemies, NpCharacter* target);
 	void heal(std::vector<Character*> allies, std::vector<NpCharacter*> enemies, Character* target);
+	void holyLight(std::vector<Character*> allies);
 	void saviourRain(std::vector<Character*> allies, std::vector<NpCharacter*> enemies);
 
 	//Getters

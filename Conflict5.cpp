@@ -17,20 +17,43 @@ void Conflict5(std::vector <Character*> players, std::vector<NpCharacter*> enemi
 	std::cout << "run away from you, until it screams and attack you" << std::endl;
 	std::cout << std::endl;
 
-	while (enemies[0]->isAlive() && players[0]->isAlive() )
+	while (enemies[0]->isAlive() && players[0]->isAlive())
 	{
 		for (NpCharacter* enemy : enemies)
 		{
+			if (enemy->isDebuffed())
+			{
+				CombatDebuffMechanic(enemy);
+			}
+
 			std::cout << "---------------------------------------------------------------------------" << std::endl;
+
 			if (enemy->isAlive())
 			{
 				enemy->npcSkillSet(players);
+
+			}
+		}
+		for (NpCharacter* enemy : enemies)
+		{
+			if (enemy->isAlive())
+			{
+				if (enemy->isBuffed())
+				{
+					CombatBuffMechanic(enemy);
+				}
 			}
 		}
 
 		for (Character* player : players)
 		{
+			if (player->isDebuffed())
+			{
+				CombatDebuffMechanic(player);
+			}
+
 			std::cout << "---------------------------------------------------------------------------" << std::endl;
+
 			if (player->isAlive())
 			{
 				player->showCombatLayout(players, enemies);
@@ -39,8 +62,21 @@ void Conflict5(std::vector <Character*> players, std::vector<NpCharacter*> enemi
 			{
 				std::cout << player->getName() << " is down" << std::endl;
 			}
+
+		}
+
+		for (Character* player : players)
+		{
+			if (player->isAlive())
+			{
+				if (player->isBuffed())
+				{
+					CombatBuffMechanic(player);
+				}
+			}
 		}
 	}
+
 
 	if (!players[0]->isAlive())
 	{

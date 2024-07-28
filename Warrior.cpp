@@ -43,6 +43,7 @@ void Warrior::showCombatLayout(std::vector <Character*> allies, std::vector<NpCh
 		std::cout << " --------- " << this->getName() << " --------- " << std::endl;
 		std::cout << "HP: " << this->getHealthPoints() << " | " << "FP: " << this->getFury();
 		std::cout << std::endl;
+		std::cout << "Str: " << this->getStrength() << " | Agi: " << this->getAgility() << " | Con: " << this->getConstitution() << " | Int: " << this->getIntelligence() << " | Dex: " << this->getDexterity() << " | Luk: " << this->getLucky() << std::endl;
 		std::cout << " ------------ " << "Skills" << " ------------ " << std::endl;
 		std::cout << "|1| - Basic Attack" << std::endl;
 		std::cout << "|2| - Sword Shout (15FP)" << std::endl;

@@ -1,4 +1,5 @@
 #include "Hunter.hpp"
+#include "DebuffPoisoned.hpp"
 
 //Constructor
 
@@ -47,9 +48,10 @@ void Hunter::showCombatLayout(std::vector<Character*> allies, std::vector<NpChar
 		std::cout << " --------- " << this->getName() << " --------- " << std::endl;
 		std::cout << "HP: " << this->getHealthPoints() << " | " << "FP: " << this->getFocus();
 		std::cout << std::endl;
+		std::cout << "Str: " << this->getStrength() << " | Agi: " << this->getAgility() << " | Con: " << this->getConstitution() << " | Int: " << this->getIntelligence() << " | Dex: " << this->getDexterity() << " | Luk: " << this->getLucky() << std::endl;
 		std::cout << " --------- " << "Skills" << " --------- " << std::endl;
 		std::cout << "|1| - Basic Attack" << std::endl;
-		std::cout << "|2| - Double Shot (30MP)" << std::endl;
+		std::cout << "|2| - Poison Shot (30MP)" << std::endl;
 		std::cout << "|3| - Hunting Arrow (70MP)" << std::endl;
 		std::cout << "|4| - Arrow Storm (100MP) (Target: All)" << std::endl;
 		std::cout << std::endl;
@@ -89,7 +91,7 @@ void Hunter::showCombatLayout(std::vector<Character*> allies, std::vector<NpChar
 				int targetIndex = chooseEnemy(aliveEnemies);
 				NpCharacter* target = aliveEnemies[targetIndex];
 
-				this->doubleShot(target);
+				this->poisonShot(target);
 			}
 			else
 			{
@@ -255,11 +257,11 @@ void Hunter::increaseFocus()
 	}
 }
 
-void Hunter::doubleShot(NpCharacter* target)
+void Hunter::poisonShot(NpCharacter* target)
 {
 	this->focus -= 30.0f;
 
-	std::cout << this->getName() << " used Double Shot against " << target->getName() << std::endl;
+	std::cout << this->getName() << " used Poison Shot against " << target->getName() << std::endl;
 
 	if (!target->dodgeAttack(this))
 	{
@@ -296,6 +298,10 @@ void Hunter::doubleShot(NpCharacter* target)
 			this->increaseFocus();
 			std::cout << std::endl;
 		}
+
+		Debuff* poison = DebuffPoisoned::create(this, target);
+		target->applyDebuff(poison);
+
 	}
 	else
 	{

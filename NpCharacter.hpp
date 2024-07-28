@@ -1,12 +1,13 @@
 #pragma once
+#include <random>
 #include "Creature.hpp"
 #include "Character.hpp"
 #include "Bag.hpp"
 #include "Item.hpp"
-#include <random>
 
 class Bag;
 class Buff;
+class Debuff;
 class Character;
 
 class NpCharacter : public Creature
@@ -28,6 +29,7 @@ protected:
 	int exp = 0;
 
 	std::vector<Buff*> buffList;
+	std::vector<Debuff*> debuffList;
 
 public:
 
@@ -48,6 +50,10 @@ public:
 	size_t chooseEnemy(const std::vector<Character*>& players);
 	void applyBuff(Buff* buff);
 	void removeBuff(Buff* buff);
+	void clearBuffs();
+	void applyDebuff(Debuff* buff);
+	void removeDebuff(Debuff* debuff);
+	void clearDebuffs();
 	void restoreHealth(float heal);
 	void decreaseHealth(float damage);
 	bool dodgeAttack(Character* enemy) const;
@@ -77,7 +83,9 @@ public:
 	float getPrecision() const;
 	int getExp() const;
 	std::vector<Buff*> getBuffList() const;
+	std::vector<Debuff*> getDebuffList() const;
 	bool isBuffed();
+	bool isDebuffed();
 
 	//Setters
 

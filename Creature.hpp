@@ -1,4 +1,3 @@
-
 #pragma once
 #include <iostream>
 #include <string>
@@ -29,6 +28,10 @@ public:
 
 	Creature(std::string name, std::string faction, std::string race, float strength, float agility, float constitution, float intelligence, float dexterity, float lucky);
 
+	//Pure Virtual Methods
+
+	virtual void decreaseHealth(float damage) = 0;
+	virtual float damageReduction() const = 0;
 
 	//Uppers
 

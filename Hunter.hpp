@@ -32,7 +32,7 @@ public:
 
 	void calculateFocus();
 	void increaseFocus();
-	void doubleShot(NpCharacter* target);
+	void poisonShot(NpCharacter* target);
 	void huntingArrow(std::vector<NpCharacter*> enemies, NpCharacter* target);
 	void arrowStorm(std::vector<NpCharacter*> enemies);
 
