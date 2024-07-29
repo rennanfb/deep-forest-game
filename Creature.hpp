@@ -22,6 +22,10 @@ protected:
 	float dexterity;
 	float lucky;
 
+	//Status
+
+	bool active = true;
+
 public:
 
 	//Constructor
@@ -67,4 +71,9 @@ public:
 	void setDexterity(float dexterity);
 	void setLucky(float lucky);
 
+	//Status
+
+	void activateCreature();
+	void disableCreature();
+	bool isActive();
 };

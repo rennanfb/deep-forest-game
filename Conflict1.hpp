@@ -13,6 +13,7 @@
 #include "DebuffBurning.hpp"
 #include "DebuffBleeding.hpp"
 #include "DebuffPoisoned.hpp"
+#include "DebuffStunned.hpp"
 #include "CombatBuffMechaninc.hpp"
 #include "CombatDebuffMechanic.hpp"
 

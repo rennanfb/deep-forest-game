@@ -51,9 +51,9 @@ void Priest::showCombatLayout(std::vector<Character*> allies, std::vector<NpChar
 		std::cout << "Str: " << this->getStrength() << " | Agi: " << this->getAgility() << " | Con: " << this->getConstitution() << " | Int: " << this->getIntelligence() << " | Dex: " << this->getDexterity() << " | Luk: " << this->getLucky() << std::endl;
 		std::cout << " --------- " << "Skills" << " --------- " << std::endl;
 		std::cout << "|1| - Basic Attack" << std::endl;
-		std::cout << "|2| - Heal (30MP) (Target: Ally)" << std::endl;
-		std::cout << "|3| - Holy Light(60MP)" << std::endl;
-		std::cout << "|4| - Saviour Rain (90MP) (Target: All)" << std::endl;
+		std::cout << "|2| - Heal (30MP) - Heal an ally" << std::endl;
+		std::cout << "|3| - Holy Light (60MP) - Bless all allies with strength, constitution and Lucky upgrades" << std::endl;
+		std::cout << "|4| - Saviour Rain (90MP) - A holy rain that cause damage to enemies and heal the allies" << std::endl;
 		std::cout << std::endl;
 
 		std::cout << "--------------------------------" << std::endl;

@@ -8,9 +8,11 @@
 #include "NpCharacter.hpp"
 #include "Buff.hpp"
 #include "BuffBlessed.hpp"
+#include "Debuff.hpp"
 #include "DebuffBurning.hpp"
 #include "DebuffBleeding.hpp"
 #include "DebuffPoisoned.hpp"
+#include "DebuffStunned.hpp"
 #include "CombatBuffMechaninc.hpp"
 #include "CombatDebuffMechanic.hpp"
 

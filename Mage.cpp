@@ -1,5 +1,6 @@
 #include "Mage.hpp"
 #include "DebuffBurning.hpp"
+#include "DebuffStunned.hpp"
 
 //Constructor
 
@@ -46,9 +47,9 @@ void Mage::showCombatLayout(std::vector<Character*> allies, std::vector<NpCharac
 		std::cout << "Str: " << this->getStrength() << " | Agi: " << this->getAgility() << " | Con: " << this->getConstitution() << " | Int: " << this->getIntelligence() << " | Dex: " << this->getDexterity() << " | Luk: " << this->getLucky() << std::endl;
 		std::cout << " ------------ " << "Skills" << " ------------ " << std::endl;
 		std::cout << "|1| - Basic Attack" << std::endl;
-		std::cout << "|2| - Fire Ball (30MP)" << std::endl;
-		std::cout << "|3| - Earthquake (60MP) (Target: all enemies)" << std::endl;
-		std::cout << "|4| - Cloud Strife (90MP)" << std::endl;
+		std::cout << "|2| - Fire Ball (30MP) - Individual damage that burns the target for 2 turns" << std::endl;
+		std::cout << "|3| - Earthquake (60MP) - Area damage with 30% chance to stun" << std::endl;
+		std::cout << "|4| - Cloud Strife (90MP) - Massive invidual damage" << std::endl;
 		std::cout << std::endl;
 
 		std::cout << "--------------------------------" << std::endl;
@@ -325,6 +326,17 @@ void Mage::earthQuake(std::vector<NpCharacter*> enemies)
 			if (!enemies[i]->dodgeAttack(this))
 			{
 				enemies[i]->decreaseHealth(damage - enemies[i]->damageReduction());
+
+				std::random_device rd;
+				std::mt19937 gen(rd());
+				std::uniform_int_distribution<> dis(1, 100);
+
+				int chance = dis(gen);
+				if (chance < 30)
+				{
+					Debuff* stun = DebuffStunned::create(this, enemies[i]);
+					enemies[i]->applyDebuff(stun);
+				}
 			}
 		}
 
@@ -347,6 +359,17 @@ void Mage::earthQuake(std::vector<NpCharacter*> enemies)
 			if (!enemies[i]->dodgeAttack(this))
 			{
 				enemies[i]->decreaseHealth(damage - enemies[i]->damageReduction());
+
+				std::random_device rd;
+				std::mt19937 gen(rd());
+				std::uniform_int_distribution<> dis(1, 100);
+
+				int chance = dis(gen);
+				if (chance < 30)
+				{
+					Debuff* stun = DebuffStunned::create(this, enemies[i]);
+					enemies[i]->applyDebuff(stun);
+				}
 			}
 		}
 

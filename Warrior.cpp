@@ -1,4 +1,5 @@
 #include "Warrior.hpp"
+#include "DebuffStunned.hpp"
 
 //Constructor
 
@@ -46,9 +47,9 @@ void Warrior::showCombatLayout(std::vector <Character*> allies, std::vector<NpCh
 		std::cout << "Str: " << this->getStrength() << " | Agi: " << this->getAgility() << " | Con: " << this->getConstitution() << " | Int: " << this->getIntelligence() << " | Dex: " << this->getDexterity() << " | Luk: " << this->getLucky() << std::endl;
 		std::cout << " ------------ " << "Skills" << " ------------ " << std::endl;
 		std::cout << "|1| - Basic Attack" << std::endl;
-		std::cout << "|2| - Sword Shout (15FP)" << std::endl;
-		std::cout << "|3| - Rock Breaker (30FP)" << std::endl;
-		std::cout << "|4| - Chaos Sword (60FP)" << std::endl;
+		std::cout << "|2| - Sword Whirl (15FP) - A whirl engage that deals area damage" << std::endl;
+		std::cout << "|3| - Rock Breaker (30FP) - Strong attack that stuns the target" << std::endl;
+		std::cout << "|4| - Chaos Sword (60FP) - Powerful strike that ignore the target armor" << std::endl;
 		std::cout << std::endl;
 
 		std::cout << "--------------------------------" << std::endl;
@@ -82,12 +83,10 @@ void Warrior::showCombatLayout(std::vector <Character*> allies, std::vector<NpCh
 		}
 		else if (nextMove == 2)
 		{
-			if (this->getFury() >= 14.5f)
+			if (this->getFury() >= 24.5f)
 			{
-				int targetIndex = chooseEnemy(aliveEnemies);
-				NpCharacter* target = aliveEnemies[targetIndex];
 
-				this->swordShout(target);
+				this->swordWhirl(enemies);
 			}
 			else
 			{
@@ -97,7 +96,7 @@ void Warrior::showCombatLayout(std::vector <Character*> allies, std::vector<NpCh
 		}
 		else if (nextMove == 3)
 		{
-			if (this->getFury() >= 29.5f)
+			if (this->getFury() >= 49.5f)
 			{
 				int targetIndex = chooseEnemy(aliveEnemies);
 				NpCharacter* target = aliveEnemies[targetIndex];
@@ -112,7 +111,7 @@ void Warrior::showCombatLayout(std::vector <Character*> allies, std::vector<NpCh
 		}
 		else if (nextMove == 4)
 		{
-			if (this->getFury() >= 59.5)
+			if (this->getFury() >= 79.5)
 			{
 				int targetIndex = chooseEnemy(aliveEnemies);
 				NpCharacter* target = aliveEnemies[targetIndex];
@@ -254,57 +253,60 @@ void Warrior::increaseFury(float damageTaken)
 	}
 }
 
-void Warrior::swordShout(NpCharacter* target)
+void Warrior::swordWhirl(std::vector<NpCharacter*> enemies)
 {
-	this->fury -= 15.0f;
+	this->fury -= 25.0f;
 
-	std::cout << this->getName() << " used Sword Shout against " << target->getName() << std::endl;
+	std::cout << this->getName() << " used Sword Whirl" << std::endl;
 
-	if (!target->dodgeAttack(this))
+
+	if (this->criticalHit())
 	{
+		float skillDamageBonus = this->getAttackPoints() * 0.7f;
+		float skillDamage = this->getAttackPoints() + skillDamageBonus;
+		float criticalDamage = skillDamage * 2.0f;
+		float damage = calculateAverageMagicDamage(criticalDamage);
 
-		if (this->criticalHit()) 
+		if (damage < 0.0f)
 		{
-
-			float skillDamageBonus = this->getAttackPoints() * 0.5f;
-			float skillDamage = this->getAttackPoints() + skillDamageBonus;
-			float criticalDamage = skillDamage * 2.0f;
-			float averageDamage = calculateAverageDamage(criticalDamage);
-			float damage = averageDamage - target->damageReduction();
-
-			if (damage < 0.0f)
-			{
-				damage = 0.0f;
-			}
-
-			target->decreaseHealth(damage);
-			std::cout << std::endl;
+			damage = 0.0f;
 		}
-		else
+
+		for (size_t i = 0; i < enemies.size(); ++i)
 		{
-			float skillDamageBonus = this->getAttackPoints() * 0.5f;
-			float skillDamage = this->getAttackPoints() + skillDamageBonus;
-			float averageDamage = calculateAverageDamage(skillDamage);
-			float damage = averageDamage - target->damageReduction();
-
-			if (damage < 0.0f)
+			if (!enemies[i]->dodgeAttack(this))
 			{
-				damage = 0.0f;
+				enemies[i]->decreaseHealth(damage - enemies[i]->damageReduction());
 			}
-
-			target->decreaseHealth(damage);
-			std::cout << std::endl;
 		}
+		std::cout << std::endl;
 	}
 	else
 	{
-		return;
+		float skillDamageBonus = this->getAttackPoints() * 0.7f;
+		float skillDamage = this->getAttackPoints() + skillDamageBonus;
+		float damage = calculateAverageMagicDamage(skillDamage);
+
+		if (damage < 0.0f)
+		{
+			damage = 0.0f;
+		}
+
+		for (size_t i = 0; i < enemies.size(); ++i)
+		{
+			if (!enemies[i]->dodgeAttack(this))
+			{
+				enemies[i]->decreaseHealth(damage - enemies[i]->damageReduction());
+			}
+		}
+		std::cout << std::endl;
 	}
+
 }
 
 void Warrior::rockBreaker(NpCharacter* target)
 {
-	this->fury -= 30.0f;
+	this->fury -= 50.0f;
 
 	std::cout << this->getName() << " used Rock Breaker against " << target->getName() << std::endl;
 
@@ -341,6 +343,9 @@ void Warrior::rockBreaker(NpCharacter* target)
 			target->decreaseHealth(damage);
 			std::cout << std::endl;
 		}
+
+		Debuff* stun = DebuffStunned::create(this, target);
+		target->applyDebuff(stun);
 	}
 	else
 	{
@@ -350,7 +355,7 @@ void Warrior::rockBreaker(NpCharacter* target)
 
 void Warrior::chaosSword(NpCharacter* target)
 {
-	this->fury -= 60.0f;
+	this->fury -= 80.0f;
 
 	std::cout << this->getName() << " used Chaos Sword against " << target->getName() << std::endl;
 
@@ -362,7 +367,7 @@ void Warrior::chaosSword(NpCharacter* target)
 			float skillDamage = this->getAttackPoints() + skillDamageBonus;
 			float criticalDamage = skillDamage * 2.0f;
 			float averageDamage = calculateAverageDamage(criticalDamage);
-			float damage = averageDamage - target->damageReduction();
+			float damage = averageDamage;
 
 			if (damage < 0.0f)
 			{
@@ -377,7 +382,7 @@ void Warrior::chaosSword(NpCharacter* target)
 			float skillDamageBonus = this->getAttackPoints() * 1.2f;
 			float skillDamage = this->getAttackPoints() + skillDamageBonus;
 			float averageDamage = calculateAverageDamage(skillDamage);
-			float damage = averageDamage - target->damageReduction();
+			float damage = averageDamage;
 
 			if (damage < 0.0f)
 			{

@@ -51,9 +51,9 @@ void Hunter::showCombatLayout(std::vector<Character*> allies, std::vector<NpChar
 		std::cout << "Str: " << this->getStrength() << " | Agi: " << this->getAgility() << " | Con: " << this->getConstitution() << " | Int: " << this->getIntelligence() << " | Dex: " << this->getDexterity() << " | Luk: " << this->getLucky() << std::endl;
 		std::cout << " --------- " << "Skills" << " --------- " << std::endl;
 		std::cout << "|1| - Basic Attack" << std::endl;
-		std::cout << "|2| - Poison Shot (30MP)" << std::endl;
-		std::cout << "|3| - Hunting Arrow (70MP)" << std::endl;
-		std::cout << "|4| - Arrow Storm (100MP) (Target: All)" << std::endl;
+		std::cout << "|2| - Poison Shot (30MP) - A arrow that poisons the target" << std::endl;
+		std::cout << "|3| - Hunting Arrow (70MP) - Powerful shot that if goes critical will hunt a second target to hit" << std::endl;
+		std::cout << "|4| - Arrow Storm (100MP) - The hunter whirls shooting arrows dealing area damage" << std::endl;
 		std::cout << std::endl;
 
 		std::cout << "--------------------------------" << std::endl;

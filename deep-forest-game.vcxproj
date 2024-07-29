@@ -143,6 +143,7 @@
     <ClInclude Include="CharacterCreation.hpp" />
     <ClInclude Include="Chimera.hpp" />
     <ClInclude Include="DebuffPoisoned.hpp" />
+    <ClInclude Include="DebuffStunned.hpp" />
     <ClInclude Include="FindBuffIndexByName.hpp" />
     <ClInclude Include="FindDebuffIndexByName.hpp" />
     <ClInclude Include="Hunter.hpp" />
@@ -199,6 +200,7 @@
     <ClCompile Include="CharacterCreation.cpp" />
     <ClCompile Include="Chimera.cpp" />
     <ClCompile Include="DebuffPoisoned.cpp" />
+    <ClCompile Include="DebuffStunned.cpp" />
     <ClCompile Include="FindBuffIndexByName.cpp" />
     <ClCompile Include="FindDebuffIndexByName.cpp" />
     <ClCompile Include="Hunter.cpp" />

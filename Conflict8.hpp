@@ -8,6 +8,8 @@
 #include "NpCharacter.hpp"
 #include "Buff.hpp"
 #include "BuffBlessed.hpp"
+#include "Debuff.hpp"
+#include "DebuffStunned.hpp"
 #include "DebuffBurning.hpp"
 #include "DebuffBleeding.hpp"
 #include "DebuffPoisoned.hpp"

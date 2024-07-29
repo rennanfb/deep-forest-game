@@ -40,7 +40,7 @@ void Conflict10(std::vector <Character*> players, std::vector<NpCharacter*> enem
 
 			std::cout << "---------------------------------------------------------------------------" << std::endl;
 
-			if (player->isAlive())
+			if (player->isAlive() && player->isActive())
 			{
 				player->showCombatLayout(players, enemies);
 			}
@@ -71,7 +71,7 @@ void Conflict10(std::vector <Character*> players, std::vector<NpCharacter*> enem
 
 			std::cout << "---------------------------------------------------------------------------" << std::endl;
 
-			if (enemy->isAlive())
+			if (enemy->isAlive() && enemy->isActive())
 			{
 				enemy->npcSkillSet(players);
 

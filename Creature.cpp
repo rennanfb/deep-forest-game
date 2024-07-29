@@ -164,3 +164,20 @@ void Creature::setLucky(float lucky)
 	this->lucky = lucky;
 }
 
+//Status
+
+void Creature::activateCreature()
+{
+	this->active = true;
+}
+
+void Creature::disableCreature()
+{
+	this->active = false;
+}
+
+bool Creature::isActive()
+{
+	return active;
+}
+

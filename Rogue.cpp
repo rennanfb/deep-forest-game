@@ -46,9 +46,9 @@ void Rogue::showCombatLayout(std::vector <Character*> allies, std::vector<NpChar
 		std::cout << "Str: " << this->getStrength() << " | Agi: " << this->getAgility() << " | Con: " << this->getConstitution() << " | Int: " << this->getIntelligence() << " | Dex: " << this->getDexterity() << " | Luk: " << this->getLucky() << std::endl;
 		std::cout << " ------------ " << "Skills" << " ------------ " << std::endl;
 		std::cout << "|1| - Basic Attack" << std::endl;
-		std::cout << "|2| - Twin Blades (40SP)" << std::endl;
-		std::cout << "|3| - Deep Wound (60SP)" << std::endl;
-		std::cout << "|4| - Seven Sins (80SP)" << std::endl;
+		std::cout << "|2| - Twin Blades (40SP) - Two simultaneous hits" << std::endl;
+		std::cout << "|3| - Deep Wound (60SP) - Moderate damage that makes the enemy bleed" << std::endl;
+		std::cout << "|4| - Seven Sins (80SP) - A fast combo of 7 hits" << std::endl;
 		std::cout << std::endl;
 
 		std::cout << "--------------------------------" << std::endl;

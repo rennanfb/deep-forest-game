@@ -35,7 +35,7 @@ public:
 	//Combat Methods
 
 	void increaseFury(float damage);
-	void swordShout(NpCharacter* target);
+	void swordWhirl(std::vector<NpCharacter*> enemies);
 	void rockBreaker(NpCharacter* target);
 	void chaosSword(NpCharacter* target);
 
