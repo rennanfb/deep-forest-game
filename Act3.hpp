@@ -17,8 +17,11 @@
 #include "Saberwolf.hpp"
 #include "SaberwolfAlpha.hpp"
 #include "Chimera.hpp"
+#include "GoblinWarlock.hpp"
+#include "InjuriedSeiren.hpp"
 #include "Interval.hpp"
 #include "Conflict9.hpp"
 #include "Conflict10.hpp"
+#include "Conflict11.hpp"
 
 void Act3(std::vector <Character*>& players, Character*& qing);

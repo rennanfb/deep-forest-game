@@ -52,6 +52,7 @@ public:
 	virtual void upgradeAttributes() = 0;
 	virtual void checkLevelAttributes() = 0;
 	virtual void restoreEnergy(float energyAmount) = 0;
+	virtual void decreaseEnergy(float energyAmount) = 0;
 	virtual void calculateCombatStatus() = 0;
 
 	//Combat Methods

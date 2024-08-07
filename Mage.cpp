@@ -222,6 +222,16 @@ void Mage::restoreEnergy(float energyAmount)
 	}
 }
 
+void Mage::decreaseEnergy(float energyAmount)
+{
+	this->mana -= energyAmount;
+
+	if (this->mana < 0.0f)
+	{
+		this->mana = 0.0f;
+	}
+}
+
 void Mage::calculateCombatStatus()
 {
 	this->healthPoints = this->getConstitution() * 6.0f;

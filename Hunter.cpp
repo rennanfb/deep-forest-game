@@ -27,7 +27,7 @@ Hunter* Hunter::createQing(int level)
 void Hunter::showSheet() const
 {
 	std::cout << std::endl;
-	std::cout << this->getName() << " | Priest Lv: " << this->getLevel() << " | " << this->getRace() << " | " << this->getFaction() << std::endl;
+	std::cout << this->getName() << " | Hunter Lv: " << this->getLevel() << " | " << this->getRace() << " | " << this->getFaction() << std::endl;
 	std::cout << "Str: " << this->getStrength() << " | Agi: " << this->getAgility() << " | Con: " << this->getConstitution() << " | Int: " << this->getIntelligence() << " | Dex: " << this->getDexterity() << " | Luk: " << this->getLucky() << std::endl;
 	std::cout << "---- Combat Attributes ---- " << std::endl;
 	std::cout << "Health Points: " << getHealthPoints() << " | Armor Power: " << getArmor() << std::endl;
@@ -225,6 +225,16 @@ void Hunter::restoreEnergy(float energyAmount)
 	if (this->focus > 100.0f + (getDexterity() / 3.0f))
 	{
 		this->calculateFocus();
+	}
+}
+
+void Hunter::decreaseEnergy(float energyAmount)
+{
+	this->focus -= energyAmount;
+
+	if (this->focus < 0.0f)
+	{
+		this->focus = 0.0f;
 	}
 }
 

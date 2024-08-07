@@ -228,6 +228,16 @@ void Priest::restoreEnergy(float energyAmount)
 	}
 }
 
+void Priest::decreaseEnergy(float energyAmount)
+{
+	this->mana -= energyAmount;
+
+	if (this->mana < 0.0f)
+	{
+		this->mana = 0.0f;
+	}
+}
+
 void Priest::calculateCombatStatus()
 {
 	this->healthPoints = this->getConstitution() * 7.0f;

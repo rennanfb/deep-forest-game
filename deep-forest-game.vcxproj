@@ -136,6 +136,7 @@
     <ClInclude Include="BuffBlessed.hpp" />
     <ClInclude Include="CombatBuffMechaninc.hpp" />
     <ClInclude Include="CombatDebuffMechanic.hpp" />
+    <ClInclude Include="Conflict11.hpp" />
     <ClInclude Include="Debuff.hpp" />
     <ClInclude Include="DebuffBleeding.hpp" />
     <ClInclude Include="DebuffBurning.hpp" />
@@ -146,6 +147,7 @@
     <ClInclude Include="DebuffStunned.hpp" />
     <ClInclude Include="FindBuffIndexByName.hpp" />
     <ClInclude Include="FindDebuffIndexByName.hpp" />
+    <ClInclude Include="GoblinWarlock.hpp" />
     <ClInclude Include="Hunter.hpp" />
     <ClInclude Include="Conflict10.hpp" />
     <ClInclude Include="Conflict5.hpp" />
@@ -167,6 +169,7 @@
     <ClInclude Include="GoblinPaladin.hpp" />
     <ClInclude Include="GoblinRebel.hpp" />
     <ClInclude Include="GoblinZombie.hpp" />
+    <ClInclude Include="InjuriedSeiren.hpp" />
     <ClInclude Include="Interval.hpp" />
     <ClInclude Include="Item.hpp" />
     <ClInclude Include="Mage.hpp" />
@@ -193,6 +196,7 @@
     <ClCompile Include="BuffBlessed.cpp" />
     <ClCompile Include="CombatBuffMechaninc.cpp" />
     <ClCompile Include="CombatDebuffMechanic.cpp" />
+    <ClCompile Include="Conflict11.cpp" />
     <ClCompile Include="Debuff.cpp" />
     <ClCompile Include="DebuffBleeding.cpp" />
     <ClCompile Include="DebuffBurning.cpp" />
@@ -203,6 +207,7 @@
     <ClCompile Include="DebuffStunned.cpp" />
     <ClCompile Include="FindBuffIndexByName.cpp" />
     <ClCompile Include="FindDebuffIndexByName.cpp" />
+    <ClCompile Include="GoblinWarlock.cpp" />
     <ClCompile Include="Hunter.cpp" />
     <ClCompile Include="Conflict10.cpp" />
     <ClCompile Include="Conflict5.cpp" />
@@ -224,6 +229,7 @@
     <ClCompile Include="GoblinPaladin.cpp" />
     <ClCompile Include="GoblinRebel.cpp" />
     <ClCompile Include="GoblinZombie.cpp" />
+    <ClCompile Include="InjuriedSeiren.cpp" />
     <ClCompile Include="Interval.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="Mage.cpp" />

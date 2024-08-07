@@ -3,6 +3,7 @@
 #include "DebuffBurning.hpp"
 #include "DebuffBleeding.hpp"
 #include "DebuffPoisoned.hpp"
+#include "DebuffStunned.hpp"
 #include "FindBuffIndexByName.hpp"
 #include "FindDebuffIndexByName.hpp"
 
@@ -547,9 +548,9 @@ void NpCharacter::shieldBash(Character* enemy)
 	}
 }
 
-void NpCharacter::shadowEmbrace(Character* enemy)
+void NpCharacter::bloodBait(Character* enemy)
 {
-	std::cout << this->getName() << " used Shadow Embrace against " << enemy->getName() << std::endl;
+	std::cout << this->getName() << " used Blood Bait against " << enemy->getName() << std::endl;
 
 	if (!enemy->dodgeAttack(this))
 	{
@@ -567,6 +568,11 @@ void NpCharacter::shadowEmbrace(Character* enemy)
 				damage = 0.0f;
 			}
 
+			float healDamage = damage / 2;
+
+			this->restoreHealth(healDamage);
+			std::cout << this->getName() << " restored " << healDamage << " points of health" << std::endl;
+
 			enemy->decreaseHealth(damage);
 			std::cout << std::endl;
 		}
@@ -582,6 +588,11 @@ void NpCharacter::shadowEmbrace(Character* enemy)
 				damage = 0.0f;
 			}
 
+			float healDamage = damage / 2;
+
+			this->restoreHealth(healDamage);
+			std::cout << this->getName() << " restored " << healDamage << " points of health" << std::endl;
+
 			enemy->decreaseHealth(damage);
 			std::cout << std::endl;
 		}
@@ -589,6 +600,177 @@ void NpCharacter::shadowEmbrace(Character* enemy)
 	else
 	{
 		return;
+	}
+}
+
+void NpCharacter::shadowEmbrace(Character* enemy)
+{
+	std::cout << this->getName() << " used Shadow Embrace against " << enemy->getName() << std::endl;
+
+	if (!enemy->dodgeAttack(this))
+	{
+		if (this->criticalHit())
+		{
+
+			float skillDamageBonus = this->getMagicAttackPoints() * 1.0f;
+			float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
+			float criticalDamage = skillDamage * 2.0f;
+			float averageDamage = calculateAverageMagicDamage(criticalDamage);
+			float damage = averageDamage - enemy->damageReduction();
+
+			if (damage < 0.0f)
+			{
+				damage = 0.0f;
+			}
+
+			enemy->decreaseHealth(damage);
+			std::cout << std::endl;
+		}
+		else
+		{
+			float bonusDamage = this->getMagicAttackPoints() * 1.0f;
+			float skillDamage = bonusDamage += this->getMagicAttackPoints();
+			float averageDamage = calculateAverageDamage(skillDamage);
+			float damage = averageDamage - enemy->damageReduction();
+
+			if (damage < 0.0f)
+			{
+				damage = 0.0f;
+			}
+
+			enemy->decreaseHealth(damage);
+			std::cout << std::endl;
+		}
+
+		Debuff* stun = DebuffStunned::create(this, enemy);
+		enemy->applyDebuff(stun);
+	}
+	else
+	{
+		return;
+	}
+}
+
+void NpCharacter::etherWave(Character* enemy)
+{
+	std::cout << this->getName() << " used Ether Wave against " << enemy->getName() << std::endl;
+
+	if (!enemy->dodgeAttack(this))
+	{
+		if (this->criticalHit())
+		{
+
+			float skillDamageBonus = this->getMagicAttackPoints() * 1.5f;
+			float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
+			float criticalDamage = skillDamage * 2.0f;
+			float averageDamage = calculateAverageMagicDamage(criticalDamage);
+			float damage = averageDamage - enemy->damageReduction();
+
+			float energyDrain = damage / 5;
+
+			if (damage < 0.0f)
+			{
+				damage = 0.0f;
+			}
+
+			std::cout << enemy->getName() << " had lost " << energyDrain << " points of energy" << std::endl;
+			enemy->decreaseEnergy(energyDrain);
+			enemy->decreaseHealth(damage);
+			std::cout << std::endl;
+		}
+		else
+		{
+			float bonusDamage = this->getMagicAttackPoints() * 1.5f;
+			float skillDamage = bonusDamage += this->getMagicAttackPoints();
+			float averageDamage = calculateAverageDamage(skillDamage);
+			float damage = averageDamage - enemy->damageReduction();
+
+			float energyDrain = damage / 5;
+
+			if (damage < 0.0f)
+			{
+				damage = 0.0f;
+			}
+
+			std::cout << enemy->getName() << " had lost " << energyDrain << " points of energy" << std::endl;
+			enemy->decreaseEnergy(energyDrain);
+			enemy->decreaseHealth(damage);
+			std::cout << std::endl;
+		}
+	}
+	else
+	{
+		return;
+	}
+}
+
+void NpCharacter::crushingGravity(std::vector<Character*> enemies)
+{
+
+	std::cout << this->getName() << " used Crushing Gravity " << std::endl;
+
+	if (this->criticalHit())
+	{
+		float skillDamageBonus = this->getMagicAttackPoints() * 0.5f;
+		float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
+		float criticalDamage = skillDamage * 2.0f;
+		float damage = calculateAverageMagicDamage(criticalDamage);
+
+		if (damage < 0.0f)
+		{
+			damage = 0.0f;
+		}
+
+		for (size_t i = 0; i < enemies.size(); ++i)
+		{
+			if (!enemies[i]->dodgeAttack(this))
+			{
+				enemies[i]->decreaseHealth(damage - enemies[i]->damageReduction());
+
+				std::random_device rd;
+				std::mt19937 gen(rd());
+				std::uniform_int_distribution<> dis(1, 100);
+
+				int chance = dis(gen);
+				if (chance < 30)
+				{
+					Debuff* stun = DebuffStunned::create(this, enemies[i]);
+					enemies[i]->applyDebuff(stun);
+				}
+			}
+		}
+		std::cout << std::endl;
+	}
+	else
+	{
+		float skillDamageBonus = this->getMagicAttackPoints() * 0.7f;
+		float skillDamage = this->getMagicAttackPoints() + skillDamageBonus;
+		float damage = calculateAverageMagicDamage(skillDamage);
+
+		if (damage < 0.0f)
+		{
+			damage = 0.0f;
+		}
+
+		for (size_t i = 0; i < enemies.size(); ++i)
+		{
+			if (!enemies[i]->dodgeAttack(this))
+			{
+				enemies[i]->decreaseHealth(damage - enemies[i]->damageReduction());
+
+				std::random_device rd;
+				std::mt19937 gen(rd());
+				std::uniform_int_distribution<> dis(1, 100);
+
+				int chance = dis(gen);
+				if (chance < 30)
+				{
+					Debuff* stun = DebuffStunned::create(this, enemies[i]);
+					enemies[i]->applyDebuff(stun);
+				}
+			}
+		}
+		std::cout << std::endl;
 	}
 }
 

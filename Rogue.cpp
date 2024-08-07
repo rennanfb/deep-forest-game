@@ -225,6 +225,16 @@ void Rogue::restoreEnergy(float energyAmount)
 	}
 }
 
+void Rogue::decreaseEnergy(float energyAmount)
+{
+	this->stamina -= energyAmount;
+
+	if (this->stamina < 0.0f)
+	{
+		this->stamina = 0.0f;
+	}
+}
+
 void Rogue::calculateCombatStatus()
 {
 	this->healthPoints = this->getConstitution() * 8.0f;

@@ -26,6 +26,7 @@ public:
 	void healStats() override;
 	void basicAttack(NpCharacter* enemy) override;
 	void restoreEnergy(float energyAmount) override;
+	void decreaseEnergy(float energyAmount) override;
 	void calculateCombatStatus() override;
 
 	//Combat Methods

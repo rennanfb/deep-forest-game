@@ -75,7 +75,6 @@ void Conflict2(std::vector <Character*> players, std::vector<NpCharacter*> enemi
 
 	if (!players[0]->isAlive())
 	{
-		std::cout << players[0]->getName() << " fall down" << std::endl;
 		std::cout << "You'are dead" << std::endl;
 		delete players[0];
 		exit(0);

@@ -91,7 +91,6 @@ void Conflict10(std::vector <Character*> players, std::vector<NpCharacter*> enem
 
 	if (!players[0]->isAlive())
 	{
-		std::cout << players[0]->getName() << " fall down" << std::endl;
 		std::cout << "You'are dead" << std::endl;
 		delete players[0];
 		exit(0);
@@ -130,8 +129,8 @@ void Conflict10(std::vector <Character*> players, std::vector<NpCharacter*> enem
 	std::cout << "Strange: don't touch the chimera's body, it's mine, i've been tracking this" << std::endl;
 	std::cout << "creature for days" << std::endl;
 	std::cout << std::endl;
-	std::cout << "Luna: We don't want this corpse, i can have it, why were you chasing this, or" << std::endl;
-	std::cout << "better, why is this doing around here, chimeras wasn't supposed to be legens?" << std::endl;
+	std::cout << "Luna: We don't want this corpse, you can have it, why were you chasing this, or" << std::endl;
+	std::cout << "better, why is that doing around here, chimeras wasn't supposed to be legends?" << std::endl;
 	std::cout << std::endl;
 	std::cout << "Qing: My name is Qing, some days ago something strange happened in this woods," << std::endl;
 	std::cout << "ancient creatures are coming, my people believe theres something to do with " << std::endl;

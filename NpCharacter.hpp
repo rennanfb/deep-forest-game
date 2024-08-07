@@ -70,7 +70,10 @@ public:
 	void stockCharge(Character* enemy);
 	void spinningSlash(Character* enemy);
 	void shieldBash(Character* enemy);
+	void bloodBait(Character* enemy);
 	void shadowEmbrace(Character* enemy);
+	void etherWave(Character* enemy);
+	void crushingGravity(std::vector<Character*> enemies);
 
 	//Getters
 

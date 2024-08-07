@@ -226,6 +226,16 @@ void Warrior::restoreEnergy(float energyAmount)
 	}
 }
 
+void Warrior::decreaseEnergy(float energyAmount)
+{
+	this->fury -= energyAmount;
+
+	if (this->fury < 0.0f)
+	{
+		this->fury = 0.0f;
+	}
+}
+
 void Warrior::calculateCombatStatus()
 {
 	this->healthPoints = this->getConstitution() * 11.0f;
